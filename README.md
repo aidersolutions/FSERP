@@ -40,27 +40,23 @@ The vc ++ is required to process python on windows just install from [microsoft 
 
 7. Open CMD and got to a directory, Run this command
 
-        hg clone https://jayarajanjn@bitbucket.org/jayarajanjn/fserpkitchen
+        git clone https://github.com/aidersolutions/FSERP.git 
 
 8. Go to the fserpkitchen directory
 
-        cd fserpkitchen
+        cd FSERP
 
-9. Go to the FSERP branch
-
-        hg checkout FSERP
-
-10. Run the setup file
+9. Run the setup file
 
         python setup.py
 
     >details like admin password and company name and new user should be entered when prompted
 
-11. Run mainfile
+10. Run mainfile
 
         python mainfile.py
 
-12. Write click on the mainfile and create a shortcut of the file  in the desktop.
+11. Write click on the mainfile and create a shortcut of the file  in the desktop.
 
 ### [Contribution guidelines](#markdown-header-contribution-guidlines)
 ----
