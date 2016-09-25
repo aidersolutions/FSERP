@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>trytond.pool &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for trytond.pool</h1><div class="highlight"><pre>
+<span class="c"># This file is part of Tryton.  The COPYRIGHT file at the top level of</span>
+<span class="c"># this repository contains the full copyright notices and license terms.</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">RLock</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">trytond.modules</span> <span class="kn">import</span> <span class="n">load_modules</span><span class="p">,</span> <span class="n">register_classes</span>
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">import</span> <span class="nn">__builtin__</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Pool&#39;</span><span class="p">,</span> <span class="s">&#39;PoolMeta&#39;</span><span class="p">,</span> <span class="s">&#39;PoolBase&#39;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PoolMeta"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.PoolMeta">[docs]</a><span class="k">class</span> <span class="nc">PoolMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;__name__&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s">&#39;__name__&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s">&#39;__name__&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+</div>
+<div class="viewcode-block" id="PoolBase"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.PoolBase">[docs]</a><span class="k">class</span> <span class="nc">PoolBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">PoolMeta</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__setup__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__post_setup__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__register__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="Pool"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool">[docs]</a><span class="k">class</span> <span class="nc">Pool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s">&#39;wizard&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s">&#39;report&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">}</span>
+    <span class="n">_started</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">_lock</span> <span class="o">=</span> <span class="n">RLock</span><span class="p">()</span>
+    <span class="n">_locks</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_pool</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">_instances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">database_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">database_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">database_name</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">database_name</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">database_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">database_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lock</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+                <span class="n">lock</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">database_name</span><span class="p">,</span> <span class="n">RLock</span><span class="p">())</span>
+        <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instances</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">database_name</span><span class="p">,</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">Pool</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">database_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">database_name</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">database_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span> <span class="o">=</span> <span class="n">database_name</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Pool.register"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="o">*</span><span class="n">classes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Register a list of classes</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;module&#39;</span><span class="p">]</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;type_&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">type_</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="s">&#39;report&#39;</span><span class="p">,</span> <span class="s">&#39;wizard&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+            <span class="n">mpool</span> <span class="o">=</span> <span class="n">Pool</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">assert</span> <span class="n">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mpool</span><span class="p">,</span> <span class="n">cls</span>
+            <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">PoolMeta</span><span class="p">),</span> <span class="n">cls</span>
+            <span class="n">mpool</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Pool.start"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Start/restart the Pool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="n">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">classes</span> <span class="ow">in</span> <span class="n">Pool</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+                <span class="n">classes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">register_classes</span><span class="p">()</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Pool.stop"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">database_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Stop the Pool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="n">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">database_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="n">database_name</span><span class="p">]</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">database_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lock</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">database_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">database_name</span><span class="p">]</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Pool.database_list"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.database_list">[docs]</a>    <span class="k">def</span> <span class="nf">database_list</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :return: database list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="n">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="n">databases</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">database</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+                        <span class="n">databases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+                        <span class="n">cls</span><span class="o">.</span><span class="n">_locks</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">databases</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the database lock for the pool.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Init pool</span>
+<span class="sd">        Set update to proceed to update</span>
+<span class="sd">        lang is a list of language code to be updated</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">]:</span>
+            <span class="c"># Don&#39;t reset pool if already init and not to update</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">update</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;init pool for &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="c"># Clean the _pool before loading modules</span>
+            <span class="k">for</span> <span class="nb">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">][</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">restart</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">load_modules</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">,</span>
+                    <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">restart</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Pool.get"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;model&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get an object from the pool</span>
+
+<span class="sd">        :param name: the object name</span>
+<span class="sd">        :param type: the type</span>
+<span class="sd">        :return: the instance</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&#39;*&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">][</span><span class="nb">type</span><span class="p">]:</span>
+                    <span class="k">break</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">][</span><span class="nb">type</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&#39;report&#39;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">trytond.report</span> <span class="kn">import</span> <span class="n">Report</span>
+                <span class="c"># Keyword argument &#39;type&#39; conflicts with builtin function</span>
+                <span class="n">cls</span> <span class="o">=</span> <span class="n">__builtin__</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="n">Report</span><span class="p">,),</span> <span class="p">{})</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">__setup__</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">cls</span>
+            <span class="k">raise</span>
+</div>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;model&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a classe to the pool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">][</span><span class="nb">type</span><span class="p">][</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls</span>
+
+<div class="viewcode-block" id="Pool.iterobject"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.iterobject">[docs]</a>    <span class="k">def</span> <span class="nf">iterobject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;model&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return an iterator over object name, object</span>
+
+<span class="sd">        :param type: the type</span>
+<span class="sd">        :return: an iterator</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_name</span><span class="p">][</span><span class="nb">type</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Pool.setup"><a class="viewcode-back" href="../../FSERP/trytond/doc/ref/pool.html#trytond.pool.Pool.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Setup classes for module and return a list of classes for each type in</span>
+<span class="sd">        a dictionary.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">type_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">classes</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">previous_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">type_</span><span class="p">)</span>
+                    <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">previous_cls</span><span class="p">),</span> <span class="p">{})</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">PoolBase</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">__setup__</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">type_</span><span class="p">)</span>
+                <span class="n">classes</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">[</span><span class="n">type_</span><span class="p">]:</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">__post_setup__</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">classes</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

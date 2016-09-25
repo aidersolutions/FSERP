@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data>
+
+        <menuitem name="LDAP" id="menu_administration"
+            parent="ir.menu_administration"/>
+        <record model="ir.ui.menu-res.group"
+            id="menu_administration_group_admin">
+            <field name="menu" ref="menu_administration"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+
+        <record model="ir.ui.view" id="test_connection_result_form">
+            <field name="model">ldap.test_connection.result</field>
+            <field name="type">form</field>
+            <field name="name">test_connection_result_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_test_connection">
+            <field name="name">Test LDAP Connection</field>
+            <field name="wiz_name">ldap.test_connection</field>
+            <field name="model">ldap.connection</field>
+        </record>
+
+        <record model="ir.ui.view" id="connection_view_form">
+            <field name="model">ldap.connection</field>
+            <field name="type">form</field>
+            <field name="name">connection_form</field>
+        </record>
+        <record model="ir.action.act_window" id="act_connection_form">
+            <field name="name">Connection</field>
+            <field name="res_model">ldap.connection</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_connection_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="connection_view_form"/>
+            <field name="act_window" ref="act_connection_form"/>
+        </record>
+        <menuitem parent="menu_administration" action="act_connection_form"
+            id="menu_connection" icon="tryton-list"/>
+        <record model="ir.ui.menu-res.group"
+            id="menu_connection_group_admin">
+            <field name="menu" ref="menu_connection"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+
+        <record model="ir.model.access" id="access_ldap_connection">
+            <field name="model" search="[('model', '=', 'ldap.connection')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access" id="access_ldap_connection_admin">
+            <field name="model" search="[('model', '=', 'ldap.connection')]"/>
+            <field name="group" ref="res.group_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+    </data>
+</tryton>

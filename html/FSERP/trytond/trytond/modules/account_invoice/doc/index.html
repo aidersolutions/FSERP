@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Invoice Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-invoice-module">
+<h1>Account Invoice Module<a class="headerlink" href="#account-invoice-module" title="Permalink to this headline">¶</a></h1>
+<p>The account_invoice module adds the invoice, payment term.</p>
+<div class="section" id="invoice">
+<h2>Invoice<a class="headerlink" href="#invoice" title="Permalink to this headline">¶</a></h2>
+<p>There are 4 types of invoice: <em>Invoice</em>, <em>Supplier Invoice</em>, <em>Credit Note</em> and
+<em>Supplier Credit Note</em>. An invoice can be in <em>Draft</em>, <em>Validated</em>, <em>Posted</em>,
+<em>Paid</em> or <em>Canceled</em>.</p>
+<ul class="simple">
+<li>Company: The company for which the invoice is created.</li>
+<li>Number: The invoice number set on validation for supplier invoices and on
+posting for others using the sequence defined on the period or fiscal year.</li>
+<li>Reference: The internal reference of the invoice.</li>
+<li>Party: The party for which or from which the invoice is issued.</li>
+<li>Invoice Address: The address of the party.</li>
+<li>Description: An optional description of the invoice.</li>
+<li>Comment: A text fields to add custom comments.</li>
+<li>Invoice Date: The date of the invoice. It is set on posting the invoice if not.</li>
+<li>Accounting Date: The date to use for accounting if set otherwise it is the
+invoice date.</li>
+<li>Currency: The currency of the invoice.</li>
+<li>Journal: The journal on which the accounting must be booked.</li>
+<li>Account: The payable or receivable account.</li>
+<li>Payment Term: The payment term to apply for the invoice
+(default value comes from the party).</li>
+<li>Lines: The lines invoiced.</li>
+<li>Taxes: The taxes related to the lines.</li>
+<li>Untaxed, Tax, Total Amount: The amounts computed by the invoice.</li>
+<li>Move: The accounting move created by the invoice on validation for supplier
+invoices and on posting for others.</li>
+<li>Cancel Move: The accounting move created to cancel a posted invoice.</li>
+</ul>
+<p>The <em>Invoice</em> report is stored when the invoice is posted and thus it is always
+the same that is returned for consistency.</p>
+<p>A wizard allow to register a cash payment directly on the invoice. The payment
+could be partial or with write-off.</p>
+<p>An other wizard allow to create a credit note from the invoice with the option
+to refund the original invoice.</p>
+</div>
+<div class="section" id="invoice-line">
+<h2>Invoice Line<a class="headerlink" href="#invoice-line" title="Permalink to this headline">¶</a></h2>
+<p>There are 4 types of lines: <em>Line</em>, <em>Subtotal</em>, <em>Title</em>, <em>Comment</em>.
+The <em>Line</em> are composed of:</p>
+<ul class="simple">
+<li>Product: An optional reference to the product to invoice.</li>
+<li>Account: The account to book the expense or revenue.</li>
+<li>Quantity: The quantity invoiced.</li>
+<li>Unit: The unit of measure in which is expressed the quantity.</li>
+<li>Unit Price: The unit price of the quantity in the currency of the invoice.</li>
+<li>Amount: The amount of the line (Unit Price multiplied by Quantity).</li>
+<li>Description: The description of the product or the line.</li>
+<li>Note: A text fields to add custom comments.</li>
+<li>Taxes: The taxes to apply to the amount of the line.</li>
+</ul>
+</div>
+<div class="section" id="invoice-tax">
+<h2>Invoice Tax<a class="headerlink" href="#invoice-tax" title="Permalink to this headline">¶</a></h2>
+<p>It groups the taxes of all the lines.
+The rounding of the taxes is defined in the accounting configuration and can
+be: <em>Per Document</em> or <em>Per Line</em>.</p>
+<ul class="simple">
+<li>Description: The description of the tax.</li>
+<li>Account: The account on which the tax is booked.</li>
+<li>Base: The base amount on which the tax is computed.</li>
+<li>Base Code: The <em>Tax Code</em> to record the base amount.</li>
+<li>Base Sign: The sign used to record the base amount on the tax code.</li>
+<li>Amount: The amount of the tax.</li>
+<li>Tax Code: The <em>Tax Code</em> to record the tax amount.</li>
+<li>Tax Sing: The sign used to record the tax amount on the tax code.</li>
+<li>Tax: The tax used for computation.</li>
+<li>Manual: A boolean to define manual tax
+(which is not linked to an invoice line).</li>
+</ul>
+</div>
+<div class="section" id="payment-term">
+<h2>Payment Term<a class="headerlink" href="#payment-term" title="Permalink to this headline">¶</a></h2>
+<p>It defines the maximum dates of how an due amount should be paid.</p>
+<ul class="simple">
+<li>Name: The name of the term.</li>
+<li>Description: The long description of the term.</li>
+<li>Lines:<ul>
+<li>Relative Deltas:<ul>
+<li>Day: The day of the month.</li>
+<li>Month: The month of the year.</li>
+<li>Day of the Week: One of the week day.</li>
+<li>Months: The number of months to add.</li>
+<li>Weeks: The number of weeks to add.</li>
+<li>Days: The number of days to add.</li>
+</ul>
+</li>
+<li>Type:<ul>
+<li><em>Fixed</em>:<ul>
+<li>Amount: The maximum fixed amount to pay at this date.</li>
+<li>Currency: The currency of the amount.</li>
+</ul>
+</li>
+<li><em>Percentage on Remainder</em>:<ul>
+<li>Percentage: The percentage to use on the remainder amount.</li>
+<li>Divisor: The reversed percentage.</li>
+</ul>
+</li>
+<li><em>Percentage on Total</em>:<ul>
+<li>Percentage: The percentage to use on the total amount.</li>
+<li>Divisor: The reversed percentage.</li>
+</ul>
+</li>
+<li><em>Remainder</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The computation of relative delta is based on the <a class="reference external" href="http://labix.org/python-dateutil#head-72c4689ec5608067d118b9143cef6bdffb6dad4e">python-dateutil library</a>.
+The payment term create a term for each line as far as there is still a
+remainder amount.</p>
+<p>A wizard is provided to test the behaviour of the payment term. It display
+computed terms base on an amount and a date.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The last line of payment term must be a remainder.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account Invoice Module</a><ul>
+<li><a class="reference internal" href="#invoice">Invoice</a></li>
+<li><a class="reference internal" href="#invoice-line">Invoice Line</a></li>
+<li><a class="reference internal" href="#invoice-tax">Invoice Tax</a></li>
+<li><a class="reference internal" href="#payment-term">Payment Term</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_invoice/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

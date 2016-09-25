@@ -1,0 +1,655 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>menu_tryton &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for menu_tryton</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Menu Module backend &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+<span class="kn">import</span> <span class="nn">trytond</span>
+<span class="kn">from</span> <span class="nn">trytond.pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">trytond.cache</span> <span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="s">&#39;testdb&#39;</span>
+
+
+<div class="viewcode-block" id="MenuProduct"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct">[docs]</a><span class="k">class</span> <span class="nc">MenuProduct</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages menu items</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Category</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.category&#39;</span><span class="p">)</span>
+        <span class="n">Product</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+        <span class="n">ProductUom</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+        <span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+        <span class="n">ProductCategory</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.category&#39;</span><span class="p">)</span>
+        <span class="n">Tax</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.tax&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside MenuProduct&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">productlist</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="nb">object</span>
+
+<div class="viewcode-block" id="MenuProduct.load_menus"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct.load_menus">[docs]</a>    <span class="k">def</span> <span class="nf">load_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the menu items</span>
+<span class="sd">        :return: list of dictionary of menu items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">productlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])</span>
+            <span class="n">return_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">productlist</span><span class="p">:</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item_no&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">list_price_uom</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Struct&quot;</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">dictionary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">return_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">return_list</span>
+</div>
+<div class="viewcode-block" id="MenuProduct.new_dish"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct.new_dish">[docs]</a>    <span class="k">def</span> <span class="nf">new_dish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        adds a new dish to the menu</span>
+<span class="sd">        :param obj: the dictionary of dish and its corresponding data</span>
+<span class="sd">        :return:boolean value True if the dish was saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuProduct new dish initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductUom</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">_</span> <span class="o">=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                            <span class="p">[(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ProductTemplate</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                            <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductTemplate</span><span class="p">()</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductCategory</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+                <span class="n">rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">])</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="n">rate</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tax</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Restaurant Tax&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">customer_taxes</span> <span class="o">=</span> <span class="p">(</span><span class="n">tax</span><span class="p">,)</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="p">()</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Dish&#39;</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="MenuProduct.update_dish"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct.update_dish">[docs]</a>    <span class="k">def</span> <span class="nf">update_dish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates a dish in the menu</span>
+<span class="sd">        :param obj: the dictionary of dish and its corresponding data</span>
+<span class="sd">        :return:boolean value True if the dish was saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuProduct update dish initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">product</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                        <span class="p">[(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductCategory</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">])</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="n">rate</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Dish&#39;</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c"># print sys.exc_info()[0].__name__, os.path.basename(sys.exc_info()[2].tb_frame.f_code.co_filename), \</span>
+            <span class="c"># sys.exc_info()[2].tb_lineno</span>
+            <span class="c"># print sys.exc_info()</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="MenuProduct.load_rows"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the dish corresponding to the id of the dish</span>
+<span class="sd">        :return: dictionary of the dish and its corresponding  values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">newid</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">newid</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span> \
+                <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&#39;No Category&#39;</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">list_price</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">data</span>
+</div>
+<div class="viewcode-block" id="MenuProduct.delete_rows"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.MenuProduct.delete_rows">[docs]</a>    <span class="k">def</span> <span class="nf">delete_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes a dish from the menu item</span>
+<span class="sd">        :param id: id of the product</span>
+<span class="sd">        :return: boolean value True if the dish was deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuProduct delete menu initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">newid</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">product</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">newid</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span>
+                                         <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">template</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ProductTemplate</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                        <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="n">week</span> <span class="o">=</span> <span class="n">WeeklyMenu</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">week</span><span class="o">.</span><span class="n">remove_from_all_days</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c"># print sys.exc_info()[0].__name__, os.path.basename(sys.exc_info()[2].tb_frame.f_code.co_filename), \</span>
+            <span class="c"># sys.exc_info()[2].tb_lineno</span>
+            <span class="c"># print sys.exc_info()</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+</div></div>
+<div class="viewcode-block" id="CategoryOfProduct"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.CategoryOfProduct">[docs]</a><span class="k">class</span> <span class="nc">CategoryOfProduct</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the category of the products</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Category</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.category&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside CategoryOfProduct&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CategoryOfProduct.create_category"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.CategoryOfProduct.create_category">[docs]</a>    <span class="k">def</span> <span class="nf">create_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a new category</span>
+<span class="sd">        :param name: category name</span>
+<span class="sd">        :return: boolean values True if the category was saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;CategoryOfProduct create category initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">newname</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">categories</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">newname</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">)])</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">categories</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Category</span><span class="p">()</span>
+                <span class="n">category</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+                <span class="n">category</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">newname</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">category</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="c"># print sys.exc_info()</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="CategoryOfProduct.search_categories"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.CategoryOfProduct.search_categories">[docs]</a>    <span class="k">def</span> <span class="nf">search_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        lists all the categories</span>
+<span class="sd">        :return:list of all category names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">categorieslist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">categorieslist</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="IngredientsInMenu"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu">[docs]</a><span class="k">class</span> <span class="nc">IngredientsInMenu</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the ingredients in a dish</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Ingredient</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.ingredientsofdish&#39;</span><span class="p">)</span>
+        <span class="n">Product</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+        <span class="n">ProductUom</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+        <span class="n">Category</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.category&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product_code</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside IngredientsInMenu&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>  <span class="c"># creation of object in a separate context prevents its modification but</span>
+            <span class="c"># can read the object in other functions of the instance, but if you try to edit it will show cursor error</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">product_code</span><span class="p">),</span>
+                                                <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="IngredientsInMenu.load_ingredients"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.load_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">load_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the ingredients of the product</span>
+<span class="sd">        :return: the list of dictionary of ingredients and its corresponding values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ingredientlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)])</span>
+            <span class="n">dataobject</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ingredientlist</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">code</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span> <span class="k">else</span> <span class="s">&#39;NA&#39;</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">quantity_uom</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">quantity</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Struct&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">dataobject</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dataobject</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.remove_ingredient_item"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.remove_ingredient_item">[docs]</a>    <span class="k">def</span> <span class="nf">remove_ingredient_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes an ingredient from the dish</span>
+<span class="sd">        :param code: code of the ingredient</span>
+<span class="sd">        :return:boolean value True is successfully deleted the dish</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;IngredientsInMenu remove ingredients initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">ingredientlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ingredientlist</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">i</span><span class="p">,))</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.update_ingredients"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.update_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">update_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataobject</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the ingredients of the product</span>
+<span class="sd">        :param dataobject: the list of dictionaries of ingredients and it corresponding values</span>
+<span class="sd">        :return: boolean value True if the ingredients was saved successfully</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;IngredientsInMenu update ingredients initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">dataobject</span> <span class="o">=</span> <span class="n">dataobject</span>
+                <span class="n">ingredientlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+                <span class="n">namelist</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ingredientlist</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dataobject</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ingredientlist</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                            <span class="n">quantity_uom</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductUom</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">])])</span>
+                            <span class="n">j</span><span class="o">.</span><span class="n">quantity_uom</span> <span class="o">=</span> <span class="n">quantity_uom</span>
+                            <span class="n">j</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">])</span>
+                            <span class="n">j</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+                        <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">),</span>
+                                                       <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">ingredient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="p">()</span>
+                        <span class="n">ingredient</span><span class="o">.</span><span class="n">dish</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span>
+                        <span class="n">ingredient</span><span class="o">.</span><span class="n">ingredient</span> <span class="o">=</span> <span class="n">product</span>
+                        <span class="n">ingredient</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">])</span>
+                        <span class="n">ingredient</span><span class="o">.</span><span class="n">quantity_uom</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductUom</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">])])</span>
+                        <span class="n">ingredient</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.get_item"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.get_item">[docs]</a>    <span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the item(dish) list</span>
+<span class="sd">        :return:list of item names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">product</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.get_quantity_uom"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.get_quantity_uom">[docs]</a>    <span class="k">def</span> <span class="nf">get_quantity_uom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the measurement list</span>
+<span class="sd">        :return:list of unit names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">products</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;NA&#39;</span><span class="p">)</span>
+            <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProductUom</span><span class="o">.</span><span class="n">search</span><span class="p">([])]</span>
+            <span class="k">return</span> <span class="n">products</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.get_categories"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.get_categories">[docs]</a>    <span class="k">def</span> <span class="nf">get_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        generates a list of categories</span>
+<span class="sd">        :return:list of category names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;NA&#39;</span><span class="p">)</span>
+            <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">search</span><span class="p">([])]</span>
+            <span class="k">return</span> <span class="n">categories</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.get_details_of_code"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.get_details_of_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_details_of_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the item, category and units based on the code</span>
+<span class="sd">        :param code: code of the product</span>
+<span class="sd">        :return: dictionary of item and its corresponding values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">code</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">return</span> <span class="n">row</span>
+</div>
+<div class="viewcode-block" id="IngredientsInMenu.get_details_of_item"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.IngredientsInMenu.get_details_of_item">[docs]</a>    <span class="k">def</span> <span class="nf">get_details_of_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the item, category and units based on the code</span>
+<span class="sd">        :param item: name of the product</span>
+<span class="sd">        :return: dictionary of item and its corresponding values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">),</span>
+                                               <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">code</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">row</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">return</span> <span class="n">row</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">row</span>
+
+</div></div>
+<div class="viewcode-block" id="WeeklyMenu"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu">[docs]</a><span class="k">class</span> <span class="nc">WeeklyMenu</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides a mechanism to manage menu per week</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Product</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+        <span class="n">Weekly</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;weeklymenu.weeklymenu&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside WeeklyMenu&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+
+<div class="viewcode-block" id="WeeklyMenu.load_dish_per_Day"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.load_dish_per_Day">[docs]</a>    <span class="k">def</span> <span class="nf">load_dish_per_Day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the menu of the day</span>
+<span class="sd">        :param day: day of the week</span>
+<span class="sd">        :return: list of dictionary of dishes and its corresponding data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">weeklist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)])</span>
+            <span class="n">return_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weeklist</span><span class="p">:</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">product</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">dish</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item_no&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">list_price_uom</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;per_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">default_quantity</span><span class="p">)</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Struct&quot;</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">dictionary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">return_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">return_list</span>
+
+</div>
+<div class="viewcode-block" id="WeeklyMenu.load_dish_notin_per_Day"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.load_dish_notin_per_Day">[docs]</a>    <span class="k">def</span> <span class="nf">load_dish_notin_per_Day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads rows not in the menu of the day</span>
+<span class="sd">        :return: list of rows</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">weeklist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)])</span>
+            <span class="n">menulist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="p">[(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;not in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">dish</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weeklist</span><span class="p">])])</span>
+            <span class="n">return_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">menulist</span><span class="p">:</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item_no&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">list_price_uom</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Struct&quot;</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">dictionary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">return_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">return_list</span>
+</div>
+<div class="viewcode-block" id="WeeklyMenu.save_dish_per_day"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.save_dish_per_day">[docs]</a>    <span class="k">def</span> <span class="nf">save_dish_per_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the dish to the day of the week</span>
+<span class="sd">        :param args: list of dictionary of dish details and day</span>
+<span class="sd">        :return:boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;WeeklyMenu save dish initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                    <span class="n">week</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="p">()</span>
+                    <span class="n">product</span> <span class="o">=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                            <span class="p">[(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dish&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;goods&#39;</span><span class="p">)])[</span>
+                            <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">week</span><span class="o">.</span><span class="n">dish</span> <span class="o">=</span> <span class="n">product</span>
+                    <span class="n">week</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;day&#39;</span><span class="p">]</span>
+                    <span class="n">week</span><span class="o">.</span><span class="n">default_quantity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">])</span>
+                    <span class="n">week</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="WeeklyMenu.update_weekly_row"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.update_weekly_row">[docs]</a>    <span class="k">def</span> <span class="nf">update_weekly_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates the weekly data info of the dish</span>
+<span class="sd">        :return:boolean True if the process was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;WeeklyMenu save weekly menu initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">weekly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)])</span>
+                <span class="n">week</span> <span class="o">=</span> <span class="n">weekly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">week</span><span class="o">.</span><span class="n">default_quantity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+                <span class="n">week</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="WeeklyMenu.remove_weekly_row"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.remove_weekly_row">[docs]</a>    <span class="k">def</span> <span class="nf">remove_weekly_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes the entry form the day</span>
+<span class="sd">        :return: boolean value True if the process was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;WeeklyMenu remove weekly row initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">weekly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">weekly</span><span class="p">)</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="WeeklyMenu.remove_from_all_days"><a class="viewcode-back" href="../menu_tryton.html#menu_tryton.WeeklyMenu.remove_from_all_days">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from_all_days</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes the menu entry from all the weekdays</span>
+<span class="sd">        :return:boolean value True if the dish was deleted successfully</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;WeeklyMenu remove from all day initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">weekly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">weekly</span><span class="p">)</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

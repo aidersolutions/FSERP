@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %} Purchase Order to {{user.supplier}} {% endblock %}
+{% block companyaddress %}
+{{user.name}},{{user.address}}
+{% endblock %}
+{% block currentdate %} {{user.date}} {% endblock %}
+{% block captiontable %}Purchase Ledger {{user.batch}}{% endblock %}
+{% block tablehead %}
+<tr>
+    <th>No</th>
+    <th>Code</th>
+    <th>Item</th>
+    <th>Category</th>
+    <th>Unit</th>
+    <th>Quantity</th>
+</tr>
+{% endblock %}
+{% block tablebody %}
+{%for i in user.purchase_list%}
+<tr id='table-data'>
+    <td>{{loop.index}}</td>
+    <td>{{i.code}}</td>
+    <td>{{i.item}}</td>
+    <td>{{i.category}}</td>
+    <td>{{i.units}}</td>
+    <td>{{i.quantity}}</td>
+</tr>
+{%endfor%}
+{% endblock %}
+{% block totalobj %}
+<tr class='footer'>
+    <th colspan='5'>Total Products</th>
+    <td>{{user.purchase_list|length()}}</td>
+</tr>
+{% endblock %}

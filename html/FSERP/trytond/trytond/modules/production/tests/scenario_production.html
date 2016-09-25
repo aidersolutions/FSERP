@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Production Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="production-scenario">
+<h1>Production Scenario<a class="headerlink" href="#production-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.production.production</span> <span class="kn">import</span> <span class="n">BOM_CHANGES</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yesterday</span> <span class="o">=</span> <span class="n">today</span> <span class="o">-</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install production Module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="p">,</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;production&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create product:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ProductUom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Product</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create Components:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">component1</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;component 1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component1</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">meter</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Meter&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centimeter</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;centimeter&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component2</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;component 2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">meter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component2</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create Bill of Material:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">BOM</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;production.bom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BOMInput</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;production.bom.input&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BOMOutput</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;production.bom.output&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span> <span class="o">=</span> <span class="n">BOM</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;product&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input1</span> <span class="o">=</span> <span class="n">BOMInput</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input1</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">component1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input1</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input2</span> <span class="o">=</span> <span class="n">BOMInput</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input2</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">component2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input2</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input2</span><span class="o">.</span><span class="n">uom</span> <span class="o">=</span> <span class="n">centimeter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">BOMOutput</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductBom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product-production.bom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">boms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProductBom</span><span class="p">(</span><span class="n">bom</span><span class="o">=</span><span class="n">bom</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create an Inventory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Inventory</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.inventory&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">InventoryLine</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.inventory.line&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.location&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;STO&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span> <span class="o">=</span> <span class="n">Inventory</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line1</span> <span class="o">=</span> <span class="n">InventoryLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inventory_line1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line1</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">component1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line1</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line2</span> <span class="o">=</span> <span class="n">InventoryLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inventory_line2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line2</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">component2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line2</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+</pre></div>
+</div>
+<p>Make a production:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Production</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;production&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span> <span class="o">=</span> <span class="n">Production</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">bom</span> <span class="o">=</span> <span class="n">bom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">quantity</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">cost</span>
+<span class="go">Decimal(&#39;25.0&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;wait&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;waiting&#39;</span>
+</pre></div>
+</div>
+<p>Test reset bom button:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">input</span><span class="o">.</span><span class="n">quantity</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;reset_bom&#39;</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="n">BOM_CHANGES</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">quantity</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Do the production:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;assign_try&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">all</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;assigned&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;run&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">all</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;done&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">==</span> <span class="n">today</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">))</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">==</span> <span class="n">production</span><span class="o">.</span><span class="n">effective_date</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span><span class="p">[</span><span class="s">&#39;locations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">storage</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Make a production with effective date yesterday:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Production</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;production&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span> <span class="o">=</span> <span class="n">Production</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">=</span> <span class="n">yesterday</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">bom</span> <span class="o">=</span> <span class="n">bom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;wait&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;assign_try&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;run&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">all</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">==</span> <span class="n">yesterday</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">==</span> <span class="n">yesterday</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Make a production with a bom of zero quantity:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">zero_bom</span><span class="p">,</span> <span class="o">=</span> <span class="n">BOM</span><span class="o">.</span><span class="n">duplicate</span><span class="p">([</span><span class="n">bom</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_</span> <span class="ow">in</span> <span class="n">bom</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">input_</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom_output</span><span class="p">,</span> <span class="o">=</span> <span class="n">bom</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom_output</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bom</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span> <span class="o">=</span> <span class="n">Production</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">effective_date</span> <span class="o">=</span> <span class="n">yesterday</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">bom</span> <span class="o">=</span> <span class="n">bom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">production</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">quantity</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">production</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
+<span class="go">[0.0, 0.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">outputs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="o">.</span><span class="n">quantity</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/production/tests/scenario_production.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

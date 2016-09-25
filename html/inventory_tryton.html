@@ -1,0 +1,739 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>inventory_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="invoice_testing module" href="invoice_testing.html" />
+    <link rel="prev" title="inventory_popupGUI package" href="inventory_popupGUI.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="invoice_testing.html" title="invoice_testing module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="inventory_popupGUI.html" title="inventory_popupGUI package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-inventory_tryton">
+<span id="inventory-tryton-module"></span><h1>inventory_tryton module<a class="headerlink" href="#module-inventory_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Inventory Module backend</p>
+<dl class="class">
+<dt id="inventory_tryton.AddStockInventory">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">AddStockInventory</tt><a class="reference internal" href="_modules/inventory_tryton.html#AddStockInventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.AddStockInventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a mechanism to add stock to the inventory</p>
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.InventoryLine">
+<tt class="descname">InventoryLine</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.InventoryLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory.line</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Location">
+<tt class="descname">Location</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.location</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.PaymentTerm">
+<tt class="descname">PaymentTerm</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.PaymentTerm" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.invoice.payment_term</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Purchase">
+<tt class="descname">Purchase</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Purchase" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">purchase.purchase</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.Uom">
+<tt class="descname">Uom</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.Uom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.User">
+<tt class="descname">User</tt><a class="headerlink" href="#inventory_tryton.AddStockInventory.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.AddStockInventory.confirm_inventory">
+<tt class="descname">confirm_inventory</tt><big>(</big><em>data</em>, <em>batch</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#AddStockInventory.confirm_inventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.AddStockInventory.confirm_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new quotation for the items from a supplier
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.AddStockInventory.confirm_purchase">
+<tt class="descname">confirm_purchase</tt><big>(</big><em>data</em>, <em>batch</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#AddStockInventory.confirm_purchase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.AddStockInventory.confirm_purchase" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches the purchase schedule and confirms it also adds the lines form purchase list to the inventory
+:param <a class="reference external" href="data:list">data:list</a> of dictionary value of the stock to be purchased
+:param batch: the batch number to be added to the inventory
+:return: boolean value eg:True if successfully saved.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.AddStockInventory.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.AddStockInventory.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.AddStockInventory.save_inventory">
+<tt class="descname">save_inventory</tt><big>(</big><em>data</em>, <em>batch</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#AddStockInventory.save_inventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.AddStockInventory.save_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new quotation for the items from a supplier
+:return:boolean value eg:True for saved successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.AddStockInventory.search_batch">
+<tt class="descname">search_batch</tt><big>(</big><em>batch</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#AddStockInventory.search_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.AddStockInventory.search_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>search the inventory based on the batch
+:param batch: the batch of the inventory
+:return: the list of dictionary consisting of values per inventory line</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.CategoryOfProduct">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">CategoryOfProduct</tt><a class="reference internal" href="_modules/inventory_tryton.html#CategoryOfProduct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.CategoryOfProduct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a mechanism to manage the category of the item(product)</p>
+<dl class="attribute">
+<dt id="inventory_tryton.CategoryOfProduct.Category">
+<tt class="descname">Category</tt><a class="headerlink" href="#inventory_tryton.CategoryOfProduct.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.CategoryOfProduct.create_category">
+<tt class="descname">create_category</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#CategoryOfProduct.create_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.CategoryOfProduct.create_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new category
+:param name: category name
+:return: boolean value True or False for saved or unsaved</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.CategoryOfProduct.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.CategoryOfProduct.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.CategoryOfProduct.search_categories">
+<tt class="descname">search_categories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#CategoryOfProduct.search_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.CategoryOfProduct.search_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of categories
+:return:list of category names</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.ItemProduct">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">ItemProduct</tt><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the items</p>
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.Account">
+<tt class="descname">Account</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.account</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.Ingredient">
+<tt class="descname">Ingredient</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.Ingredient" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.ingredientsofdish</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.ProductCategory">
+<tt class="descname">ProductCategory</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.ProductCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.ProductSuppliers">
+<tt class="descname">ProductSuppliers</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.ProductSuppliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">purchase.product_supplier</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.ProductTemplate">
+<tt class="descname">ProductTemplate</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.ProductTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.template</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.ProductUom">
+<tt class="descname">ProductUom</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.ProductUom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.User">
+<tt class="descname">User</tt><a class="headerlink" href="#inventory_tryton.ItemProduct.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.add_item">
+<tt class="descname">add_item</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new Item(product)
+:return:boolean value eg:True if the value item is saved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.add_supplier_to_item">
+<tt class="descname">add_supplier_to_item</tt><big>(</big><em>code=None</em>, <em>pan=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.add_supplier_to_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.add_supplier_to_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a new supplier
+:param code: code of the item(product)
+:param pan:is pan of party or the code of the party
+:return:boolean value eg:True if added successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.complete_unit">
+<tt class="descname">complete_unit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.complete_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.complete_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search all the units
+:return: list of the unit names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.create_item">
+<tt class="descname">create_item</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.create_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.create_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new Item(product)
+:return:boolean value eg:True if the value item is saved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.delete_rows">
+<tt class="descname">delete_rows</tt><big>(</big><em>id=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.delete_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.delete_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes an item
+:param id: id of the product
+:return: list of boolean value and the message to be displayed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.delete_supplier_from_item">
+<tt class="descname">delete_supplier_from_item</tt><big>(</big><em>code=None</em>, <em>pan=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.delete_supplier_from_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.delete_supplier_from_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a supplier
+:param code: code of the item(product)
+:param pan:is pan of party or the code of the party
+:return:boolean value eg:True if deleted successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.fill_item_list">
+<tt class="descname">fill_item_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.fill_item_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.fill_item_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of the items
+:return: a list of item names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the item, category and units based on the code
+:param code: code of the product
+:return: dictionary of the item and its details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the item, category and units based on the code
+:param item: name of the product
+:return: dictionary of the item and its details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.load_items">
+<tt class="descname">load_items</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.load_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.load_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the items
+:return:list of dictionary of the item and its corresponding values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>id=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> &#8211; the id of the corresponding item</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the item corresponding to the id and its values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.load_supplier_table">
+<tt class="descname">load_supplier_table</tt><big>(</big><em>id=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.load_supplier_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.load_supplier_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the supplier table in the item dialog
+:param id: product id
+:return: list of dictionary of suppliers and its corresponding values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ItemProduct.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.ItemProduct.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ItemProduct.save_item">
+<tt class="descname">save_item</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ItemProduct.save_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ItemProduct.save_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves an  Item(product) details
+:return:boolean value eg:True if the value item is saved</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.ReleaseDiscard">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">ReleaseDiscard</tt><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a mechanism to release a stock item or discard it</p>
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.Location">
+<tt class="descname">Location</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.location</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.Shipment">
+<tt class="descname">Shipment</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.Shipment" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.shipment.internal</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.ShipmentMoves">
+<tt class="descname">ShipmentMoves</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.ShipmentMoves" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.move</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.Uom">
+<tt class="descname">Uom</tt><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.Uom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.check_and_delete">
+<tt class="descname">check_and_delete</tt><big>(</big><em>inventory</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.check_and_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.check_and_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks the inventory and deletes the item if it has a item of quantity less than 0
+:param inventory:the inventory to be checked on
+:return:a boolean value eg:True if the process was successful</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.collect_batch">
+<tt class="descname">collect_batch</tt><big>(</big><em>item</em>, <em>quantity</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.collect_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.collect_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>collects the batch number corresponding to the quantity of the item
+:param item:the name of the item
+:param quantity:the quantity to be released
+:return:boolean value or a list of batch_number and the quantity</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.discard">
+<tt class="descname">discard</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.discard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>discards the item from the inventory
+:param <a class="reference external" href="data:the">data:the</a> dictionary of the item and its related value
+:return:boolean value eg: if True the discard was successful.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.move">
+<tt class="descname">move</tt><big>(</big><em>from_location</em>, <em>to_location</em>, <em>item</em>, <em>quantity</em>, <em>batch_number</em>, <em>reason=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>moves an item from a given location to another
+:param from_location:the start location
+:param to_location:the end location
+:param item:the item to be moved
+:param quantity: the quantity of the item to be moved
+:param batch_number:the batch number from which the item should be moved
+:param reason:the reason (optional) for which the move was done eg:in case of Expiry
+:return: boolean value eg:True if the move was successful</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.ReleaseDiscard.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.populate_discard">
+<tt class="descname">populate_discard</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.populate_discard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.populate_discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the list of items to be discarded based on their expiry date
+:return:list of dictionary values of the item and its related values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.release">
+<tt class="descname">release</tt><big>(</big><em>item</em>, <em>quantity</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.release" title="Permalink to this definition">¶</a></dt>
+<dd><p>releases a n item form the stock
+:param item: the name of the item
+:param quantity:the quantity of the item to be released
+:return: boolean value eg:if True then release was successful</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.ReleaseDiscard.sort_inventory">
+<tt class="descname">sort_inventory</tt><big>(</big><em>inventory_list</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#ReleaseDiscard.sort_inventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.ReleaseDiscard.sort_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorts the inventory list according to the batch number
+:param inventory_list: the list of inventory items
+:return: ordered inventory list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.SchedulePurchase">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">SchedulePurchase</tt><a class="reference internal" href="_modules/inventory_tryton.html#SchedulePurchase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SchedulePurchase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a mechanism to schedule a purchase</p>
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Location">
+<tt class="descname">Location</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.location</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Purchase">
+<tt class="descname">Purchase</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Purchase" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">purchase.purchase</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.PurchaseLine">
+<tt class="descname">PurchaseLine</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.PurchaseLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">purchase.line</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.Uom">
+<tt class="descname">Uom</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.Uom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.User">
+<tt class="descname">User</tt><a class="headerlink" href="#inventory_tryton.SchedulePurchase.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SchedulePurchase.get_largest_batch">
+<tt class="descname">get_largest_batch</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SchedulePurchase.get_largest_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SchedulePurchase.get_largest_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the most recent batch number
+:return:the recent batch number or None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SchedulePurchase.load_schedules">
+<tt class="descname">load_schedules</tt><big>(</big><em>from_date=None</em>, <em>to_date=None</em>, <em>supplier='All'</em>, <em>day=None</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SchedulePurchase.load_schedules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SchedulePurchase.load_schedules" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the schedule according to the from_day and to_day
+:param from_date: start_date
+:param to_date: end_date
+:return: list of dictionary of values of each schedule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SchedulePurchase.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.SchedulePurchase.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SchedulePurchase.save_purchase">
+<tt class="descname">save_purchase</tt><big>(</big><em>data</em>, <em>batch</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SchedulePurchase.save_purchase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SchedulePurchase.save_purchase" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new quotation for the items from a supplier
+:param data: the list of dictionary consisting of the item and its values
+:param batch: the batch number
+:return:boolean value eg:True if the purchase was saved successfully</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.StockInventory">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">StockInventory</tt><a class="reference internal" href="_modules/inventory_tryton.html#StockInventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.StockInventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a mechanism to calculate the stock</p>
+<dl class="attribute">
+<dt id="inventory_tryton.StockInventory.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#inventory_tryton.StockInventory.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.StockInventory.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#inventory_tryton.StockInventory.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.StockInventory.load_stock">
+<tt class="descname">load_stock</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#StockInventory.load_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.StockInventory.load_stock" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the stock details
+:return: the list of dictionary with the values of stock</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.StockInventory.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.StockInventory.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory_tryton.SupplierParty">
+<em class="property">class </em><tt class="descclassname">inventory_tryton.</tt><tt class="descname">SupplierParty</tt><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mechanism to manage a supplier</p>
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.Account">
+<tt class="descname">Account</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.account</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.Address">
+<tt class="descname">Address</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.Address" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.address</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.PartyCategory">
+<tt class="descname">PartyCategory</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.PartyCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.category</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.User">
+<tt class="descname">User</tt><a class="headerlink" href="#inventory_tryton.SupplierParty.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.create_supplier">
+<tt class="descname">create_supplier</tt><big>(</big><em>datadict</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.create_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.create_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a supplier
+:param datadict:the dictionary of supplier and corresponding values
+:return:boolean value eg:True if supplier saved successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.delete_supplier">
+<tt class="descname">delete_supplier</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.delete_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.delete_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the supplier
+:param code:the code of the supplier
+:return:list of boolean value and the message to be displayed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.edit_supplier">
+<tt class="descname">edit_supplier</tt><big>(</big><em>datadict</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.edit_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.edit_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves a supplier
+:param datadict:the dictionary of supplier and corresponding values
+:return:boolean value eg:True if supplier saved successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.get_supplier">
+<tt class="descname">get_supplier</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.get_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.get_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the supplier corresponding to the code
+:param code:the code of the supplier
+:return:the dictionary of the supplier and its corresponding values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.list_suppliers_with_id">
+<tt class="descname">list_suppliers_with_id</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.list_suppliers_with_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.list_suppliers_with_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of suppliers with their ids
+:return: the list of suppliers with</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory_tryton.SupplierParty.load_suppliers">
+<tt class="descname">load_suppliers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory_tryton.html#SupplierParty.load_suppliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory_tryton.SupplierParty.load_suppliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the supplier list
+:return:list of dictionary of supplier and corresponding values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory_tryton.SupplierParty.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#inventory_tryton.SupplierParty.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="inventory_popupGUI.html"
+                        title="previous chapter">inventory_popupGUI package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="invoice_testing.html"
+                        title="next chapter">invoice_testing module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/inventory_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="invoice_testing.html" title="invoice_testing module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="inventory_popupGUI.html" title="inventory_popupGUI package"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

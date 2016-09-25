@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Statement Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-statement-module">
+<h1>Account Statement Module<a class="headerlink" href="#account-statement-module" title="Permalink to this headline">¶</a></h1>
+<p>The account_statement module allows to book statements. Statement can be used
+for bank statement, cash daybook etc.</p>
+<div class="section" id="statement">
+<h2>Statement<a class="headerlink" href="#statement" title="Permalink to this headline">¶</a></h2>
+<p>A statement groups many lines under a journal for a date. It is mainly defined
+by:</p>
+<ul class="simple">
+<li>Name.</li>
+<li>Journal.</li>
+<li>Date.</li>
+</ul>
+<p>The statement can be in one of this states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>The statement is waiting for validation</p>
+</li>
+<li><p class="first">Validated</p>
+<p>The statement is validated and is waiting to be posted. A move for each
+grouped lines is already created in draft state.</p>
+</li>
+<li><p class="first">Posted</p>
+<p>The statement is posted which means all the moves have been posted.</p>
+</li>
+<li><p class="first">Canceled</p>
+<p>The statement is canceled which means all the moves previously created have
+been deleted.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="line">
+<h2>Line<a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h2>
+<p>A Statement Line is mainly defined by:</p>
+<ul class="simple">
+<li>Sequence: Use to order the lines in the statement.</li>
+<li>Number: The number to identify a transaction.</li>
+<li>Date.</li>
+<li>Amount.</li>
+<li>Party.</li>
+<li>Account.</li>
+<li>Invoice.</li>
+<li>Description.</li>
+<li>Move: The move created for this line.</li>
+</ul>
+</div>
+<div class="section" id="line-group">
+<h2>Line Group<a class="headerlink" href="#line-group" title="Permalink to this headline">¶</a></h2>
+<p>The line group represent the group of lines created at the validation of the
+statement.
+By default the lines of a statement are grouped by <em>Number</em>, <em>Date</em> and <em>Party</em>.</p>
+</div>
+<div class="section" id="journal">
+<h2>Journal<a class="headerlink" href="#journal" title="Permalink to this headline">¶</a></h2>
+<p>A Statement Journal is mainly defined by:</p>
+<ul class="simple">
+<li>Name.</li>
+<li>Journal (from account).</li>
+<li>Currency.</li>
+<li>Validation Type:
+- Balance
+- Amount
+- Number of Lines</li>
+</ul>
+<p>The statements are validated following the validation type of the journal.
+The Balance validation requests to set the start and end balance (the start is
+automaticaly filled with the end balance of the last statement on the same
+journal) and the difference is checked against the total amount of the lines.
+The Amount validation requests to set the total amount to check against the
+total amount of the lines.
+The Number of Lines requests to set the number of unique lines on the
+statement.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account Statement Module</a><ul>
+<li><a class="reference internal" href="#statement">Statement</a></li>
+<li><a class="reference internal" href="#line">Line</a></li>
+<li><a class="reference internal" href="#line-group">Line Group</a></li>
+<li><a class="reference internal" href="#journal">Journal</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_statement/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

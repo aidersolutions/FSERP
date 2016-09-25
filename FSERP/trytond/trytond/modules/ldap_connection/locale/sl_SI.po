@@ -1,0 +1,135 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:ldap.connection,active_directory:"
+msgid "Active Directory"
+msgstr "Active Directory"
+
+msgctxt "field:ldap.connection,bind_dn:"
+msgid "Bind DN"
+msgstr "DN"
+
+msgctxt "field:ldap.connection,bind_pass:"
+msgid "Bind Pass"
+msgstr "Geslo"
+
+msgctxt "field:ldap.connection,create_date:"
+msgid "Create Date"
+msgstr "Ustvarjeno"
+
+msgctxt "field:ldap.connection,create_uid:"
+msgid "Create User"
+msgstr "Ustvaril"
+
+msgctxt "field:ldap.connection,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:ldap.connection,port:"
+msgid "Port"
+msgstr "Vrata"
+
+msgctxt "field:ldap.connection,rec_name:"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "field:ldap.connection,secure:"
+msgid "Secure"
+msgstr "Varna povezava"
+
+msgctxt "field:ldap.connection,server:"
+msgid "Server"
+msgstr "Strežnik"
+
+msgctxt "field:ldap.connection,uri:"
+msgid "URI"
+msgstr "URI"
+
+msgctxt "field:ldap.connection,write_date:"
+msgid "Write Date"
+msgstr "Zapisano"
+
+msgctxt "field:ldap.connection,write_uid:"
+msgid "Write User"
+msgstr "Zapisal"
+
+msgctxt "field:ldap.test_connection.result,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "help:ldap.connection,bind_dn:"
+msgid "LDAP DN used to bind"
+msgstr "LDAP DN za povezavo"
+
+msgctxt "help:ldap.connection,bind_pass:"
+msgid "LDAP password used to bind"
+msgstr "LDAP geslo za povezavo"
+
+msgctxt "help:ldap.connection,port:"
+msgid "LDAP server port"
+msgstr "Vrata LDAP strežnika"
+
+msgctxt "help:ldap.connection,secure:"
+msgid "LDAP secure connection"
+msgstr "LDAP varna povezava"
+
+msgctxt "help:ldap.connection,server:"
+msgid "LDAP server name"
+msgstr "Ime LDAP strežnika"
+
+msgctxt "model:ir.action,name:act_connection_form"
+msgid "Connection"
+msgstr "Povezava"
+
+msgctxt "model:ir.action,name:wizard_test_connection"
+msgid "Test LDAP Connection"
+msgstr "Preizkus LDAP povezave"
+
+msgctxt "model:ir.ui.menu,name:menu_administration"
+msgid "LDAP"
+msgstr "LDAP"
+
+msgctxt "model:ir.ui.menu,name:menu_connection"
+msgid "Connection"
+msgstr "Povezava"
+
+msgctxt "model:ldap.connection,name:"
+msgid "LDAP Connection"
+msgstr "LDAP povezava"
+
+msgctxt "model:ldap.test_connection.result,name:"
+msgid "Test Connection"
+msgstr "Preizkus povezave"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "Never"
+msgstr "Nikoli"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "SSL"
+msgstr "SSL"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "TLS"
+msgstr "TLS"
+
+msgctxt "view:ldap.connection:"
+msgid "LDAP Connection"
+msgstr "LDAP povezava"
+
+msgctxt "view:ldap.connection:"
+msgid "_Test Connection"
+msgstr "_Preizkus povezave"
+
+msgctxt "view:ldap.test_connection.result:"
+msgid "Test Connection Succeed!"
+msgstr "Uspešen preizkus povezave!"
+
+msgctxt "view:ldap.test_connection.result:"
+msgid "Test LDAP Connection"
+msgstr "Preizkus LDAP povezave"
+
+msgctxt "wizard_button:ldap.test_connection,result,end:"
+msgid "Close"
+msgstr "Zapri"

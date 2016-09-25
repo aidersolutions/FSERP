@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Stock Shipment Out Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stock-shipment-out-scenario">
+<h1>Stock Shipment Out Scenario<a class="headerlink" href="#stock-shipment-out-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install stock Module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="p">,</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;stock_supply&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Group</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.group&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create stock admin user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Stock Admin&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;stock_admin&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span><span class="o">.</span><span class="n">main_company</span> <span class="o">=</span> <span class="n">company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock Administration&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stock_admin_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_admin_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create stock user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Stock&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;stock&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span><span class="o">.</span><span class="n">main_company</span> <span class="o">=</span> <span class="n">company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stock_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create product user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span><span class="o">.</span><span class="n">main_company</span> <span class="o">=</span> <span class="n">company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Product Administration&#39;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product_admin_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_admin_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create product:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">product_admin_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductUom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Product</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;20&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Get stock locations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">stock_admin_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.location&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">warehouse_loc</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;WH&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_loc</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;SUP&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_loc</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;CUS&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_loc</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;OUT&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage_loc</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;STO&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Create new internal location:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.location&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">provisioning_loc</span> <span class="o">=</span> <span class="n">Location</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">provisioning_loc</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Provisioning Location&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">provisioning_loc</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;storage&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">provisioning_loc</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">warehouse_loc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">provisioning_loc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create internal order point:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">OrderPoint</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.order_point&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span> <span class="o">=</span> <span class="n">OrderPoint</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">warehouse_location</span> <span class="o">=</span> <span class="n">warehouse_loc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">storage_location</span> <span class="o">=</span> <span class="n">storage_loc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">provisioning_location</span> <span class="o">=</span> <span class="n">provisioning_loc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;internal&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">min_quantity</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">max_quantity</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_point</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create inventory to add enough quantity in Provisioning Location:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">stock_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Inventory</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.inventory&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span> <span class="o">=</span> <span class="n">Inventory</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">provisioning_loc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span><span class="o">.</span><span class="n">expected_quantity</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+</pre></div>
+</div>
+<p>Execute internal supply:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ShipmentInternal</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.shipment.internal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;stock.shipment.internal.create&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="p">,</span> <span class="o">=</span> <span class="n">ShipmentInternal</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;waiting&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">shipment</span><span class="o">.</span><span class="n">moves</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="p">,</span> <span class="o">=</span> <span class="n">shipment</span><span class="o">.</span><span class="n">moves</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+<span class="go">u&#39;Product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">quantity</span>
+<span class="go">15.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">from_location</span><span class="o">.</span><span class="n">name</span>
+<span class="go">u&#39;Provisioning Location&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">to_location</span><span class="o">.</span><span class="n">code</span>
+<span class="go">u&#39;STO&#39;</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/stock_supply/tests/scenario_stock_internal_supply.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

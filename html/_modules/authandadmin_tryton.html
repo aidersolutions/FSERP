@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>authandadmin_tryton &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for authandadmin_tryton</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Authorization and admin panel back end &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span>
+
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+
+
+<div class="viewcode-block" id="AccessUser"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser">[docs]</a><span class="k">class</span> <span class="nc">AccessUser</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the user</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Tax</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.tax&#39;</span><span class="p">)</span>
+    <span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">userif</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tax</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Restaurant Tax&#39;</span><span class="p">)])[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="AccessUser.validate_user"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser.validate_user">[docs]</a>    <span class="k">def</span> <span class="nf">validate_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param user:username of the user</span>
+<span class="sd">        :param password: password of the user</span>
+<span class="sd">        :return: valid id if password is correct else 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">database_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">userconf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">userid</span> <span class="o">=</span> <span class="n">userconf</span><span class="o">.</span><span class="n">get_login</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">userid</span>
+</div>
+<div class="viewcode-block" id="AccessUser.get_user"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser.get_user">[docs]</a>    <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the user with the corresponding id</span>
+<span class="sd">        :param id:the id of the user</span>
+<span class="sd">        :return:the user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user</span>
+</div>
+<div class="viewcode-block" id="AccessUser.get_details"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: all the details of the user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userid</span><span class="p">)</span>
+        <span class="n">company</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">main_company</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">rec_name</span>
+        <span class="n">street</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">street</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">city</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">zip</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="n">apikey</span> <span class="o">=</span> <span class="n">company</span><span class="o">.</span><span class="n">api</span>
+        <span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tax</span><span class="o">.</span><span class="n">rate</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng</span><span class="p">()</span>
+        <span class="n">profileid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">login</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">password</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;street&#39;</span><span class="p">:</span> <span class="n">street</span><span class="p">,</span> <span class="s">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span> <span class="s">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span> <span class="s">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
+                   <span class="s">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span> <span class="s">&#39;apikey&#39;</span><span class="p">:</span> <span class="n">apikey</span><span class="p">,</span> <span class="s">&#39;tax&#39;</span><span class="p">:</span> <span class="n">tax</span><span class="p">,</span>
+                   <span class="s">&#39;profileid&#39;</span><span class="p">:</span> <span class="n">profileid</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">}</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Struct&#39;</span><span class="p">,</span> <span class="n">details</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">details</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">details</span>
+</div>
+<div class="viewcode-block" id="AccessUser.save_details"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser.save_details">[docs]</a>    <span class="k">def</span> <span class="nf">save_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param details: dict of details</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
+        <span class="n">company</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">main_company</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">rec_name</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">street</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">street</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">city</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">zip</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">pin</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">apikey</span>
+        <span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tax</span>
+        <span class="n">tax</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">tax</span><span class="p">)</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">profileid</span>
+        <span class="k">if</span> <span class="n">details</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">company</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">tax</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="AccessUser.intitate_everything"><a class="viewcode-back" href="../authandadmin_tryton.html#authandadmin_tryton.AccessUser.intitate_everything">[docs]</a>    <span class="k">def</span> <span class="nf">intitate_everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        it is ran once to check whether the initial set of company and other stuffs are created properly</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

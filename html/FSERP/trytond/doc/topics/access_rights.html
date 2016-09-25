@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Access Rights &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="access-rights">
+<span id="topics-access-rights"></span><h1>Access Rights<a class="headerlink" href="#access-rights" title="Permalink to this headline">¶</a></h1>
+<p>There are 3 levels of access rights: model, field, button and record.
+Every access right is based on the groups of the user.
+The model and field access rights are checked for every RPC call for which
+<a class="reference internal" href="../ref/rpc.html#trytond.rpc.RPC.check_access" title="trytond.rpc.RPC.check_access"><tt class="xref py py-attr docutils literal"><span class="pre">trytond.rpc.RPC.check_access</span></tt></a> is set. The others are always enforced.</p>
+<div class="section" id="model-access">
+<h2>Model Access<a class="headerlink" href="#model-access" title="Permalink to this headline">¶</a></h2>
+<p>They are defined by records of <cite>ir.model.access</cite> which define for each couple
+of model and group, the read, write, create and delete permission. If any group
+of the user has the permission activated, then the user is granted this
+permission.</p>
+</div>
+<div class="section" id="field-access">
+<h2>Field Access<a class="headerlink" href="#field-access" title="Permalink to this headline">¶</a></h2>
+<p>Same as for model access but applied on the field. It uses records of
+<cite>ir.model.field.access</cite>.</p>
+</div>
+<div class="section" id="button">
+<h2>Button<a class="headerlink" href="#button" title="Permalink to this headline">¶</a></h2>
+<p>For each button of a model the records of &#8216;ir.model.button` define the list of
+groups that are allowed to call it.</p>
+</div>
+<div class="section" id="record-rule">
+<h2>Record Rule<a class="headerlink" href="#record-rule" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Access Rights</a><ul>
+<li><a class="reference internal" href="#model-access">Model Access</a></li>
+<li><a class="reference internal" href="#field-access">Field Access</a></li>
+<li><a class="reference internal" href="#button">Button</a></li>
+<li><a class="reference internal" href="#record-rule">Record Rule</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/topics/access_rights.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

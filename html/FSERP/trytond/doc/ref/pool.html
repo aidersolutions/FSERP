@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pool &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-trytond.pool"><span id="ref-pool"></span></span><div class="section" id="pool">
+<h1>Pool<a class="headerlink" href="#pool" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.pool.Pool">
+<em class="property">class </em><tt class="descclassname">trytond.pool.</tt><tt class="descname">Pool</tt><big>(</big><span class="optional">[</span><em>database_name</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The Pool store the instances of models, wizards and reports per database.</p>
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.pool.Pool.register">
+<em class="property">static </em><tt class="descclassname">Pool.</tt><tt class="descname">register</tt><big>(</big><em>klass</em><span class="optional">[</span>, <em>type</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a class of type (default: <cite>model</cite>).</p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.pool.Pool.start">
+<em class="property">classmethod </em><tt class="descclassname">Pool.</tt><tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the pool by registering all Tryton modules found.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.pool.Pool.stop">
+<em class="property">classmethod </em><tt class="descclassname">Pool.</tt><tt class="descname">stop</tt><big>(</big><em>database_name</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the pool by removing instances for the database.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.pool.Pool.database_list">
+<em class="property">classmethod </em><tt class="descclassname">Pool.</tt><tt class="descname">database_list</tt><big>(</big><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.database_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.database_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all started database.</p>
+</dd></dl>
+
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.pool.Pool.get">
+<tt class="descclassname">Pool.</tt><tt class="descname">get</tt><big>(</big><em>name</em><span class="optional">[</span>, <em>type</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the named instance of type from the pool.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.pool.Pool.iterobject">
+<tt class="descclassname">Pool.</tt><tt class="descname">iterobject</tt><big>(</big><span class="optional">[</span><em>type</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.iterobject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.iterobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an interator over instances names.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.pool.Pool.setup">
+<tt class="descclassname">Pool.</tt><tt class="descname">setup</tt><big>(</big><em>module</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pool.html#Pool.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.Pool.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup classes for module and return a list of classes for each type in a
+dictionary.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="poolmeta">
+<h1>PoolMeta<a class="headerlink" href="#poolmeta" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.pool.PoolMeta">
+<em class="property">class </em><tt class="descclassname">trytond.pool.</tt><tt class="descname">PoolMeta</tt><a class="reference internal" href="../../../../_modules/trytond/pool.html#PoolMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.PoolMeta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The PoolMeta is a metaclass helper to setup __name__ on class to be registered
+in the Pool.</p>
+</div>
+<div class="section" id="poolbase">
+<h1>PoolBase<a class="headerlink" href="#poolbase" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.pool.PoolBase">
+<em class="property">class </em><tt class="descclassname">trytond.pool.</tt><tt class="descname">PoolBase</tt><a class="reference internal" href="../../../../_modules/trytond/pool.html#PoolBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pool.PoolBase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The base class of registered class that will be setup.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pool</a></li>
+<li><a class="reference internal" href="#poolmeta">PoolMeta</a></li>
+<li><a class="reference internal" href="#poolbase">PoolBase</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/ref/pool.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

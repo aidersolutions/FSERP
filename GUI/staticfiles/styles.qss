@@ -1,0 +1,217 @@
+#inventory_tab_1 {background-color:#ADEBFF;}
+#billing_tab_2{background-color:#6CBED2;}
+#employee_tab_3{background-color:#0099CC;}
+#menu_tab_4{background-color:#297ACC;}
+#report_tab_5{background-color:#006BB2;}
+#waste_tab_6{background-color:#003D7A;}
+QWidget QLabel{
+color:#000000;}
+QWidget QTextEdit{
+color:#000000;}
+QFrame{
+color:#FFFFFF;}
+#menudialogue_menuIngredients_table{
+    color:#000000;
+}
+#inventory_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#inventory_detail_tabWidget QTabBar::tab:selected {
+    background-color: #4B77BE;
+}
+
+#inventory_detail_tabWidget QTabBar::tab:!selected {
+    background-color: #7C7C7C;
+}
+
+/*####1*/
+#billing_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#billing_detail_tabWidget QTabBar::tab:selected {
+    background-color: #4B77BE;
+}
+
+#billing_detail_tabWidget QTabBar::tab:!selected {
+    background-color: #7C7C7C;
+}
+
+/*####2*/
+#employee_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#employee_detail_tabWidget QTabBar::tab:selected {
+    background-color: #4B77BE;
+}
+
+#employee_detail_tabWidget QTabBar::tab:!selected {
+    background-color: #7C7C7C;
+}
+
+/*####3*/
+#menu_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#menu_detail_tabWidget QTabBar::tab:selected {
+    background-color:#4B77BE;
+}
+
+#menu_detail_tabWidget QTabBar::tab:!selected {
+    background-color: #7C7C7C;
+}
+
+/*####4*/
+#report_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#report_detail_tabWidget QTabBar::tab:selected {
+    background-color: #4B77BE;
+}
+
+#report_detail_tabWidget QTabBar::tab:!selected {
+    background-color:#7C7C7C;
+}
+
+/*####5*/
+#waste_detail_tabWidget QTabBar::tab {
+    border-top-left-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 1px;
+    color:#FFFFFF;
+}
+
+#waste_detail_tabWidget QTabBar::tab:selected {
+    background-color: #4B77BE;
+}
+
+#waste_detail_tabWidget QTabBar::tab:!selected {
+    background-color: #7C7C7C;
+}
+QHeaderView::section:horizontal
+{
+   height:40px;
+   border-style: none;
+   /*border-left:1px solid #FFFFFF;
+   border-right:1px solid #FFFFFF;
+   border-bottom:1px solid #FFFFFF;*/
+   border:1px solid #FFFFFF;
+   background-color: #4B77BE;
+   color:#FFFFFF;
+ }
+/*QHeaderView::section:horizontal:first{
+border-left:0px solid #FFFFFF;
+}
+QHeaderView::section:horizontal:last{
+border-right:0px solid #FFFFFF;
+}*/
+QHeaderView::section:vertical
+{
+   height:40px;
+   border-style: none;
+   border-left:1px solid #FFFFFF;
+   border-right:1px solid #FFFFFF;
+   border-bottom:1px solid #FFFFFF;
+   background-color: #4B77BE;
+   color:#FFFFFF;
+ }
+/*QTableWidget{
+background-color:#7094FF;
+}
+QPushButton {
+    background-color: #FFFFFF;
+}*/
+QPushButton {
+    background: rgb(76, 142, 250);
+    border-radius: 2px;
+    padding: 5px 24px;
+    color: #fff;
+}
+QTableWidget {
+    alternate-background-color: #6175AF;
+    background-color: #3A539B;
+    color:#FFFFFF;
+}
+
+
+QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    background: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0,
+                stop:0.518182 rgba(241, 241, 241, 255), stop:1 rgba(255, 255, 255, 255));
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+
+QComboBox::down-arrow {
+    image: url(:/images/down.png);
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox:editable {
+    background: white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0,
+                stop:0.518182 rgba(241, 241, 241, 255), stop:1 rgba(255, 255, 255, 255));
+}
+
+/* QComboBox gets the "on" state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: #4B77BE;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView{
+    background: #4B77BE;
+}
+#shortcut_tree{
+    color:#000000;
+}
+QCalendarWidget QWidget {
+    background-color: #FFFFFF;
+    color: black;}
+QCalendarWidget QAbstractItemView:disabled { color: grey; }

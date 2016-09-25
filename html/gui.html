@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gui module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="inventory module" href="inventory.html" />
+    <link rel="prev" title="fserpapi module" href="fserpapi.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inventory.html" title="inventory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fserpapi.html" title="fserpapi module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-gui">
+<span id="gui-module"></span><h1>gui module<a class="headerlink" href="#module-gui" title="Permalink to this headline">¶</a></h1>
+<p>Main Gui file</p>
+<dl class="class">
+<dt id="gui.EventHandlerForTabBar">
+<em class="property">class </em><tt class="descclassname">gui.</tt><tt class="descname">EventHandlerForTabBar</tt><a class="reference internal" href="_modules/gui.html#EventHandlerForTabBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.EventHandlerForTabBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PySide.QtCore.QObject</span></tt></p>
+<dl class="method">
+<dt id="gui.EventHandlerForTabBar.eventFilter">
+<tt class="descname">eventFilter</tt><big>(</big><em>obj</em>, <em>event</em><big>)</big><a class="reference internal" href="_modules/gui.html#EventHandlerForTabBar.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.EventHandlerForTabBar.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gui.EventHandlerForTabBar.staticMetaObject">
+<tt class="descname">staticMetaObject</tt><em class="property"> = &lt;PySide.QtCore.QMetaObject object at 0xc9b762c&gt;</em><a class="headerlink" href="#gui.EventHandlerForTabBar.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gui.Gui">
+<em class="property">class </em><tt class="descclassname">gui.</tt><tt class="descname">Gui</tt><a class="reference internal" href="_modules/gui.html#Gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.Gui" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="gui.Gui.add_tabs">
+<tt class="descname">add_tabs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gui.html#Gui.add_tabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.Gui.add_tabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return:adds new tabs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.Gui.add_tool_tip">
+<tt class="descname">add_tool_tip</tt><big>(</big><em>ob</em><big>)</big><a class="reference internal" href="_modules/gui.html#Gui.add_tool_tip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.Gui.add_tool_tip" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ob</strong> &#8211; Tab bar</td>
+</tr>
+</tbody>
+</table>
+<p>:return:tool tips</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.Gui.change_focus">
+<tt class="descname">change_focus</tt><big>(</big><em>event=None</em><big>)</big><a class="reference internal" href="_modules/gui.html#Gui.change_focus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.Gui.change_focus" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.Gui.setup">
+<tt class="descname">setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gui.html#Gui.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gui.Gui.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fserpapi.html"
+                        title="previous chapter">fserpapi module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="inventory.html"
+                        title="next chapter">inventory module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gui.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inventory.html" title="inventory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fserpapi.html" title="fserpapi module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

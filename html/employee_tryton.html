@@ -1,0 +1,533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>employee_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="fserpapi module" href="fserpapi.html" />
+    <link rel="prev" title="employee_popupGUI package" href="employee_popupGUI.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fserpapi.html" title="fserpapi module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="employee_popupGUI.html" title="employee_popupGUI package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-employee_tryton">
+<span id="employee-tryton-module"></span><h1>employee_tryton module<a class="headerlink" href="#module-employee_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Employee Module backend</p>
+<dl class="class">
+<dt id="employee_tryton.AttendenceManagement">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">AttendenceManagement</tt><a class="reference internal" href="_modules/employee_tryton.html#AttendenceManagement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.AttendenceManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the attendance of the employees</p>
+<dl class="attribute">
+<dt id="employee_tryton.AttendenceManagement.Attendence">
+<tt class="descname">Attendence</tt><a class="headerlink" href="#employee_tryton.AttendenceManagement.Attendence" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">attendance.attendance</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.AttendenceManagement.Employee">
+<tt class="descname">Employee</tt><a class="headerlink" href="#employee_tryton.AttendenceManagement.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">company.employee</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.AttendenceManagement.Payroll">
+<tt class="descname">Payroll</tt><a class="headerlink" href="#employee_tryton.AttendenceManagement.Payroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.payroll</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.AttendenceManagement.Shift">
+<tt class="descname">Shift</tt><a class="headerlink" href="#employee_tryton.AttendenceManagement.Shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">attendance.shiftdetails</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.AttendenceManagement.load_attendence">
+<tt class="descname">load_attendence</tt><big>(</big><em>day</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#AttendenceManagement.load_attendence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.AttendenceManagement.load_attendence" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the attendance for the particular day
+:param day:the date string  eg:&#8216;20-06-2015&#8217;
+:return:the list of dictionary with the attendance details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.AttendenceManagement.new_attendence">
+<tt class="descname">new_attendence</tt><big>(</big><em>day</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#AttendenceManagement.new_attendence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.AttendenceManagement.new_attendence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new attendance of the for a day
+:param day:day string eg:&#8216;20-06-2015&#8217;
+:return:boolean value True if the attendance was created successfully</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.AttendenceManagement.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.AttendenceManagement.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.AttendenceManagement.save_attendence">
+<tt class="descname">save_attendence</tt><big>(</big><em>data</em>, <em>day</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#AttendenceManagement.save_attendence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.AttendenceManagement.save_attendence" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the attendance for the corresponding day
+:param <a class="reference external" href="data:the">data:the</a> attendance data list of dictionaries with the details
+:param day:the date string eg:&#8216;20-06-2015&#8217;
+:return:boolean data True if attendance was saved successfully</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.EmployeeManagement">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">EmployeeManagement</tt><big>(</big><em>emp_id=None</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the Employees</p>
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Account">
+<tt class="descname">Account</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.account</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Address">
+<tt class="descname">Address</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Address" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.address</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Contact_Mechanism">
+<tt class="descname">Contact_Mechanism</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Contact_Mechanism" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.contact_mechanism</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Department">
+<tt class="descname">Department</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Department" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">department.department</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Designation">
+<tt class="descname">Designation</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">employee.designation</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Employee">
+<tt class="descname">Employee</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">company.employee</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Party">
+<tt class="descname">Party</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">party.party</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Salary">
+<tt class="descname">Salary</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Salary" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.salary</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.SalarySettings">
+<tt class="descname">SalarySettings</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.SalarySettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.salarysettings</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.Shift">
+<tt class="descname">Shift</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.Shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">attendance.shiftdetails</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.User">
+<tt class="descname">User</tt><a class="headerlink" href="#employee_tryton.EmployeeManagement.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.delete_department">
+<tt class="descname">delete_department</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.delete_department"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.delete_department" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the department
+:param <a class="reference external" href="data:data">data:data</a> dictionary with the department values to be deleted
+:return: boolean values if True the department is deleted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.delete_designation">
+<tt class="descname">delete_designation</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.delete_designation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.delete_designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the designation
+:param <a class="reference external" href="data:data">data:data</a> dictionary with the designation values to be deleted
+:return: boolean values if True the designation is deleted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.get_shift_list">
+<tt class="descname">get_shift_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.get_shift_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.get_shift_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches for the shifts that exists
+:return:the list of shifts</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.load_department">
+<tt class="descname">load_department</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.load_department"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.load_department" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the department list
+:return: the list of departments</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.load_designation">
+<tt class="descname">load_designation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.load_designation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.load_designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the designation list
+:return: the list of designations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.load_employee">
+<tt class="descname">load_employee</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.load_employee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.load_employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the employee corresponding to the id employee_id passed in the initialization
+:return:data dictionary object with use details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagement.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.EmployeeManagement.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.remove_employee">
+<tt class="descname">remove_employee</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.remove_employee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.remove_employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes an employee corresponding to the employee_id passed in the initialization
+:return: booloean value True if the employee is deleted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.save_department">
+<tt class="descname">save_department</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.save_department"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.save_department" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the department
+:param <a class="reference external" href="data:data">data:data</a> dictionary with the department values to be saved
+:return: boolean values if True the department is saved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.save_designation">
+<tt class="descname">save_designation</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.save_designation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.save_designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the designation
+:param <a class="reference external" href="data:data">data:data</a> dictionary with the designation values to be saved
+:return: boolean values if True the designation is saved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagement.save_employee">
+<tt class="descname">save_employee</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagement.save_employee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagement.save_employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the employee details
+:param <a class="reference external" href="data:the">data:the</a> data dictionary with the use details
+:return:boolean value True if the employee saved</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.EmployeeManagementList">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">EmployeeManagementList</tt><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagementList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagementList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists out the general registered employee list</p>
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagementList.Employee">
+<tt class="descname">Employee</tt><a class="headerlink" href="#employee_tryton.EmployeeManagementList.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">company.employee</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.EmployeeManagementList.load_data">
+<tt class="descname">load_data</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#EmployeeManagementList.load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.EmployeeManagementList.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the employee details
+:return:list with the dictionary of employee data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.EmployeeManagementList.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.EmployeeManagementList.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.PayrollManagement">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">PayrollManagement</tt><a class="reference internal" href="_modules/employee_tryton.html#PayrollManagement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.PayrollManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>manages the payroll of the employees</p>
+<dl class="attribute">
+<dt id="employee_tryton.PayrollManagement.Employee">
+<tt class="descname">Employee</tt><a class="headerlink" href="#employee_tryton.PayrollManagement.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">company.employee</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.PayrollManagement.Payroll">
+<tt class="descname">Payroll</tt><a class="headerlink" href="#employee_tryton.PayrollManagement.Payroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.payroll</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.PayrollManagement.create_payroll">
+<tt class="descname">create_payroll</tt><big>(</big><em>period</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#PayrollManagement.create_payroll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.PayrollManagement.create_payroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a payroll for the particular date
+:param period:period of shift [monthly,weekly,daily]
+:param to_date:the maximum date
+:return:the list of dictionary of payroll details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.PayrollManagement.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.PayrollManagement.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.PayrollManagement.save_payroll">
+<tt class="descname">save_payroll</tt><big>(</big><em>data</em>, <em>period</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#PayrollManagement.save_payroll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.PayrollManagement.save_payroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a payroll for the particular date
+:param <a class="reference external" href="data:the">data:the</a> list of dictionary of payroll details
+:param period:period of shift [monthly,weekly,daily]
+:param to_date:the maximum date
+:return:the list of dictionary of payroll details or boolean value False if failed or could not save</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.SalarySettingList">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">SalarySettingList</tt><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingList" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a  list of salary settings</p>
+<dl class="attribute">
+<dt id="employee_tryton.SalarySettingList.SalarySetting">
+<tt class="descname">SalarySetting</tt><a class="headerlink" href="#employee_tryton.SalarySettingList.SalarySetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.salarysettings</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.SalarySettingList.load_salary_setting">
+<tt class="descname">load_salary_setting</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingList.load_salary_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingList.load_salary_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the list of salary settings
+:return:list of dictionary  consisting of salary settings values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.SalarySettingList.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.SalarySettingList.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.SalarySettingManagement">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">SalarySettingManagement</tt><big>(</big><em>designation=None</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingManagement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a mechanism to manage the salary settings of a designation</p>
+<dl class="attribute">
+<dt id="employee_tryton.SalarySettingManagement.Designation">
+<tt class="descname">Designation</tt><a class="headerlink" href="#employee_tryton.SalarySettingManagement.Designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">employee.designation</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.SalarySettingManagement.SalarySetting">
+<tt class="descname">SalarySetting</tt><a class="headerlink" href="#employee_tryton.SalarySettingManagement.SalarySetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">payroll.salarysettings</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.SalarySettingManagement.delete_setting">
+<tt class="descname">delete_setting</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingManagement.delete_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingManagement.delete_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the salary settings of the designation passed in the initialization.
+:return:list consisting of a boolean value and a message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.SalarySettingManagement.load_setting">
+<tt class="descname">load_setting</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingManagement.load_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingManagement.load_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the settings of a designation passed during initialization
+:return: returns a boolean False if none found or else a list of dictionary consisting of salary setting values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.SalarySettingManagement.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.SalarySettingManagement.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.SalarySettingManagement.save_setting">
+<tt class="descname">save_setting</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#SalarySettingManagement.save_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.SalarySettingManagement.save_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the salary settings of the corresponding values passed
+:param data: the dictionary of values of the salary settings
+:return:list consisting of a boolean value and the message eg:if True then the operation was successful</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.ShiftList">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">ShiftList</tt><a class="reference internal" href="_modules/employee_tryton.html#ShiftList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftList" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of shifts</p>
+<dl class="attribute">
+<dt id="employee_tryton.ShiftList.Shift">
+<tt class="descname">Shift</tt><a class="headerlink" href="#employee_tryton.ShiftList.Shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">attendance.shiftdetails</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.ShiftList.load_shifts">
+<tt class="descname">load_shifts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#ShiftList.load_shifts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftList.load_shifts" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads a list of shifts
+:return:list of dictionary consisting details of a shift</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.ShiftList.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.ShiftList.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="employee_tryton.ShiftManagement">
+<em class="property">class </em><tt class="descclassname">employee_tryton.</tt><tt class="descname">ShiftManagement</tt><big>(</big><em>slot=None</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#ShiftManagement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the shift details</p>
+<dl class="attribute">
+<dt id="employee_tryton.ShiftManagement.Employee">
+<tt class="descname">Employee</tt><a class="headerlink" href="#employee_tryton.ShiftManagement.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">company.employee</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.ShiftManagement.Shift">
+<tt class="descname">Shift</tt><a class="headerlink" href="#employee_tryton.ShiftManagement.Shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">attendance.shiftdetails</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.ShiftManagement.delete_shift">
+<tt class="descname">delete_shift</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#ShiftManagement.delete_shift"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftManagement.delete_shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the particular shift
+:return:boolean value if the shift was deleted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.ShiftManagement.load_shift">
+<tt class="descname">load_shift</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#ShiftManagement.load_shift"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftManagement.load_shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the shift details for the corresponding slot details passed in the initialization
+:return:the dictionary of the shift details for the corresponding slot</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="employee_tryton.ShiftManagement.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#employee_tryton.ShiftManagement.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="employee_tryton.ShiftManagement.save_shift">
+<tt class="descname">save_shift</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/employee_tryton.html#ShiftManagement.save_shift"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employee_tryton.ShiftManagement.save_shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the shift with the corresponding data
+:param <a class="reference external" href="data:dictionary">data:dictionary</a> of the shift details
+:return:boolean True is the shift was saved</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="employee_popupGUI.html"
+                        title="previous chapter">employee_popupGUI package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fserpapi.html"
+                        title="next chapter">fserpapi module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/employee_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fserpapi.html" title="fserpapi module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="employee_popupGUI.html" title="employee_popupGUI package"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

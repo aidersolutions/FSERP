@@ -1,0 +1,1056 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>employee_tryton &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for employee_tryton</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Employee Module backend &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">trytond.pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">trytond.cache</span> <span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">inflect</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="s">&#39;testdb&#39;</span>
+
+
+<div class="viewcode-block" id="EmployeeManagement"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement">[docs]</a><span class="k">class</span> <span class="nc">EmployeeManagement</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the Employees</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Designation</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;employee.designation&#39;</span><span class="p">)</span>
+        <span class="n">Department</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;department.department&#39;</span><span class="p">)</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+        <span class="n">Salary</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.salary&#39;</span><span class="p">)</span>
+        <span class="n">SalarySettings</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.salarysettings&#39;</span><span class="p">)</span>
+        <span class="n">Party</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+        <span class="n">Shift</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;attendance.shiftdetails&#39;</span><span class="p">)</span>
+        <span class="n">User</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+        <span class="n">Account</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.account&#39;</span><span class="p">)</span>
+        <span class="n">Address</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.address&#39;</span><span class="p">)</span>
+        <span class="n">Contact_Mechanism</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.contact_mechanism&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emp_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside EmployeeManagement&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">company</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">main_company</span>
+            <span class="n">accounts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">search</span><span class="p">([</span>
+                <span class="p">(</span><span class="s">&#39;kind&#39;</span><span class="p">,</span> <span class="s">&#39;in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">,</span> <span class="s">&#39;payable&#39;</span><span class="p">,</span> <span class="s">&#39;revenue&#39;</span><span class="p">,</span> <span class="s">&#39;expense&#39;</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s">&#39;company&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">company</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span> <span class="o">=</span> <span class="n">emp_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">:</span>
+                <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">employee</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="n">employee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EmployeeManagement.get_shift_list"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.get_shift_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_shift_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        searches for the shifts that exists</span>
+<span class="sd">        :return:the list of shifts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">shifts</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">slot</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([]))</span>
+            <span class="k">return</span> <span class="n">shifts</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.load_employee"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.load_employee">[docs]</a>    <span class="k">def</span> <span class="nf">load_employee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the employee corresponding to the id employee_id passed in the initialization</span>
+<span class="sd">        :return:data dictionary object with use details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">employee</span><span class="o">.</span><span class="n">employee_id</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;department&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">department</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">designation</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;surname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">surname</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;fathersname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">fathersname</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;dob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">dob</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">-%m-%Y&quot;</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;doj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">doj</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">-%m-%Y&quot;</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;pan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">pan</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;adhar&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">adhar</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;salary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">employee</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">basic_pay</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;shift&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">shift</span><span class="o">.</span><span class="n">slot</span> <span class="k">if</span> <span class="n">employee</span><span class="o">.</span><span class="n">shift</span> <span class="k">else</span> <span class="bp">None</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;period&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;phone&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">phone</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">full_address</span>
+                <span class="k">return</span> <span class="n">data</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.save_employee"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.save_employee">[docs]</a>    <span class="k">def</span> <span class="nf">save_employee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the employee details</span>
+<span class="sd">        :param data:the data dictionary with the use details</span>
+<span class="sd">        :return:boolean value True if the employee saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement save employee initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">:</span>  <span class="c"># edit mode</span>
+                    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">):</span>
+                        <span class="n">check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])])</span>
+                        <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate entry with same employee-id&#39;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="n">salary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Salary</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">employee</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="n">party</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">employee</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Address</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">employee</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="n">contact_mechanism</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contact_Mechanism</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">party</span><span class="o">.</span><span class="n">contact_mechanisms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="p">()</span>
+                    <span class="n">salary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Salary</span><span class="p">()</span>
+                    <span class="n">party</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="p">()</span>
+                    <span class="n">party</span><span class="o">.</span><span class="n">account_payable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="s">&#39;payable&#39;</span><span class="p">]</span>
+                    <span class="n">party</span><span class="o">.</span><span class="n">account_receivable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">]</span>
+                    <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Address</span><span class="p">()</span>
+                    <span class="n">party</span><span class="o">.</span><span class="n">addresses</span> <span class="o">=</span> <span class="p">(</span><span class="n">address</span><span class="p">,)</span>
+                    <span class="n">contact_mechanism</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contact_Mechanism</span><span class="p">()</span>
+                    <span class="n">party</span><span class="o">.</span><span class="n">contact_mechanisms</span> <span class="o">=</span> <span class="p">(</span><span class="n">contact_mechanism</span><span class="p">,)</span>
+                    <span class="n">contact_mechanism</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;phone&#39;</span>
+                    <span class="n">check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])])</span>
+                    <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate entry with same employee-id&#39;</span><span class="p">]</span>
+                <span class="n">department</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Department</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;department&#39;</span><span class="p">]])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">designation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySettings</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;designation&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">designation</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">setting</span><span class="p">:</span>
+                    <span class="n">salary_settings</span> <span class="o">=</span> <span class="n">setting</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">salary_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySettings</span><span class="p">()</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">employee_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">department</span> <span class="o">=</span> <span class="n">department</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">designation</span> <span class="o">=</span> <span class="n">designation</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">sal_des_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="n">salary_settings</span><span class="o">.</span><span class="n">designation</span><span class="p">]</span>
+                    <span class="n">sal_des_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">designation</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">sal_des_list</span> <span class="o">=</span> <span class="p">(</span><span class="n">designation</span><span class="p">,)</span>
+                <span class="n">salary_settings</span><span class="o">.</span><span class="n">designation</span> <span class="o">=</span> <span class="n">sal_des_list</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;surname&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">fathersname</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;fathersname&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">dob</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;dob&#39;</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">-%m-%Y&quot;</span><span class="p">)</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">doj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;doj&#39;</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">-%m-%Y&quot;</span><span class="p">)</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">pan</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;pan&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">adhar</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;adhar&#39;</span><span class="p">]</span>
+                <span class="n">salary</span><span class="o">.</span><span class="n">basic_pay</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;salary&#39;</span><span class="p">])</span>
+                <span class="n">salary</span><span class="o">.</span><span class="n">salary_settings</span> <span class="o">=</span> <span class="n">salary_settings</span>
+                <span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;period&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">party</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                <span class="n">contact_mechanism</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;phone&#39;</span><span class="p">]</span>
+                <span class="n">address</span><span class="o">.</span><span class="n">street</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">salary</span> <span class="o">=</span> <span class="n">salary</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">party</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;shift&#39;</span><span class="p">]:</span>
+                    <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;shift&#39;</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">employee</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="n">shift</span>
+                    <span class="n">employee</span><span class="o">.</span><span class="n">shift</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;shift&#39;</span><span class="p">]</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">company</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">company</span>
+                <span class="n">salary_settings</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">salary</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">employee</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="n">employee</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Employee saved&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown Issue&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.remove_employee"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.remove_employee">[docs]</a>    <span class="k">def</span> <span class="nf">remove_employee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes an employee corresponding to the employee_id passed in the initialization</span>
+<span class="sd">        :return: booloean value True if the employee is deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement delete employee initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee_id</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employee</span><span class="p">:</span>
+                        <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="n">party</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">party</span>
+                        <span class="n">address</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">employee</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">employee</span><span class="p">,))</span>
+                        <span class="n">address</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">address</span><span class="p">,))</span>
+                        <span class="n">party</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">party</span><span class="p">,))</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.load_designation"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.load_designation">[docs]</a>    <span class="k">def</span> <span class="nf">load_designation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the designation list</span>
+<span class="sd">        :return: the list of designations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">designation_list</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([]))</span>
+            <span class="k">return</span> <span class="n">designation_list</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.load_department"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.load_department">[docs]</a>    <span class="k">def</span> <span class="nf">load_department</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the department list</span>
+<span class="sd">        :return: the list of departments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">department_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Department</span><span class="o">.</span><span class="n">search</span><span class="p">([])]</span>
+            <span class="k">return</span> <span class="n">department_list</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.save_department"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.save_department">[docs]</a>    <span class="k">def</span> <span class="nf">save_department</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the department</span>
+<span class="sd">        :param data:data dictionary with the department values to be saved</span>
+<span class="sd">        :return: boolean values if True the department is saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement save department initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Department</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s">&#39;OR&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;department_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;dep_id&#39;</span><span class="p">])),</span> <span class="p">],</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]),</span> <span class="p">],</span> <span class="p">])</span>
+                <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate Department entry&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">department</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Department</span><span class="p">()</span>
+                    <span class="n">department</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                    <span class="n">department</span><span class="o">.</span><span class="n">department_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;dep_id&#39;</span><span class="p">])</span>
+                    <span class="n">department</span><span class="o">.</span><span class="n">company</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">company</span>
+
+                    <span class="n">department</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Successfully saved the Department&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown Error&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.delete_department"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.delete_department">[docs]</a>    <span class="k">def</span> <span class="nf">delete_department</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes the department</span>
+<span class="sd">        :param data:data dictionary with the department values to be deleted</span>
+<span class="sd">        :return: boolean values if True the department is deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement delete department initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Department</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])])</span>
+                <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                    <span class="n">department</span> <span class="o">=</span> <span class="n">chk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">emp_list</span> <span class="o">=</span> <span class="n">department</span><span class="o">.</span><span class="n">employees</span>
+                    <span class="k">if</span> <span class="n">emp_list</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Employees Exist in the Department&#39;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">department</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Department deleted successfully&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Record Not Found&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unkown error check debug&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.save_designation"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.save_designation">[docs]</a>    <span class="k">def</span> <span class="nf">save_designation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the designation</span>
+<span class="sd">        :param data:data dictionary with the designation values to be saved</span>
+<span class="sd">        :return: boolean values if True the designation is saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement designation save initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s">&#39;OR&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;des_code&#39;</span><span class="p">])),</span> <span class="p">],</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]),</span> <span class="p">],</span> <span class="p">])</span>
+                <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate Designation entry&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">designation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="p">()</span>
+                    <span class="n">designation</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+                    <span class="n">designation</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;des_code&#39;</span><span class="p">])</span>
+
+                    <span class="n">designation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Successfully saved the Designation&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown Error&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="EmployeeManagement.delete_designation"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagement.delete_designation">[docs]</a>    <span class="k">def</span> <span class="nf">delete_designation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes the designation</span>
+<span class="sd">        :param data:data dictionary with the designation values to be deleted</span>
+<span class="sd">        :return: boolean values if True the designation is deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;EmployeeManagement delete designation initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])])</span>
+                <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                    <span class="n">designation</span> <span class="o">=</span> <span class="n">chk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">emp_list</span> <span class="o">=</span> <span class="n">designation</span><span class="o">.</span><span class="n">employees</span>
+                    <span class="k">if</span> <span class="n">emp_list</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Employees exists in the Designation, change their designation to delete&#39;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">designation</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">designation</span><span class="p">,))</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Designation deleted successfully&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Record Not Found&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown Error&#39;</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="EmployeeManagementList"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagementList">[docs]</a><span class="k">class</span> <span class="nc">EmployeeManagementList</span><span class="p">():</span>  <span class="c"># need to deprecate this no need for a class just for a single function</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lists out the general registered employee list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside EmployeeManagementList&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="EmployeeManagementList.load_data"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.EmployeeManagementList.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the employee details</span>
+<span class="sd">        :return:list with the dictionary of employee data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">employee</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">employee</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">employee_id</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;department&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">department</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">designation</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;dob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">dob</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">-%m-%Y&quot;</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;shift&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">shift</span><span class="o">.</span><span class="n">slot</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">lines</span>
+
+</div></div>
+<div class="viewcode-block" id="AttendenceManagement"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.AttendenceManagement">[docs]</a><span class="k">class</span> <span class="nc">AttendenceManagement</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the attendance of the employees</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+        <span class="n">Shift</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;attendance.shiftdetails&#39;</span><span class="p">)</span>
+        <span class="n">Payroll</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.payroll&#39;</span><span class="p">)</span>
+        <span class="n">Attendence</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;attendance.attendance&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside AttendenceManagement&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AttendenceManagement.new_attendence"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.AttendenceManagement.new_attendence">[docs]</a>    <span class="k">def</span> <span class="nf">new_attendence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new attendance of the for a day</span>
+<span class="sd">        :param day:day string eg:&#39;20-06-2015&#39;</span>
+<span class="sd">        :return:boolean value True if the attendance was created successfully</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;AttendenceManagement new attendence initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">day_string</span> <span class="o">=</span> <span class="n">day</span>
+                <span class="n">day</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day_string</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s">-%m-%Y&#39;</span><span class="p">)</span>
+                <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+                <span class="n">employee_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+                <span class="n">attendence_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attendence</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;date&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">day</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">attendence_check</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">today</span> <span class="o">-</span> <span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Cannot create attendance for a date more than 3 days back&#39;</span><span class="p">]</span>
+                    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">employee_list</span><span class="p">:</span>
+                        <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="n">attendence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attendence</span><span class="p">()</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">shift</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">day</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">leave_type</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">is_holiday</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c"># for unknown reason it is being default True</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">leave_reason</span> <span class="o">=</span> <span class="s">&#39;Unassigned&#39;</span>
+                        <span class="n">attendence</span><span class="o">.</span><span class="n">leave_applied</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attendence</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">name</span>
+                        <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_applied&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attendence</span><span class="o">.</span><span class="n">leave_applied</span>
+                        <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_reason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Unassigned&#39;</span>
+                        <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attendence</span><span class="o">.</span><span class="n">leave_type</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">attendence</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Cannot create Attendence&#39;</span><span class="p">]</span>
+                        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="n">lines</span><span class="p">]</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_attendence</span><span class="p">(</span><span class="n">day_string</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">lines</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unkown Error check debug&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="AttendenceManagement.load_attendence"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.AttendenceManagement.load_attendence">[docs]</a>    <span class="k">def</span> <span class="nf">load_attendence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the attendance for the particular day</span>
+<span class="sd">        :param day:the date string  eg:&#39;20-06-2015&#39;</span>
+<span class="sd">        :return:the list of dictionary with the attendance details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">day_string</span> <span class="o">=</span> <span class="n">day</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day_string</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s">-%m-%Y&#39;</span><span class="p">)</span>
+            <span class="n">attendence_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attendence</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;date&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">day</span><span class="p">])</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">attendence_list</span><span class="p">:</span>
+                <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_applied&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">leave_applied</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_reason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">leave_reason</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;leave_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">leave_type</span>
+                <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;is_holiday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">is_holiday</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="n">lines</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Attendance Found&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="AttendenceManagement.save_attendence"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.AttendenceManagement.save_attendence">[docs]</a>    <span class="k">def</span> <span class="nf">save_attendence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the attendance for the corresponding day</span>
+<span class="sd">        :param data:the attendance data list of dictionaries with the details</span>
+<span class="sd">        :param day:the date string eg:&#39;20-06-2015&#39;</span>
+<span class="sd">        :return:boolean data True if attendance was saved successfully</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;AttendenceManagement save attendence initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">day_string</span> <span class="o">=</span> <span class="n">day</span>
+                <span class="n">day</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day_string</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s">-%m-%Y&#39;</span><span class="p">)</span>
+                <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">today</span> <span class="o">-</span> <span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Cannot Edit Attendance prior 3 days&#39;</span><span class="p">]</span>
+                <span class="n">attendence_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attendence</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;date&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">day</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">attendence_list</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">attendence_list</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">leave_applied</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;leave_applied&#39;</span><span class="p">]</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">leave_reason</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;leave_reason&#39;</span><span class="p">]</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">leave_type</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;leave_type&#39;</span><span class="p">]</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">is_holiday</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s">&#39;is_holiday&#39;</span><span class="p">]</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">in_time</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">employee</span><span class="o">.</span><span class="n">shift</span><span class="o">.</span><span class="n">in_time</span>
+                                <span class="n">j</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Attendence data saved&#39;</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Attendence Data Available&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unkown Error check debug&#39;</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="PayrollManagement"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.PayrollManagement">[docs]</a><span class="k">class</span> <span class="nc">PayrollManagement</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    manages the payroll of the employees</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Payroll</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.payroll&#39;</span><span class="p">)</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside PayrollManagement&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PayrollManagement.create_payroll"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.PayrollManagement.create_payroll">[docs]</a>    <span class="k">def</span> <span class="nf">create_payroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">to_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a payroll for the particular date</span>
+<span class="sd">        :param period:period of shift [monthly,weekly,daily]</span>
+<span class="sd">        :param to_date:the maximum date</span>
+<span class="sd">        :return:the list of dictionary of payroll details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;PayrollManagement create payroll initiated&#39;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">employee_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+                <span class="k">if</span> <span class="n">employee_list</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">employee_list</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="n">period</span><span class="p">:</span>
+                            <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                            <span class="n">payroll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Payroll</span><span class="p">()</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">salary_settings</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">basic_pay</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">basic_pay</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span>
+                            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="s">&#39;monthly&#39;</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="s">&#39;weekly&#39;</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">to_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">to_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">exist_previous</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;to_date&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="n">from_date</span><span class="p">),</span>
+                                                             <span class="p">(</span><span class="s">&#39;employee&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;paid&#39;</span><span class="p">)])</span>
+                            <span class="k">if</span> <span class="n">exist_previous</span><span class="p">:</span>
+                                <span class="n">date_sort</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">exist_previous</span><span class="p">:</span>
+                                    <span class="n">date_sort</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">to_date</span><span class="p">)</span>
+                                <span class="n">date_sort</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                                <span class="n">payroll</span><span class="o">.</span><span class="n">from_date</span> <span class="o">=</span> <span class="n">date_sort</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">payroll</span><span class="o">.</span><span class="n">from_date</span> <span class="o">=</span> <span class="n">from_date</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">to_date</span> <span class="o">=</span> <span class="n">to_date</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">month</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s">&#39;draft&#39;</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">other_deductions</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="n">i</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">employee_id</span><span class="p">)</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;total_days&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">payroll</span><span class="o">.</span><span class="n">total_days</span><span class="p">)</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;total_leaves&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">payroll</span><span class="o">.</span><span class="n">get_leaves</span><span class="p">(</span><span class="s">&#39;leaves&#39;</span><span class="p">)))</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;net_salary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">payroll</span><span class="o">.</span><span class="n">net_pay4duration</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">payroll</span><span class="p">,))</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">lines</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">lines</span>
+</div>
+<div class="viewcode-block" id="PayrollManagement.save_payroll"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.PayrollManagement.save_payroll">[docs]</a>    <span class="k">def</span> <span class="nf">save_payroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">to_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a payroll for the particular date</span>
+<span class="sd">        :param data:the list of dictionary of payroll details</span>
+<span class="sd">        :param period:period of shift [monthly,weekly,daily]</span>
+<span class="sd">        :param to_date:the maximum date</span>
+<span class="sd">        :return:the list of dictionary of payroll details or boolean value False if failed or could not save</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;PayrollManagement save payroll initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">employee_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;employee_id&#39;</span><span class="p">])])</span>
+                <span class="k">if</span> <span class="n">employee_list</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">employee_list</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="n">period</span><span class="p">:</span>
+                            <span class="k">print</span> <span class="n">i</span>
+                            <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                            <span class="n">payroll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Payroll</span><span class="p">()</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">salary_settings</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">basic_pay</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">basic_pay</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span>
+                            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="s">&#39;monthly&#39;</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">i</span><span class="o">.</span><span class="n">salary</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="s">&#39;weekly&#39;</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">to_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                                <span class="n">to_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+                                <span class="n">from_date</span> <span class="o">=</span> <span class="n">to_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">exist_previous</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                                <span class="p">[(</span><span class="s">&#39;to_date&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="n">from_date</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;employee&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;paid&#39;</span><span class="p">)])</span>
+                            <span class="k">if</span> <span class="n">exist_previous</span><span class="p">:</span>
+                                <span class="n">date_sort</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">exist_previous</span><span class="p">:</span>
+                                    <span class="n">date_sort</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">to_date</span><span class="p">)</span>
+                                <span class="n">date_sort</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                                <span class="n">payroll</span><span class="o">.</span><span class="n">from_date</span> <span class="o">=</span> <span class="n">date_sort</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">payroll</span><span class="o">.</span><span class="n">from_date</span> <span class="o">=</span> <span class="n">from_date</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">to_date</span> <span class="o">=</span> <span class="n">to_date</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">month</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_date</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s">&#39;draft&#39;</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">other_deductions</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">employee</span> <span class="o">=</span> <span class="n">i</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">designation</span><span class="o">.</span><span class="n">name</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;pan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">pan</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_date</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;basic_pay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">basic_pay</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">da</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;gross&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">gross_pay4duration</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">hra</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">pf</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">esi</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;professional_tax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">professional_tax</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;other_deductions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">leave_deduction</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;total_deduction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dictionary</span><span class="p">[</span>
+                                <span class="s">&#39;professional_tax&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;other_deductions&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s">&#39;other_deductions&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;net&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payroll</span><span class="o">.</span><span class="n">net_pay4duration</span>
+                            <span class="n">p</span> <span class="o">=</span> <span class="n">inflect</span><span class="o">.</span><span class="n">engine</span><span class="p">()</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;rupees&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">number_to_words</span><span class="p">(</span><span class="n">payroll</span><span class="o">.</span><span class="n">net_pay4duration</span><span class="p">)</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s">&#39;paid&#39;</span>
+                            <span class="n">payroll</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                            <span class="k">return</span> <span class="n">dictionary</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+</div></div>
+<div class="viewcode-block" id="ShiftManagement"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftManagement">[docs]</a><span class="k">class</span> <span class="nc">ShiftManagement</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the shift details</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Shift</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;attendance.shiftdetails&#39;</span><span class="p">)</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside ShiftManagement&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+
+<div class="viewcode-block" id="ShiftManagement.save_shift"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftManagement.save_shift">[docs]</a>    <span class="k">def</span> <span class="nf">save_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the shift with the corresponding data</span>
+<span class="sd">        :param data:dictionary of the shift details</span>
+<span class="sd">        :return:boolean True is the shift was saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;ShiftManagement save shift initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">:</span>
+                    <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="p">()</span>
+                    <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]])</span>
+                    <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate slot entry&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]:</span>
+                        <span class="n">chk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]])</span>
+                        <span class="k">if</span> <span class="n">chk</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate slot entry&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">in_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;in_time&#39;</span><span class="p">],</span> <span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">out_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;out_time&#39;</span><span class="p">],</span> <span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">monday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;monday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">tuesday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;tuesday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">wednesday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;wednesday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">thursday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;thursday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">friday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;friday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">saturday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;saturday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">sunday</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;sunday&#39;</span><span class="p">]</span>
+                <span class="n">shift</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;The Shift was saved&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unkown error check debug&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="ShiftManagement.load_shift"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftManagement.load_shift">[docs]</a>    <span class="k">def</span> <span class="nf">load_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the shift details for the corresponding slot details passed in the initialization</span>
+<span class="sd">        :return:the dictionary of the shift details for the corresponding slot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">slot</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;in_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">in_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;out_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">out_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;monday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">monday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;tuesday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">tuesday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;wednesday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">wednesday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;thursday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">thursday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;friday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">friday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;saturday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">saturday</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;sunday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span><span class="o">.</span><span class="n">sunday</span>
+                <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No such entry&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="ShiftManagement.delete_shift"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftManagement.delete_shift">[docs]</a>    <span class="k">def</span> <span class="nf">delete_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes the particular shift</span>
+<span class="sd">        :return:boolean value if the shift was deleted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;ShiftManagement delete shift initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">:</span>
+                    <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;slot&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">employee_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Employee</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">employee_list</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">shift</span><span class="o">.</span><span class="n">slot</span> <span class="o">==</span> <span class="n">shift</span><span class="o">.</span><span class="n">slot</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span>
+                                    <span class="s">&#39;Employee existing in this shift. &#39;</span>
+                                    <span class="s">&#39;Please remove employees from shift before deleting&#39;</span><span class="p">]</span>
+                    <span class="n">shift</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">shift</span><span class="p">,))</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Shift deletion successful&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown error check debug&#39;</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="ShiftList"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftList">[docs]</a><span class="k">class</span> <span class="nc">ShiftList</span><span class="p">():</span>  <span class="c"># a class for a single function need to remove it.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    provides a list of shifts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Shift</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;attendance.shiftdetails&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside ShiftList&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ShiftList.load_shifts"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.ShiftList.load_shifts">[docs]</a>    <span class="k">def</span> <span class="nf">load_shifts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads a list of shifts</span>
+<span class="sd">        :return:list of dictionary consisting details of a shift</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Shift</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+            <span class="k">if</span> <span class="n">shift</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shift</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;slot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">slot</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;in_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">in_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;out_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">out_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M %p&#39;</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;monday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">monday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;tuesday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">tuesday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;wednesday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">wednesday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;thursday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">thursday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;friday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">friday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;saturday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">saturday</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;sunday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">sunday</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">lines</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+</div></div>
+<div class="viewcode-block" id="SalarySettingManagement"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingManagement">[docs]</a><span class="k">class</span> <span class="nc">SalarySettingManagement</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides a mechanism to manage the salary settings of a designation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Designation</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;employee.designation&#39;</span><span class="p">)</span>
+        <span class="n">SalarySetting</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.salarysettings&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">designation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside SalarySettingManagement&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span> <span class="o">=</span> <span class="n">designation</span>
+
+<div class="viewcode-block" id="SalarySettingManagement.load_setting"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingManagement.load_setting">[docs]</a>    <span class="k">def</span> <span class="nf">load_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the settings of a designation passed during initialization</span>
+<span class="sd">        :return: returns a boolean False if none found or else a list of dictionary consisting of salary setting values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">:</span>
+                <span class="n">designation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">designation</span><span class="p">:</span>
+                    <span class="n">designation</span> <span class="o">=</span> <span class="n">designation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">salary_setting</span> <span class="o">=</span> <span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">designation</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">da_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">hra_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">pf_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">esi_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;proftax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">professional_tax_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="SalarySettingManagement.save_setting"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingManagement.save_setting">[docs]</a>    <span class="k">def</span> <span class="nf">save_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the salary settings of the corresponding values passed</span>
+<span class="sd">        :param data: the dictionary of values of the salary settings</span>
+<span class="sd">        :return:list consisting of a boolean value and the message eg:if True then the operation was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;SalarySettingManagement save setting initiated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="n">designation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]])</span>
+                <span class="k">if</span> <span class="n">designation</span><span class="p">:</span>
+                    <span class="n">designation</span> <span class="o">=</span> <span class="n">designation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]:</span>
+                            <span class="n">salary_setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">salary_setting</span><span class="p">:</span>
+                                <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate salary setting&#39;</span><span class="p">]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">salary_setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="p">()</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">salary_setting</span> <span class="o">=</span> <span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">salary_setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">salary_setting</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Duplicate salary setting&#39;</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">salary_setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="p">()</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">designation</span> <span class="o">=</span> <span class="p">(</span><span class="n">designation</span><span class="p">,)</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">da_percent</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">])</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">hra_percent</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">])</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">pf_percent</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">])</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">esi_percent</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">])</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">professional_tax_percent</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;proftax&#39;</span><span class="p">])</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">salary_setting</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span> <span class="o">=</span> <span class="n">designation</span><span class="o">.</span><span class="n">name</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;The Salary Setting was saved&#39;</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;The Salary Setting was not saved&#39;</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;The Designation not available&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown error check debug&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="SalarySettingManagement.delete_setting"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingManagement.delete_setting">[docs]</a>    <span class="k">def</span> <span class="nf">delete_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes the salary settings of the designation passed in the initialization.</span>
+<span class="sd">        :return:list consisting of a boolean value and a message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;SalarySettingManagement delete settings initated&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">:</span>
+                    <span class="n">designation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Designation</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">salary_setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">designation</span><span class="o">.</span><span class="n">salary_setting</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">salary_setting</span><span class="o">.</span><span class="n">designation</span><span class="p">:</span>
+                        <span class="n">emp_list</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">employees</span>
+                        <span class="k">if</span> <span class="n">emp_list</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Employees Exist in the Designation, change their designation to delete&#39;</span><span class="p">]</span>
+                    <span class="n">salary_setting</span><span class="o">.</span><span class="n">delete</span><span class="p">((</span><span class="n">salary_setting</span><span class="p">,))</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;Salary Setting deleted successfully&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Record Not Found&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;Unknown error check debug&#39;</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="SalarySettingList"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingList">[docs]</a><span class="k">class</span> <span class="nc">SalarySettingList</span><span class="p">():</span>  <span class="c"># a class for a single function need to remove this</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    provides a  list of salary settings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">SalarySetting</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;payroll.salarysettings&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside SalarySettingList&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SalarySettingList.load_salary_setting"><a class="viewcode-back" href="../employee_tryton.html#employee_tryton.SalarySettingList.load_salary_setting">[docs]</a>    <span class="k">def</span> <span class="nf">load_salary_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the list of salary settings</span>
+<span class="sd">        :return:list of dictionary  consisting of salary settings values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">salary_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SalarySetting</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">salary_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">designation</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">da_percent</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">da_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">hra_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">pf_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">esi_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;proftax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">professional_tax_percent</span><span class="p">)</span><span class="o">.</span><span class="n">to_eng_string</span><span class="p">()</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">lines</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

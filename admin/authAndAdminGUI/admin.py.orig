@@ -1,0 +1,100 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'admin.ui'
+#
+# Created: Sun Apr  5 10:20:59 2015
+#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PySide import QtCore, QtGui
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(391, 487)
+        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.formLayout = QtGui.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.label = QtGui.QLabel(Dialog)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label)
+        self.adminpopup_hotelname_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_hotelname_linedit.setObjectName("adminpopup_hotelname_linedit")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.adminpopup_hotelname_linedit)
+        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_2)
+        self.adminpopup_address_textedit = QtGui.QTextEdit(Dialog)
+        self.adminpopup_address_textedit.setObjectName("adminpopup_address_textedit")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.adminpopup_address_textedit)
+        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4.setObjectName("label_4")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_4)
+        self.adminpopup_latitude_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_latitude_linedit.setObjectName("adminpopup_latitude_linedit")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.adminpopup_latitude_linedit)
+        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5.setObjectName("label_5")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_5)
+        self.adminpopup_longitude_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_longitude_linedit.setObjectName("adminpopup_longitude_linedit")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.adminpopup_longitude_linedit)
+        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.LabelRole, self.label_3)
+        self.adminpopup_apikey_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_apikey_linedit.setObjectName("adminpopup_apikey_linedit")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.adminpopup_apikey_linedit)
+        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6.setObjectName("label_6")
+        self.formLayout.setWidget(5, QtGui.QFormLayout.LabelRole, self.label_6)
+        self.adminpopup_profileid_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_profileid_linedit.setObjectName("adminpopup_profileid_linedit")
+        self.formLayout.setWidget(5, QtGui.QFormLayout.FieldRole, self.adminpopup_profileid_linedit)
+        self.label_7 = QtGui.QLabel(Dialog)
+        self.label_7.setObjectName("label_7")
+        self.formLayout.setWidget(6, QtGui.QFormLayout.LabelRole, self.label_7)
+        self.adminpopup_password_linedit = QtGui.QLineEdit(Dialog)
+        self.adminpopup_password_linedit.setEchoMode(QtGui.QLineEdit.Password)
+        self.adminpopup_password_linedit.setObjectName("adminpopup_password_linedit")
+        self.formLayout.setWidget(6, QtGui.QFormLayout.FieldRole, self.adminpopup_password_linedit)
+        self.verticalLayout.addLayout(self.formLayout)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.adminpopup_save_button = QtGui.QPushButton(Dialog)
+        self.adminpopup_save_button.setObjectName("adminpopup_save_button")
+        self.horizontalLayout.addWidget(self.adminpopup_save_button)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.adminpopup_close_button = QtGui.QPushButton(Dialog)
+        self.adminpopup_close_button.setObjectName("adminpopup_close_button")
+        self.horizontalLayout.addWidget(self.adminpopup_close_button)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Admin", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Dialog", "Hotel Name", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Address", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setText(QtGui.QApplication.translate("Dialog", "Latitude", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_5.setText(QtGui.QApplication.translate("Dialog", "Longitude", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("Dialog", "API Key", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_6.setText(QtGui.QApplication.translate("Dialog", "Profile Id", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_7.setText(QtGui.QApplication.translate("Dialog", "Password", None, QtGui.QApplication.UnicodeUTF8))
+        self.adminpopup_save_button.setText(QtGui.QApplication.translate("Dialog", "Save", None, QtGui.QApplication.UnicodeUTF8))
+        self.adminpopup_close_button.setText(QtGui.QApplication.translate("Dialog", "Close", None, QtGui.QApplication.UnicodeUTF8))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Dialog = QtGui.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+

@@ -1,0 +1,894 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Model &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-trytond.model"><span id="ref-models"></span></span><div class="section" id="model">
+<h1>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.Model">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">Model</tt><big>(</big><span class="optional">[</span><em>id</em><span class="optional">[</span>, <em>**kwargs</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This is the base class that every kind of <a class="reference internal" href="../../topics/models/index.html#topics-models"><em>model</em></a>
+inherits. It defines common attributes of all models.</p>
+<p>Class attributes are:</p>
+<dl class="attribute">
+<dt id="trytond.model.Model.__name__">
+<tt class="descclassname">Model.</tt><tt class="descname">__name__</tt><a class="headerlink" href="#trytond.model.Model.__name__" title="Permalink to this definition">¶</a></dt>
+<dd><p>It contains the a unique name to reference the model throughout the
+platform.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.Model.__rpc__">
+<tt class="descclassname">Model.</tt><tt class="descname">__rpc__</tt><a class="headerlink" href="#trytond.model.Model.__rpc__" title="Permalink to this definition">¶</a></dt>
+<dd><p>It contains a dictionary with method name as key and an instance of
+<a class="reference internal" href="../rpc.html#trytond.rpc.RPC" title="trytond.rpc.RPC"><tt class="xref py py-class docutils literal"><span class="pre">trytond.rpc.RPC</span></tt></a> as value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.Model._error_messages">
+<tt class="descclassname">Model.</tt><tt class="descname">_error_messages</tt><a class="headerlink" href="#trytond.model.Model._error_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>It contains a dictionary mapping keywords to an error message. By way of
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_error_messages</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;recursive_categories&#39;</span><span class="p">:</span> <span class="s">&#39;You can not create recursive categories!&#39;</span><span class="p">,</span>
+    <span class="s">&#39;wrong_name&#39;</span><span class="p">:</span> <span class="s">&#39;You can not use &quot; / &quot; in name field!&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.Model._rec_name">
+<tt class="descclassname">Model.</tt><tt class="descname">_rec_name</tt><a class="headerlink" href="#trytond.model.Model._rec_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>It contains the name of the field used as name of records. The default
+value is &#8216;name&#8217;.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.Model.id">
+<tt class="descclassname">Model.</tt><tt class="descname">id</tt><a class="headerlink" href="#trytond.model.Model.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the field <tt class="docutils literal"><span class="pre">id</span></tt> of records.</p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.Model.__setup__">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">__setup__</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.Model.__setup__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the class before adding into the <a class="reference internal" href="../pool.html#trytond.pool.Pool" title="trytond.pool.Pool"><tt class="xref py py-class docutils literal"><span class="pre">trytond.pool.Pool</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.__post_setup__">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">__post_setup__</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.Model.__post_setup__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the class after added into the <a class="reference internal" href="../pool.html#trytond.pool.Pool" title="trytond.pool.Pool"><tt class="xref py py-class docutils literal"><span class="pre">trytond.pool.Pool</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.__register__">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">__register__</tt><big>(</big><em>module_name</em><big>)</big><a class="headerlink" href="#trytond.model.Model.__register__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the model in <tt class="docutils literal"><span class="pre">ir.model</span></tt> and <tt class="docutils literal"><span class="pre">ir.model.field</span></tt>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.raise_user_error">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">raise_user_error</tt><big>(</big><em>error</em><span class="optional">[</span>, <em>error_args</em><span class="optional">[</span>, <em>error_description</em><span class="optional">[</span>, <em>error_description_args</em><span class="optional">[</span>, <em>raise_exception</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.Model.raise_user_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception that will be displayed as an error message in the
+client.  <tt class="docutils literal"><span class="pre">error</span></tt> is the key of the error message in <tt class="docutils literal"><span class="pre">_error_messages</span></tt>
+and <tt class="docutils literal"><span class="pre">error_args</span></tt> is the arguments for the &#8220;%&#8221;-based substitution of the
+error message.  There is the same parameter for an additional description.
+The boolean <tt class="docutils literal"><span class="pre">raise_exception</span></tt> can be set to <tt class="docutils literal"><span class="pre">False</span></tt> to retrieve the
+error message strings.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.raise_user_warning">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">raise_user_warning</tt><big>(</big><em>warning_name</em>, <em>warning</em><span class="optional">[</span>, <em>warning_args</em><span class="optional">[</span>, <em>warning_description</em><span class="optional">[</span>, <em>warning_description_args</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.Model.raise_user_warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception that will be displayed as a warning message on the
+client, if the user has not yet bypassed it. <tt class="docutils literal"><span class="pre">warning_name</span></tt> is used to
+uniquely identify the warning. Others parameters are like in
+<a class="reference internal" href="#trytond.model.Model.raise_user_error" title="trytond.model.Model.raise_user_error"><tt class="xref py py-meth docutils literal"><span class="pre">Model.raise_user_error()</span></tt></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It requires that the cursor will be commited as it stores state of the
+warning states by users.</p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.default_get">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">default_get</tt><big>(</big><em>fields_names</em><span class="optional">[</span>, <em>with_rec_name</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.Model.default_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the default values for each field in
+<tt class="docutils literal"><span class="pre">fields_names</span></tt>. Default values are defined by the returned value of each
+instance method with the pattern <tt class="docutils literal"><span class="pre">default_`field_name`()</span></tt>.
+<tt class="docutils literal"><span class="pre">with_rec_name</span></tt> allow to add <cite>rec_name</cite> value for each many2one field.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.Model.fields_get">
+<em class="property">classmethod </em><tt class="descclassname">Model.</tt><tt class="descname">fields_get</tt><big>(</big><span class="optional">[</span><em>fields_names</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.Model.fields_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the definition of each field on the model.</p>
+</dd></dl>
+
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.model.Model.on_change">
+<tt class="descclassname">Model.</tt><tt class="descname">on_change</tt><big>(</big><em>fieldnames</em><big>)</big><a class="headerlink" href="#trytond.model.Model.on_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of changes by calling <cite>on_change</cite> method of each field.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.model.Model.on_change_with">
+<tt class="descclassname">Model.</tt><tt class="descname">on_change_with</tt><big>(</big><em>fieldnames</em><big>)</big><a class="headerlink" href="#trytond.model.Model.on_change_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the new values of all fields by calling <cite>on_change_with</cite> method of
+each field.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.model.Model.pre_validate">
+<tt class="descclassname">Model.</tt><tt class="descname">pre_validate</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.Model.pre_validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called by the client to validate the instance.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="modelview">
+<h1>ModelView<a class="headerlink" href="#modelview" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.ModelView">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">ModelView</tt><a class="headerlink" href="#trytond.model.ModelView" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>It adds requirements to display a view of the model in the client.</p>
+<p>Class attributes:</p>
+<dl class="attribute">
+<dt id="trytond.model.ModelView._buttons">
+<tt class="descclassname">ModelView.</tt><tt class="descname">_buttons</tt><a class="headerlink" href="#trytond.model.ModelView._buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>It contains a dictionary with button name as key and the states dictionary
+for the button. This states dictionary will be used to generate the views
+containing the button.</p>
+</dd></dl>
+
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.model.ModelView.button">
+<em class="property">static </em><tt class="descclassname">ModelView.</tt><tt class="descname">button</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelView.button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate button method to check group access.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="trytond.model.ModelView.button_action">
+<em class="property">static </em><tt class="descclassname">ModelView.</tt><tt class="descname">button_action</tt><big>(</big><em>action</em><big>)</big><a class="headerlink" href="#trytond.model.ModelView.button_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <a class="reference internal" href="#trytond.model.ModelView.button" title="trytond.model.ModelView.button"><tt class="xref py py-meth docutils literal"><span class="pre">ModelView.button()</span></tt></a> but return the action id of the XML <cite>id</cite>
+action.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="trytond.model.ModelView.button_change">
+<em class="property">static </em><tt class="descclassname">ModelView.</tt><tt class="descname">button_change</tt><big>(</big><span class="optional">[</span><em>*fields</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelView.button_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <a class="reference internal" href="#trytond.model.ModelView.button" title="trytond.model.ModelView.button"><tt class="xref py py-meth docutils literal"><span class="pre">ModelView.button()</span></tt></a> but for button that change values of the
+fields on client side (similar to <a class="reference internal" href="fields.html#ref-models-fields-on-change"><em>on_change</em></a>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only on instance methods.</p>
+</div>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.ModelView.fields_view_get">
+<em class="property">classmethod </em><tt class="descclassname">ModelView.</tt><tt class="descname">fields_view_get</tt><big>(</big><span class="optional">[</span><em>view_id</em><span class="optional">[</span>, <em>view_type</em><span class="optional">[</span>, <em>toolbar</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelView.fields_view_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view definition used by the client. The definition is:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &#39;model&#39;: model name,
+    &#39;type&#39;: view type,
+    &#39;view_id&#39;: view id,
+    &#39;arch&#39;: XML description,
+    &#39;fields&#39;: {
+        field name: {
+            ...
+        },
+    },
+    &#39;field_childs&#39;: field for tree,
+}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelView.view_toolbar_get">
+<em class="property">classmethod </em><tt class="descclassname">ModelView.</tt><tt class="descname">view_toolbar_get</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelView.view_toolbar_get" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns the model specific actions in a dictionary with keys:</dt>
+<dd><ul class="first last simple">
+<li><cite>print</cite>: a list of available reports</li>
+<li><cite>action</cite>: a list of available actions</li>
+<li><cite>relate</cite>: a list of available relations</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelView.view_header_get">
+<em class="property">classmethod </em><tt class="descclassname">ModelView.</tt><tt class="descname">view_header_get</tt><big>(</big><em>value</em><span class="optional">[</span>, <em>view_type</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelView.view_header_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the window title used by the client for the specific view type.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelView.view_attributes">
+<em class="property">classmethod </em><tt class="descclassname">ModelView.</tt><tt class="descname">view_attributes</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelView.view_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of XPath, attribute and value.
+Each element from the XPath will get the attribute set with the JSON
+encoded value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="modelstorage">
+<h1>ModelStorage<a class="headerlink" href="#modelstorage" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.ModelStorage">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">ModelStorage</tt><a class="headerlink" href="#trytond.model.ModelStorage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>It adds storage capability.</p>
+<p>Class attributes are:</p>
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage.create_uid">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">create_uid</tt><a class="headerlink" href="#trytond.model.ModelStorage.create_uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Many2One" title="trytond.model.fields.Many2One"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2One</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.create_uid" title="trytond.model.ModelStorage.create_uid"><tt class="xref py py-attr docutils literal"><span class="pre">create_uid</span></tt></a> of records. It contains the <tt class="xref py py-attr docutils literal"><span class="pre">id</span></tt> of the user who
+creates the record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage.create_date">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">create_date</tt><a class="headerlink" href="#trytond.model.ModelStorage.create_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.DateTime" title="trytond.model.fields.DateTime"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.DateTime</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.create_date" title="trytond.model.ModelStorage.create_date"><tt class="xref py py-attr docutils literal"><span class="pre">create_date</span></tt></a> of records.  It contains the datetime of the creation of
+the record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage.write_uid">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">write_uid</tt><a class="headerlink" href="#trytond.model.ModelStorage.write_uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Many2One" title="trytond.model.fields.Many2One"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2One</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.write_uid" title="trytond.model.ModelStorage.write_uid"><tt class="xref py py-attr docutils literal"><span class="pre">write_uid</span></tt></a> of the records.
+It contains the <tt class="xref py py-attr docutils literal"><span class="pre">id</span></tt> of the last user who writes on the record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage.write_date">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">write_date</tt><a class="headerlink" href="#trytond.model.ModelStorage.write_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.DateTime" title="trytond.model.fields.DateTime"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.DateTime</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.write_date" title="trytond.model.ModelStorage.write_date"><tt class="xref py py-attr docutils literal"><span class="pre">write_date</span></tt></a> of the records. It contains the datetime of the last
+write on the record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage.rec_name">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">rec_name</tt><a class="headerlink" href="#trytond.model.ModelStorage.rec_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Function" title="trytond.model.fields.Function"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Function</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.rec_name" title="trytond.model.ModelStorage.rec_name"><tt class="xref py py-attr docutils literal"><span class="pre">rec_name</span></tt></a>. It is used in the client to display the records with a
+single string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelStorage._constraints">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">_constraints</tt><a class="headerlink" href="#trytond.model.ModelStorage._constraints" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Deprecated, use <a class="reference internal" href="#trytond.model.ModelStorage.validate" title="trytond.model.ModelStorage.validate"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.ModelStorage.validate</span></tt></a> instead.</p>
+</div>
+<p>The list of constraints that each record must respect. The definition is:</p>
+<blockquote>
+<div>[ (&#8216;function name&#8217;, &#8216;error keyword&#8217;), ... ]</div></blockquote>
+<p>where <tt class="docutils literal"><span class="pre">function</span> <span class="pre">name</span></tt> is the name of an instance or a class method of the
+which must return a boolean (<tt class="docutils literal"><span class="pre">False</span></tt> when the constraint is violated) and
+<tt class="docutils literal"><span class="pre">error</span> <span class="pre">keyword</span></tt> is a key of <a class="reference internal" href="#trytond.model.Model._error_messages" title="trytond.model.Model._error_messages"><tt class="xref py py-attr docutils literal"><span class="pre">Model._error_messages</span></tt></a>.</p>
+</dd></dl>
+
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.model.ModelStorage.default_create_uid">
+<em class="property">static </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">default_create_uid</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.default_create_uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the default value for <a class="reference internal" href="#trytond.model.ModelStorage.create_uid" title="trytond.model.ModelStorage.create_uid"><tt class="xref py py-attr docutils literal"><span class="pre">create_uid</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="trytond.model.ModelStorage.default_create_date">
+<em class="property">static </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">default_create_date</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.default_create_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the default value for <a class="reference internal" href="#trytond.model.ModelStorage.create_date" title="trytond.model.ModelStorage.create_date"><tt class="xref py py-attr docutils literal"><span class="pre">create_date</span></tt></a>.</p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.create">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">create</tt><big>(</big><em>vlist</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create records. <tt class="docutils literal"><span class="pre">vlist</span></tt> is list of dictionaries with fields names as key
+and created values as value and return the list of new instances.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.trigger_create">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">trigger_create</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.trigger_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger create actions. It will call actions defined in <tt class="docutils literal"><span class="pre">ir.trigger</span></tt> if
+<tt class="docutils literal"><span class="pre">on_create</span></tt> is set and <tt class="docutils literal"><span class="pre">condition</span></tt> is true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.read">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">read</tt><big>(</big><em>ids</em><span class="optional">[</span>, <em>fields_names</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of values for the ids. If <tt class="docutils literal"><span class="pre">fields_names</span></tt> is set, there will
+be only values for these fields otherwise it will be for all fields.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.write">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">write</tt><big>(</big><em>records</em>, <em>values</em><span class="optional">[</span><span class="optional">[</span>, <em>records</em>, <em>values</em><span class="optional">]</span>, <em>...</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write <tt class="docutils literal"><span class="pre">values</span></tt> on the list of records.  <tt class="docutils literal"><span class="pre">values</span></tt> is a dictionary with
+fields names as key and writen values as value.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.trigger_write_get_eligibles">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">trigger_write_get_eligibles</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.trigger_write_get_eligibles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return eligible records for write actions by triggers. This dictionary
+is to pass to <a class="reference internal" href="#trytond.model.ModelStorage.trigger_write" title="trytond.model.ModelStorage.trigger_write"><tt class="xref py py-meth docutils literal"><span class="pre">trigger_write()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.trigger_write">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">trigger_write</tt><big>(</big><em>eligibles</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.trigger_write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger write actions. It will call actions defined in <tt class="docutils literal"><span class="pre">ir.trigger</span></tt> if
+<tt class="docutils literal"><span class="pre">on_write</span></tt> is set and <tt class="docutils literal"><span class="pre">condition</span></tt> was false before
+<a class="reference internal" href="#trytond.model.ModelStorage.write" title="trytond.model.ModelStorage.write"><tt class="xref py py-meth docutils literal"><span class="pre">write()</span></tt></a> and true after.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.delete">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">delete</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete records.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.trigger_delete">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">trigger_delete</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.trigger_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger delete actions. It will call actions defined in <tt class="docutils literal"><span class="pre">ir.trigger</span></tt> if
+<tt class="docutils literal"><span class="pre">on_delete</span></tt> is set and <tt class="docutils literal"><span class="pre">condition</span></tt> is true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.copy">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">copy</tt><big>(</big><em>records</em><span class="optional">[</span>, <em>default</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate the records. <tt class="docutils literal"><span class="pre">default</span></tt> is a dictionary of default value for the
+created records.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.search">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search</tt><big>(</big><em>domain</em><span class="optional">[</span>, <em>offset</em><span class="optional">[</span>, <em>limit</em><span class="optional">[</span>, <em>order</em><span class="optional">[</span>, <em>count</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of records that match the <a class="reference internal" href="../../topics/domain.html#topics-domain"><em>domain</em></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.search_count">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search_count</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.search_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of records that match the <a class="reference internal" href="../../topics/domain.html#topics-domain"><em>domain</em></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.search_read">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search_read</tt><big>(</big><em>domain</em><span class="optional">[</span>, <em>offset</em><span class="optional">[</span>, <em>limit</em><span class="optional">[</span>, <em>order</em><span class="optional">[</span>, <em>fields_names</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.search_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call <a class="reference internal" href="#trytond.model.ModelStorage.search" title="trytond.model.ModelStorage.search"><tt class="xref py py-meth docutils literal"><span class="pre">search()</span></tt></a> and <a class="reference internal" href="#trytond.model.ModelStorage.read" title="trytond.model.ModelStorage.read"><tt class="xref py py-meth docutils literal"><span class="pre">read()</span></tt></a> at once.
+Useful for the client to reduce the number of calls.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.search_rec_name">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search_rec_name</tt><big>(</big><em>name</em>, <em>clause</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.search_rec_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searcher for the <a class="reference internal" href="fields.html#trytond.model.fields.Function" title="trytond.model.fields.Function"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Function</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.rec_name" title="trytond.model.ModelStorage.rec_name"><tt class="xref py py-attr docutils literal"><span class="pre">rec_name</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.search_global">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search_global</tt><big>(</big><em>cls</em>, <em>text</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.search_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield tuples (record, name, icon) for records matching text.
+It is used for the global search.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.browse">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">browse</tt><big>(</big><em>ids</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.browse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of record instance for the <tt class="docutils literal"><span class="pre">ids</span></tt>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.export_data">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">export_data</tt><big>(</big><em>records</em>, <em>fields_names</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.export_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of list of values for each <tt class="docutils literal"><span class="pre">records</span></tt>.
+The list of values follows <tt class="docutils literal"><span class="pre">fields_names</span></tt>.
+Relational fields are defined with <tt class="docutils literal"><span class="pre">/</span></tt> at any depth.
+Descriptor on fields are available by appending <tt class="docutils literal"><span class="pre">.</span></tt> and the name of the
+method on the field that returns the descriptor.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.import_data">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">import_data</tt><big>(</big><em>fields_names</em>, <em>data</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create records for all values in <tt class="docutils literal"><span class="pre">datas</span></tt>.
+The field names of values must be defined in <tt class="docutils literal"><span class="pre">fields_names</span></tt>.
+It returns a tuple containing: the number of records imported, the last values
+if failed, the exception if failed and the warning if failed.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.check_xml_record">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">check_xml_record</tt><big>(</big><em>records</em>, <em>values</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.check_xml_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify if the records are originating from XML data. It is used to prevent
+modification of data coming from XML files. This method must be overiden to
+change this behavior.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.check_recursion">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">check_recursion</tt><big>(</big><em>records</em><span class="optional">[</span>, <em>parent</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.check_recursion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that checks if there is no recursion in the tree composed
+with <tt class="docutils literal"><span class="pre">parent</span></tt> as parent field name.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.validate">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">validate</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the integrity of records after creation and modification. This
+method must be overridden to add validation and must raise an exception if
+validation fails.</p>
+</dd></dl>
+
+<p>Dual methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.ModelStorage.save">
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">save</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the modification made on the records.</p>
+</dd></dl>
+
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.model.ModelStorage.get_rec_name">
+<tt class="descclassname">ModelStorage.</tt><tt class="descname">get_rec_name</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#trytond.model.ModelStorage.get_rec_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the <a class="reference internal" href="fields.html#trytond.model.fields.Function" title="trytond.model.fields.Function"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Function</span></tt></a> field
+<a class="reference internal" href="#trytond.model.ModelStorage.rec_name" title="trytond.model.ModelStorage.rec_name"><tt class="xref py py-attr docutils literal"><span class="pre">rec_name</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="modelsql">
+<h1>ModelSQL<a class="headerlink" href="#modelsql" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.ModelSQL">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">ModelSQL</tt><a class="headerlink" href="#trytond.model.ModelSQL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>It implements <a class="reference internal" href="#trytond.model.ModelStorage" title="trytond.model.ModelStorage"><tt class="xref py py-class docutils literal"><span class="pre">ModelStorage</span></tt></a> for an SQL database.</p>
+<p>Class attributes are:</p>
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._table">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_table</tt><a class="headerlink" href="#trytond.model.ModelSQL._table" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the database table which is mapped to the class.
+If not set, the value of <tt class="xref py py-attr docutils literal"><span class="pre">Model._name</span></tt> is used with dots converted to
+underscores.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._order">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_order</tt><a class="headerlink" href="#trytond.model.ModelSQL._order" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of tuples defining the default order of the records:</p>
+<blockquote>
+<div>[ (&#8216;field name&#8217;, &#8216;ASC&#8217;), (&#8216;other field name&#8217;, &#8216;DESC&#8217;), ... ]</div></blockquote>
+<p>where the first element of the tuple is a field name of the model and the
+second is the sort ordering as <cite>ASC</cite> for ascending or <cite>DESC</cite> for
+descending.</p>
+<p>In case the field used for the first element is a <a class="reference internal" href="fields.html#trytond.model.fields.Many2One" title="trytond.model.fields.Many2One"><tt class="xref py py-class docutils literal"><span class="pre">fields.Many2One</span></tt></a>,
+it is also possible to use the dotted notation to sort on a specific field
+from the target record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._order_name">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_order_name</tt><a class="headerlink" href="#trytond.model.ModelSQL._order_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the field (or an SQL statement) on which the records must be
+sorted when sorting on this model from an other model. If not set,
+<tt class="xref py py-attr docutils literal"><span class="pre">ModelStorage._rec_name</span></tt> will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._history">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_history</tt><a class="headerlink" href="#trytond.model.ModelSQL._history" title="Permalink to this definition">¶</a></dt>
+<dd><p>If true, all changes on records will be stored in a history table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._sql_constraints">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_sql_constraints</tt><a class="headerlink" href="#trytond.model.ModelSQL._sql_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of SQL constraints that are added on the table:</p>
+<blockquote>
+<div>[ (&#8216;constraint name&#8217;, &#8216;SQL constraint&#8217;, &#8216;error message key&#8217;), ... ]</div></blockquote>
+<ul class="simple">
+<li><cite>constraint name</cite> is the name of the SQL constraint in the database</li>
+<li><cite>SQL constraint</cite> is the actual SQL constraint</li>
+<li><cite>error message key</cite> is the key of
+<a class="reference internal" href="#trytond.model.ModelSQL._sql_error_messages" title="trytond.model.ModelSQL._sql_error_messages"><tt class="xref py py-attr docutils literal"><span class="pre">_sql_error_messages</span></tt></a></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.ModelSQL._sql_error_messages">
+<tt class="descclassname">ModelSQL.</tt><tt class="descname">_sql_error_messages</tt><a class="headerlink" href="#trytond.model.ModelSQL._sql_error_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <a class="reference internal" href="#trytond.model.Model._error_messages" title="trytond.model.Model._error_messages"><tt class="xref py py-attr docutils literal"><span class="pre">Model._error_messages</span></tt></a> but for <a class="reference internal" href="#trytond.model.ModelSQL._sql_constraints" title="trytond.model.ModelSQL._sql_constraints"><tt class="xref py py-attr docutils literal"><span class="pre">_sql_constraints</span></tt></a></p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.__table__">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">__table__</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.__table__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a SQL Table instance for the Model.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.table_query">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">table_query</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.table_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Could be overrided to use a custom SQL query instead of a table of the
+database. It should return a SQL FromItem.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.history_revisions">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">history_revisions</tt><big>(</big><em>ids</em><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.history_revisions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sorted list of all revisions for ids. The list is composed of
+the date, id and username of the revision.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.restore_history">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">restore_history</tt><big>(</big><em>ids</em>, <em>datetime</em><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.restore_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore the record ids from history at the specified date time.
+Restoring a record will still generate an entry in the history table.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">No access rights are verified and the records are not validated.</p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.restore_history_before">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">restore_history_before</tt><big>(</big><em>ids</em>, <em>datetime</em><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.restore_history_before" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore the record ids from history before the specified date time.
+Restoring a record will still generate an entry in the history table.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">No access rights are verified and the records are not validated.</p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt>
+<em class="property">classmethod </em><tt class="descclassname">ModelStorage.</tt><tt class="descname">search</tt><big>(</big><em>domain</em><span class="optional">[</span>, <em>offset</em><span class="optional">[</span>, <em>limit</em><span class="optional">[</span>, <em>order</em><span class="optional">[</span>, <em>count</em><span class="optional">[</span>, <em>query</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big></dt>
+<dd><p>Return a list of records that match the <a class="reference internal" href="../../topics/domain.html#topics-domain"><em>domain</em></a> or
+the sql query if query is True.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.ModelSQL.search_domain">
+<em class="property">classmethod </em><tt class="descclassname">ModelSQL.</tt><tt class="descname">search_domain</tt><big>(</big><em>domain</em><span class="optional">[</span>, <em>active_test</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#trytond.model.ModelSQL.search_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a <a class="reference internal" href="../../topics/domain.html#topics-domain"><em>domain</em></a> into a tuple containing:</p>
+<ul class="simple">
+<li>a SQL clause string</li>
+<li>a list of arguments for the SQL clause</li>
+<li>a list of tables used in the SQL clause</li>
+<li>a list of arguments for the tables</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="workflow">
+<h1>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.Workflow">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">Workflow</tt><a class="headerlink" href="#trytond.model.Workflow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A Mix-in class to handle transition check.</p>
+<p>Class attribute:</p>
+<dl class="attribute">
+<dt id="trytond.model.Workflow._transition_state">
+<tt class="descclassname">Workflow.</tt><tt class="descname">_transition_state</tt><a class="headerlink" href="#trytond.model.Workflow._transition_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the field that will be used to check state transition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.Workflow._transitions">
+<tt class="descclassname">Workflow.</tt><tt class="descname">_transitions</tt><a class="headerlink" href="#trytond.model.Workflow._transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>A set containing tuples of from and to state.</p>
+</dd></dl>
+
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.model.Workflow.transition">
+<em class="property">static </em><tt class="descclassname">Workflow.</tt><tt class="descname">transition</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#trytond.model.Workflow.transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate method to filter ids for which the transition is valid and finally
+to update the state of the filtered ids.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="modelsingleton">
+<h1>ModelSingleton<a class="headerlink" href="#modelsingleton" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.ModelSingleton">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">ModelSingleton</tt><a class="headerlink" href="#trytond.model.ModelSingleton" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Modify <a class="reference internal" href="#trytond.model.ModelStorage" title="trytond.model.ModelStorage"><tt class="xref py py-class docutils literal"><span class="pre">ModelStorage</span></tt></a> into a <a class="reference external" href="http://en.wikipedia.org/wiki/Singleton_pattern">singleton</a>.
+This means that there will be only one record of this model.
+It is commonly used to store configuration value.</p>
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.ModelSingleton.get_singleton">
+<em class="property">classmethod </em><tt class="descclassname">ModelSingleton.</tt><tt class="descname">get_singleton</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.ModelSingleton.get_singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the instance of the unique record if there is one.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="dictschemamixin">
+<h1>DictSchemaMixin<a class="headerlink" href="#dictschemamixin" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.DictSchemaMixin">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">DictSchemaMixin</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Mixin">mixin</a> for the schema of <a class="reference internal" href="fields.html#trytond.model.fields.Dict" title="trytond.model.fields.Dict"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Dict</span></tt></a> field.</p>
+<p>Class attributes are:</p>
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.name">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">name</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Char" title="trytond.model.fields.Char"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Char</span></tt></a> field for the name
+of the key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.string">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">string</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.string" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Char" title="trytond.model.fields.Char"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Char</span></tt></a> field for the
+string of the key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.type_">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">type_</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.type_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Selection" title="trytond.model.fields.Selection"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Selection</span></tt></a> field for the
+type of the key. The available types are:</p>
+<ul class="simple">
+<li>boolean</li>
+<li>integer</li>
+<li>char</li>
+<li>float</li>
+<li>numeric</li>
+<li>date</li>
+<li>datetime</li>
+<li>selection</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.digits">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">digits</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.digits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Integer" title="trytond.model.fields.Integer"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Integer</span></tt></a> field for the
+digits number when the type is <cite>float</cite> or <cite>numeric</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.selection">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">selection</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Text" title="trytond.model.fields.Text"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Text</span></tt></a> field to store the
+couple of key and label when the type is <cite>selection</cite>.
+The format is a key/label separated by &#8221;:&#8221; per line.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.selection_sorted">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">selection_sorted</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.selection_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the <a class="reference internal" href="#trytond.model.DictSchemaMixin.selection" title="trytond.model.DictSchemaMixin.selection"><tt class="xref py py-attr docutils literal"><span class="pre">selection</span></tt></a> must be sorted on label by the client.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.model.DictSchemaMixin.selection_json">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">selection_json</tt><a class="headerlink" href="#trytond.model.DictSchemaMixin.selection_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of the <a class="reference internal" href="fields.html#trytond.model.fields.Function" title="trytond.model.fields.Function"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Function</span></tt></a> field to
+return the <a class="reference external" href="http://en.wikipedia.org/wiki/Json">JSON</a> version of the <a class="reference internal" href="#trytond.model.DictSchemaMixin.selection" title="trytond.model.DictSchemaMixin.selection"><tt class="xref py py-attr docutils literal"><span class="pre">selection</span></tt></a>.</p>
+</dd></dl>
+
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.model.DictSchemaMixin.default_digits">
+<em class="property">static </em><tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">default_digits</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.DictSchemaMixin.default_digits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the default value for <a class="reference internal" href="#trytond.model.DictSchemaMixin.digits" title="trytond.model.DictSchemaMixin.digits"><tt class="xref py py-attr docutils literal"><span class="pre">digits</span></tt></a>.</p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.DictSchemaMixin.get_keys">
+<em class="property">classmethod </em><tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">get_keys</tt><big>(</big><em>records</em><big>)</big><a class="headerlink" href="#trytond.model.DictSchemaMixin.get_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the definition of the keys for the records.</p>
+</dd></dl>
+
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.model.DictSchemaMixin.get_selection_json">
+<tt class="descclassname">DictSchemaMixin.</tt><tt class="descname">get_selection_json</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#trytond.model.DictSchemaMixin.get_selection_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the <a class="reference internal" href="#trytond.model.DictSchemaMixin.selection_json" title="trytond.model.DictSchemaMixin.selection_json"><tt class="xref py py-attr docutils literal"><span class="pre">selection_json</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="matchmixin">
+<h1>MatchMixin<a class="headerlink" href="#matchmixin" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.MatchMixin">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">MatchMixin</tt><a class="headerlink" href="#trytond.model.MatchMixin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Mixin">mixin</a> to add to a <a class="reference internal" href="#trytond.model.Model" title="trytond.model.Model"><tt class="xref py py-class docutils literal"><span class="pre">Model</span></tt></a> a match method on pattern.
+The pattern is a dictionary with field name as key and the value to compare.
+The record matches the pattern if for all dictionary entries, the value of the
+record is equal or not defined.</p>
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.model.MatchMixin.match">
+<tt class="descclassname">MatchMixin.</tt><tt class="descname">match</tt><big>(</big><em>pattern</em><big>)</big><a class="headerlink" href="#trytond.model.MatchMixin.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if the instance match the pattern</p>
+</dd></dl>
+
+</div>
+<div class="section" id="unionmixin">
+<h1>UnionMixin<a class="headerlink" href="#unionmixin" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.model.UnionMixin">
+<em class="property">class </em><tt class="descclassname">trytond.model.</tt><tt class="descname">UnionMixin</tt><a class="headerlink" href="#trytond.model.UnionMixin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Mixin">mixin</a> to create a <a class="reference internal" href="#trytond.model.ModelSQL" title="trytond.model.ModelSQL"><tt class="xref py py-class docutils literal"><span class="pre">ModelSQL</span></tt></a> which is the <a class="reference external" href="http://en.wikipedia.org/wiki/Union_(SQL)#UNION_operator">UNION</a> of some
+<a class="reference internal" href="#trytond.model.ModelSQL" title="trytond.model.ModelSQL"><tt class="xref py py-class docutils literal"><span class="pre">ModelSQL</span></tt></a>&#8216;s. The ids of each models are sharded to be unique.</p>
+<p>Static methods:</p>
+<dl class="staticmethod">
+<dt id="trytond.model.UnionMixin.union_models">
+<em class="property">static </em><tt class="descclassname">UnionMixin.</tt><tt class="descname">union_models</tt><big>(</big><big>)</big><a class="headerlink" href="#trytond.model.UnionMixin.union_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of <a class="reference internal" href="#trytond.model.ModelSQL" title="trytond.model.ModelSQL"><tt class="xref py py-class docutils literal"><span class="pre">ModelSQL</span></tt></a>&#8216;s names</p>
+</dd></dl>
+
+<p>Class methods:</p>
+<dl class="classmethod">
+<dt id="trytond.model.UnionMixin.union_shard">
+<em class="property">classmethod </em><tt class="descclassname">UnionMixin.</tt><tt class="descname">union_shard</tt><big>(</big><em>column</em>, <em>model</em><big>)</big><a class="headerlink" href="#trytond.model.UnionMixin.union_shard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a SQL expression that shards the column containing record id of
+model name.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.UnionMixin.union_unshard">
+<em class="property">classmethod </em><tt class="descclassname">UnionMixin.</tt><tt class="descname">union_unshard</tt><big>(</big><em>record_id</em><big>)</big><a class="headerlink" href="#trytond.model.UnionMixin.union_unshard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the original instance of the record for the sharded id.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.UnionMixin.union_column">
+<em class="property">classmethod </em><tt class="descclassname">UnionMixin.</tt><tt class="descname">union_column</tt><big>(</big><em>name</em>, <em>field</em>, <em>table</em>, <em>Model</em><big>)</big><a class="headerlink" href="#trytond.model.UnionMixin.union_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the SQL column that corresponds to the field on the union model.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="trytond.model.UnionMixin.union_columns">
+<em class="property">classmethod </em><tt class="descclassname">UnionMixin.</tt><tt class="descname">union_columns</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#trytond.model.UnionMixin.union_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the SQL table and columns to use for the UNION for the model name.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Model</a></li>
+<li><a class="reference internal" href="#modelview">ModelView</a></li>
+<li><a class="reference internal" href="#modelstorage">ModelStorage</a></li>
+<li><a class="reference internal" href="#modelsql">ModelSQL</a></li>
+<li><a class="reference internal" href="#workflow">Workflow</a></li>
+<li><a class="reference internal" href="#modelsingleton">ModelSingleton</a></li>
+<li><a class="reference internal" href="#dictschemamixin">DictSchemaMixin</a></li>
+<li><a class="reference internal" href="#matchmixin">MatchMixin</a></li>
+<li><a class="reference internal" href="#unionmixin">UnionMixin</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/FSERP/trytond/doc/ref/models/models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

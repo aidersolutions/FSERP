@@ -1,0 +1,961 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>menu &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for menu</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Menu Module Ui &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> \
+    <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QAbstractItemView</span><span class="p">,</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> \
+    <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QCheckBox</span><span class="p">,</span> <span class="n">QDoubleValidator</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QIntValidator</span>
+
+<span class="kn">from</span> <span class="nn">PySide.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">menu_popupGUI.menu_add_dialogue</span> <span class="kn">import</span> <span class="n">Ui_add_menu_dialogue</span>
+<span class="kn">from</span> <span class="nn">menu_popupGUI.menu_for_each_week</span> <span class="kn">import</span> <span class="n">Ui_menu_this_day</span>
+<span class="kn">from</span> <span class="nn">menu_popupGUI.menu_add_eachweek</span> <span class="kn">import</span> <span class="n">Ui_add_menu_eachweek</span>
+<span class="kn">from</span> <span class="nn">menu_popupGUI.new_category</span> <span class="kn">import</span> <span class="n">Ui_new_category</span>
+<span class="kn">from</span> <span class="nn">menu_tryton</span> <span class="kn">import</span> <span class="n">MenuProduct</span><span class="p">,</span> <span class="n">WeeklyMenu</span><span class="p">,</span> <span class="n">IngredientsInMenu</span><span class="p">,</span> <span class="n">CategoryOfProduct</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MenuAddDialogue"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue">[docs]</a><span class="k">class</span> <span class="nc">MenuAddDialogue</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside MenuAddDialogue&#39;</span><span class="p">)</span>
+        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span> <span class="o">=</span> <span class="n">Ui_add_menu_dialogue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got_focus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">CategoryOfProduct</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogu_delete_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_menu_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_addrow_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_new_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ingredients</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popup_edit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowCloseButtonHint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editable</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuproduct</span> <span class="o">=</span> <span class="n">MenuProduct</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dish</span> <span class="o">=</span> <span class="n">MenuProduct</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete_category</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_rate_lineedit</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="n">QDoubleValidator</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span> <span class="mf">999.000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_codenumber_linedit</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="n">QIntValidator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_newcategory_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_category</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemname_linedit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_capital</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemname_linedit</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogu_delete_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogu_delete_button</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s">&quot;Cannot Delete Uncreated Dish&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_codenumber_linedit</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s">&#39;Not Assigned&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_addrow_button</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+                <span class="s">&quot;Cannot Add ingredients of unsaved Menu&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_addrow_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_save_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edit_mode</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+<div class="viewcode-block" id="MenuAddDialogue.edit_mode"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.edit_mode">[docs]</a>    <span class="k">def</span> <span class="nf">edit_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editable</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&#39;Edit Dish&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_add_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;Save&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_codenumber_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_ingredients</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_dish</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_addrow_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table_save_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogu_delete_button</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.create_category"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.create_category">[docs]</a>    <span class="k">def</span> <span class="nf">create_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">CategoryAddDialogue</span><span class="p">()</span>
+        <span class="n">category</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete_category</span><span class="p">()</span>
+        <span class="n">itemfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemcategory_combobox</span>
+        <span class="n">settext</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">categorydialogue_newcategory_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">itemfield</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">settext</span><span class="p">)</span>
+        <span class="n">itemfield</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.complete_category"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.complete_category">[docs]</a>    <span class="k">def</span> <span class="nf">complete_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fills the category in the combobox</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">itemfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemcategory_combobox</span>
+        <span class="n">itemfield</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;QAbstractItemView{&quot;</span>
+                                <span class="s">&quot;background: #4B77BE;&quot;</span>
+                                <span class="s">&quot;}&quot;</span><span class="p">)</span>
+        <span class="n">itemfield</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">itemfield</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">search_categories</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.delete_menu_item"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.delete_menu_item">[docs]</a>    <span class="k">def</span> <span class="nf">delete_menu_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: deletes the current item from the menu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuAddDialogue delete menu initiated&#39;</span><span class="p">)</span>
+        <span class="n">ask</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Confirm!!&quot;</span><span class="p">,</span> <span class="s">&quot;The current menu item will be deleted&quot;</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ask</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="n">todelete</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuproduct</span>
+            <span class="n">todelete</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.popup_edit"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.popup_edit">[docs]</a>    <span class="k">def</span> <span class="nf">popup_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pops up the menu to be edited</span>
+<span class="sd">        :param item: item clicked</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="n">model_index</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">indexFromItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">model_index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_ingredient_item</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.remove_ingredient_item"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.remove_ingredient_item">[docs]</a>    <span class="k">def</span> <span class="nf">remove_ingredient_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes an ingredient</span>
+<span class="sd">        :param code: code of the ingredient</span>
+<span class="sd">        :return:None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuAddDialogue remove ingredients initiated&#39;</span><span class="p">)</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Confirm!!&quot;</span><span class="p">,</span> <span class="s">&quot;This will delete the ingredient with code </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+            <span class="n">ingredients</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">ingredients</span><span class="o">.</span><span class="n">remove_ingredient_item</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!&quot;</span><span class="p">,</span> <span class="s">&quot;The Ingredient was removed&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_ingredients</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Failure!!&quot;</span><span class="p">,</span> <span class="s">&quot;The Ingredient was not removed&quot;</span><span class="p">,</span>
+                                     <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.auto_capital"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.auto_capital">[docs]</a>    <span class="k">def</span> <span class="nf">auto_capital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linedit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param linedit: the linedit object to be modified</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edit</span> <span class="o">=</span> <span class="n">linedit</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">edit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.update_ingredients"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.update_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">update_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates the ingredients list</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ingredients</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">ingredientlist</span> <span class="o">=</span> <span class="n">ingredients</span><span class="o">.</span><span class="n">load_ingredients</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ingredientlist</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span><span class="p">(</span><span class="o">*</span><span class="n">ingredientlist</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.load_dish"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.load_dish">[docs]</a>    <span class="k">def</span> <span class="nf">load_dish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads the dish and its values</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dishvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dish</span><span class="o">.</span><span class="n">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemname_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">dishvalues</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">combo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemcategory_combobox</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">dishvalues</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemcategory_combobox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_rate_lineedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">dishvalues</span><span class="p">[</span><span class="s">&#39;rate&#39;</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.load_rows"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param args:item code</span>
+<span class="sd">        :return:Loads the rows from the database</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">clearContents</span><span class="p">()</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                    <span class="n">combo</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fillunits</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">combo</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+                    <span class="n">combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">combo</span><span class="p">)</span>
+                    <span class="n">quantity</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">###arranges the width each time we call this method</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.add_new_rows"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.add_new_rows">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:adds a new row to the table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="n">rowcount</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">rowcount</span><span class="p">)</span>
+        <span class="n">edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">edit</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details_of_code</span><span class="p">(</span><span class="n">rowcount</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">edit</span><span class="p">)</span>
+        <span class="n">combo</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillitem</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details_of_item</span><span class="p">(</span><span class="n">rowcount</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">combo</span><span class="p">)</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillunits</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">quantity</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="n">QIntValidator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.fillitem"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.fillitem">[docs]</a>    <span class="k">def</span> <span class="nf">fillitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the item names for ingredients</span>
+<span class="sd">        :param combo: combobox object</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;QAbstractItemView{&quot;</span>
+                            <span class="s">&quot;background: #4B77BE;&quot;</span>
+                            <span class="s">&quot;}&quot;</span><span class="p">)</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">items</span><span class="o">.</span><span class="n">get_item</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.fillunits"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.fillunits">[docs]</a>    <span class="k">def</span> <span class="nf">fillunits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the measurement list from tryton</span>
+<span class="sd">       :param combo: the combobox to be filled</span>
+<span class="sd">       :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;QAbstractItemView{&quot;</span>
+                            <span class="s">&quot;background: #4B77BE;&quot;</span>
+                            <span class="s">&quot;}&quot;</span><span class="p">)</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">get_quantity_uom</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.get_details_of_code"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.get_details_of_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_details_of_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rowcount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fills the item, category and units based on the code</span>
+<span class="sd">        :param rowcount: the row count</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">codeline</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">get_details_of_code</span><span class="p">(</span><span class="n">codeline</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">category</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">])</span>
+        <span class="n">units</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.get_details_of_item"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.get_details_of_item">[docs]</a>    <span class="k">def</span> <span class="nf">get_details_of_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rowcount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fills the code, category and units based on the item</span>
+<span class="sd">        :param rowcount: the row count</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">rowcount</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">itemcombo</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">get_details_of_item</span><span class="p">(</span><span class="n">itemcombo</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">code</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">])</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">category</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">])</span>
+        <span class="n">units</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.add_menu"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.add_menu">[docs]</a>    <span class="k">def</span> <span class="nf">add_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        adds the new menu item</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuAddDialogue add new menu initiated&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemname_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_rate_lineedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_codenumber_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_itemcategory_combobox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;rate&#39;</span><span class="p">:</span> <span class="n">rate</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">QMessageBox</span><span class="p">(),</span> <span class="s">&#39;Error&#39;</span><span class="p">,</span> <span class="s">&#39;Invalid </span><span class="si">%s</span><span class="s"> value&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editable</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuproduct</span><span class="o">.</span><span class="n">update_dish</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuproduct</span><span class="o">.</span><span class="n">new_dish</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">QMessageBox</span><span class="p">(),</span> <span class="s">&#39;Error&#39;</span><span class="p">,</span> <span class="s">&#39;Duplicate Entry&#39;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="n">QMessageBox</span><span class="p">(),</span> <span class="s">&#39;Success&#39;</span><span class="p">,</span> <span class="s">&#39;Dish Saved&#39;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edit_mode</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.got_focus"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.got_focus">[docs]</a>    <span class="k">def</span> <span class="nf">got_focus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        just a focus receiving event</span>
+<span class="sd">        :param event: focus in</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.save_ingredients"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.save_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">save_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves the ingredients corresponding to the product</span>
+<span class="sd">        :return:None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuAddDialogue save ingredients initiated&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+        <span class="n">saveingredients</span> <span class="o">=</span> <span class="n">IngredientsInMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">saveingredients</span><span class="o">.</span><span class="n">update_ingredients</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!&quot;</span><span class="p">,</span> <span class="s">&quot;The ingredients were saved successfully&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_ingredients</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.get_data"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: fetches all the data for printing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">menudialogue_menuIngredients_table</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="n">dataobj</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&quot;issue&quot;</span>
+            <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span>
+                                                                                                              <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span>
+                                                                                                              <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span>
+                                                                                                              <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_error</span><span class="p">(</span><span class="s">&#39;Quantity&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">dictionary</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;0&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">dataobj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataobj</span>
+</div>
+<div class="viewcode-block" id="MenuAddDialogue.show_error"><a class="viewcode-back" href="../menu.html#menu.MenuAddDialogue.show_error">[docs]</a>    <span class="k">def</span> <span class="nf">show_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: pops up an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">QMessageBox</span><span class="p">(),</span> <span class="s">&#39;Fail!!!&#39;</span><span class="p">,</span> <span class="s">&quot;Please Enter </span><span class="si">%s</span><span class="s"> properly&quot;</span> <span class="o">%</span> <span class="n">text</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CategoryAddDialogue"><a class="viewcode-back" href="../menu.html#menu.CategoryAddDialogue">[docs]</a><span class="k">class</span> <span class="nc">CategoryAddDialogue</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside CategoryAddDialogue&#39;</span><span class="p">)</span>
+        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">Ui_new_category</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newcategory</span> <span class="o">=</span> <span class="n">CategoryOfProduct</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">categorydialogue_newcategory_linedit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_capital</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">categorydialogue_newcategory_linedit</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">categorydialogue_addcategory_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_category</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CategoryAddDialogue.auto_capital"><a class="viewcode-back" href="../menu.html#menu.CategoryAddDialogue.auto_capital">[docs]</a>    <span class="k">def</span> <span class="nf">auto_capital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linedit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param linedit: the linedit object to be modified</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edit</span> <span class="o">=</span> <span class="n">linedit</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">edit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="CategoryAddDialogue.add_category"><a class="viewcode-back" href="../menu.html#menu.CategoryAddDialogue.add_category">[docs]</a>    <span class="k">def</span> <span class="nf">add_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        adds a new category to the category types</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newcategory</span><span class="o">.</span><span class="n">create_category</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">categorydialogue_newcategory_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!&quot;</span><span class="p">,</span> <span class="s">&quot;The Category was saved&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Failure!!&quot;</span><span class="p">,</span> <span class="s">&quot;The Category was not saved, may be duplicate&quot;</span><span class="p">,</span>
+                                 <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../menu.html#menu.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">####</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_tab_4&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_7</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_7</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;horizontalLayout_7&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_detail_tabWidget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weeklytabs</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tabs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_7</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="p">)</span>
+        <span class="c">####signals and slots &amp;&amp; other stuffs</span>
+        <span class="c"># self.mainwindow = Ui_MainWindow  # just for the ease of finding the attributes in pycharm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span>
+
+
+<div class="viewcode-block" id="Menu.add_tabs"><a class="viewcode-back" href="../menu.html#menu.Menu.add_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">add_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: adds the tab</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">MenuDetails</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">,</span> <span class="s">&quot;Menu&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weeklytabs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;monday&#39;</span><span class="p">,</span> <span class="s">&#39;Monday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;tuesday&#39;</span><span class="p">,</span> <span class="s">&#39;Tuesday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;wednesday&#39;</span><span class="p">,</span> <span class="s">&#39;Wednesday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;thursday&#39;</span><span class="p">,</span> <span class="s">&#39;Thursday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;friday&#39;</span><span class="p">,</span> <span class="s">&#39;Friday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;Saturday&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;sunday&#39;</span><span class="p">,</span> <span class="s">&#39;Sunday&#39;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">days</span><span class="p">):</span>
+            <span class="n">menu</span> <span class="o">=</span> <span class="n">MenuWeekday</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weeklytabs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">menu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="Menu.change_focus"><a class="viewcode-back" href="../menu.html#menu.Menu.change_focus">[docs]</a>    <span class="k">def</span> <span class="nf">change_focus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">wid</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+            <span class="n">wid</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="MenuDetails"><a class="viewcode-back" href="../menu.html#menu.MenuDetails">[docs]</a><span class="k">class</span> <span class="nc">MenuDetails</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">####</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside MenuDetails&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menudetail_tab_1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout_20&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_table&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">spacerItem22</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">612</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem22</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_table_add_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c">####retranslate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Code&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Item&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Category&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Rate&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Add New Dish&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="c">###signals and slots &amp;&amp; other stuffs</span>
+        <span class="c"># self.mainwindow = Ui_MainWindow  # just for the ease of finding the attributes in pycharm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">MenuProduct</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popup_edit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setShowGrid</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span>
+
+<div class="viewcode-block" id="MenuDetails.add_menu"><a class="viewcode-back" href="../menu.html#menu.MenuDetails.add_menu">[docs]</a>    <span class="k">def</span> <span class="nf">add_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Pops up a new dialogue to add the menus</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">MenuAddDialogue</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">MenuAddDialogue</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuDetails.update_menu"><a class="viewcode-back" href="../menu.html#menu.MenuDetails.update_menu">[docs]</a>    <span class="k">def</span> <span class="nf">update_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:Populates the menu table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">menulist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">load_menus</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">menulist</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="n">menulist</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">clearContents</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuDetails.popup_edit"><a class="viewcode-back" href="../menu.html#menu.MenuDetails.popup_edit">[docs]</a>    <span class="k">def</span> <span class="nf">popup_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pops up the menu to be edited</span>
+<span class="sd">        :param item: item clicked</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">indexFromItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">model_index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="MenuDetails.add_row"><a class="viewcode-back" href="../menu.html#menu.MenuDetails.add_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item_no</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuDetails.load_rows"><a class="viewcode-back" href="../menu.html#menu.MenuDetails.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:checks and adds new rows</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="MenuWeekday"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday">[docs]</a><span class="k">class</span> <span class="nc">MenuWeekday</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="c">####</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside MenuWeekday&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menudetail_tab_1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout_20&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_table&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">spacerItem22</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">612</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem22</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_refresh_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_refresh_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_table_refresh_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table_refresh_button</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_table_add_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_20</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c">####retranslate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Code&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Item&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Category&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Rate&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Per Day&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_refresh_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Refresh&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Add Dish&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="c">###signals and slots &amp;&amp; other stuffs</span>
+        <span class="c"># self.mainwindow = Ui_MainWindow  # just for the ease of finding the attributes in pycharm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popup_edit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table_refresh_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setShowGrid</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menudetail_tab_1</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span>
+
+<div class="viewcode-block" id="MenuWeekday.add_menu"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday.add_menu">[docs]</a>    <span class="k">def</span> <span class="nf">add_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Pops up a new dialogue to add the menus</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">AddMenuFromList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">MenuQuantityEditPopup</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quantity</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MenuWeekday.update_menu"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday.update_menu">[docs]</a>    <span class="k">def</span> <span class="nf">update_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:Populates the menu table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">WeeklyMenu</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">menulist</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">load_dish_per_Day</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">menulist</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="n">menulist</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">clearContents</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuWeekday.popup_edit"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday.popup_edit">[docs]</a>    <span class="k">def</span> <span class="nf">popup_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pops up the menu to be edited</span>
+<span class="sd">        :param item: item clicked</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">indexFromItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">model_index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_menu</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuWeekday.add_row"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday.add_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_table</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item_no</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">per_day</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuWeekday.load_rows"><a class="viewcode-back" href="../menu.html#menu.MenuWeekday.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:checks and adds new rows</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="MenuQuantityEditPopup"><a class="viewcode-back" href="../menu.html#menu.MenuQuantityEditPopup">[docs]</a><span class="k">class</span> <span class="nc">MenuQuantityEditPopup</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside MenuQuantityEditPopup&#39;</span><span class="p">)</span>
+        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">today</span> <span class="o">=</span> <span class="n">Ui_menu_this_day</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_quantity_linedit</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="n">QIntValidator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99999</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_weeklydata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_delete_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_from_weeklymenu</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_code_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_name_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_quantity_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">week</span> <span class="o">=</span> <span class="n">WeeklyMenu</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MenuQuantityEditPopup.update_weeklydata"><a class="viewcode-back" href="../menu.html#menu.MenuQuantityEditPopup.update_weeklydata">[docs]</a>    <span class="k">def</span> <span class="nf">update_weeklydata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates the value of the per day quantity of a dish</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuQuantityEditPopup updating weeklydata initiated&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">menuperday_quantity_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">update_weekly_row</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!&quot;</span><span class="p">,</span> <span class="s">&quot;The quantity was saved&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Fail!!&#39;</span><span class="p">,</span> <span class="s">&#39;The quantity was not saved!!&#39;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuQuantityEditPopup.remove_from_weeklymenu"><a class="viewcode-back" href="../menu.html#menu.MenuQuantityEditPopup.remove_from_weeklymenu">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from_weeklymenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deletes the entry</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;MenuQuantityEditPopup remove from weeklymenu initiated&#39;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Confirm?&quot;</span><span class="p">,</span> <span class="s">&quot;This will delete the entry in the </span><span class="si">%s</span><span class="s"> table&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">remove_weekly_row</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!&quot;</span><span class="p">,</span> <span class="s">&quot;The Dish was deleted successfully&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="AddMenuFromList"><a class="viewcode-back" href="../menu.html#menu.AddMenuFromList">[docs]</a><span class="k">class</span> <span class="nc">AddMenuFromList</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside AddMenuFromList&#39;</span><span class="p">)</span>
+        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span> <span class="o">=</span> <span class="n">Ui_add_menu_eachweek</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">sectionClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_all_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addmenu_this_day</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">week</span> <span class="o">=</span> <span class="n">WeeklyMenu</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">menulist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">load_dish_notin_per_Day</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="n">menulist</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AddMenuFromList.select_all_rows"><a class="viewcode-back" href="../menu.html#menu.AddMenuFromList.select_all_rows">[docs]</a>    <span class="k">def</span> <span class="nf">select_all_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        selects all rows in the 0th column</span>
+<span class="sd">        :param item: column number</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                <span class="n">chekbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">chekbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                    <span class="n">chekbox</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">chekbox</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AddMenuFromList.addmenu_this_day"><a class="viewcode-back" href="../menu.html#menu.AddMenuFromList.addmenu_this_day">[docs]</a>    <span class="k">def</span> <span class="nf">addmenu_this_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        add the rows to the current day</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;AddMenuFromList adding menu to this day initiated&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_table</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">checkbox</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s">&#39;day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s">&#39;model_item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">save_dish_per_day</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Success!&#39;</span><span class="p">,</span> <span class="s">&quot;The menu Items were added&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">message</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">update_menu</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">model_index</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">indexFromItem</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s">&#39;model_item&#39;</span><span class="p">])</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">model_index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">removeRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Fail!!&#39;</span><span class="p">,</span> <span class="s">&#39;The menu Item was not saved!!&#39;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AddMenuFromList.add_row"><a class="viewcode-back" href="../menu.html#menu.AddMenuFromList.add_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addeachweek</span><span class="o">.</span><span class="n">add_eachweek_table</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setShowGrid</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;color:#000000;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                <span class="n">checkbox</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">()</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">checkbox</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item_no</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">quantity</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+                <span class="n">quantity</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="n">QIntValidator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99999</span><span class="p">))</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AddMenuFromList.load_rows"><a class="viewcode-back" href="../menu.html#menu.AddMenuFromList.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

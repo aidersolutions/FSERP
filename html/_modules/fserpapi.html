@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fserpapi &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for fserpapi</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">API functions file</span>
+<span class="sd">Every method returns a list with a boolean and JSON or String of error</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">put</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">ConnectionError</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c"># need a config file or should get it</span>
+<span class="n">HOST</span> <span class="o">=</span> <span class="s">&#39;http://localhost:8800&#39;</span>
+<span class="n">HEADERS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Content-type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">}</span>
+<span class="n">PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;123&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="s">&#39;12453&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_dish_categories"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_dish_categories">[docs]</a><span class="k">def</span> <span class="nf">get_dish_categories</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get dish categories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/dish/categories/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="add_dish_category"><a class="viewcode-back" href="../fserpapi.html#fserpapi.add_dish_category">[docs]</a><span class="k">def</span> <span class="nf">add_dish_category</span><span class="p">(</span><span class="n">dish</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    add dish categories</span>
+<span class="sd">    :param dish: the new dish category name</span>
+<span class="sd">    :param parent: the parent category</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">localparams</span> <span class="o">=</span> <span class="n">PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">localparams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">dish</span><span class="p">,</span> <span class="s">&#39;parent&#39;</span><span class="p">:</span> <span class="n">parent</span><span class="p">})</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">put</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/dish/category/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">localparams</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_ingredients"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_ingredients">[docs]</a><span class="k">def</span> <span class="nf">get_ingredients</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get dish ingredients</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/ingredients/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_ingredient_categories"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_ingredient_categories">[docs]</a><span class="k">def</span> <span class="nf">get_ingredient_categories</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get dish ingredient categories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/ingredients/categories/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="ingredient_add"><a class="viewcode-back" href="../fserpapi.html#fserpapi.ingredient_add">[docs]</a><span class="k">def</span> <span class="nf">ingredient_add</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    add dish ingredient</span>
+<span class="sd">    :param ingredient: the new ingredient name</span>
+<span class="sd">    :param parent: the parent category of the ingredient</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">localparams</span> <span class="o">=</span> <span class="n">PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">localparams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">ingredient</span><span class="p">,</span> <span class="s">&#39;parent&#39;</span><span class="p">:</span> <span class="n">parent</span><span class="p">})</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">put</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/ingredient/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">localparams</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="add_ingredients_category"><a class="viewcode-back" href="../fserpapi.html#fserpapi.add_ingredients_category">[docs]</a><span class="k">def</span> <span class="nf">add_ingredients_category</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    add dish ingredient category</span>
+<span class="sd">    :param category: the new ingredient category name</span>
+<span class="sd">    :param parent: the parent category of the ingredient</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">localparams</span> <span class="o">=</span> <span class="n">PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">localparams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span> <span class="s">&#39;parent&#39;</span><span class="p">:</span> <span class="n">parent</span><span class="p">})</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">put</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/ingredients/category/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">localparams</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_messages_updates"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_messages_updates">[docs]</a><span class="k">def</span> <span class="nf">get_messages_updates</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get message updates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/messages/updates/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_message"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_message">[docs]</a><span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="n">msgid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get message updates of the id</span>
+<span class="sd">    :param msgid: the message id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/messages/&#39;</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">msgid</span><span class="p">)},</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_employee_designations"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_employee_designations">[docs]</a><span class="k">def</span> <span class="nf">get_employee_designations</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get employee designations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/employee/designations/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_designation"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_designation">[docs]</a><span class="k">def</span> <span class="nf">get_designation</span><span class="p">(</span><span class="n">design_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    gets the employee designation of the passed id</span>
+<span class="sd">    :param design_id: the id of the designation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/employee/designation/&#39;</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">design_id</span><span class="p">)},</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span>
+                       <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_billing_last"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_billing_last">[docs]</a><span class="k">def</span> <span class="nf">get_billing_last</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get last bill</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/billing/last/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_billing_summary"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_billing_summary">[docs]</a><span class="k">def</span> <span class="nf">get_billing_summary</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get billing summary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/billing/summary/&#39;</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_company_departments"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_company_departments">[docs]</a><span class="k">def</span> <span class="nf">get_company_departments</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get company departments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/company/departments/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_inventory_summary"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_inventory_summary">[docs]</a><span class="k">def</span> <span class="nf">get_inventory_summary</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get inventory summary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/invetory/summary/&#39;</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_inventory_last"><a class="viewcode-back" href="../fserpapi.html#fserpapi.get_inventory_last">[docs]</a><span class="k">def</span> <span class="nf">get_inventory_last</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get last inventory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">HOST</span> <span class="o">+</span> <span class="s">&#39;/invetory/last/&#39;</span><span class="p">,</span>
+                       <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">PARAMS</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;No Connection&#39;</span>
+
+<span class="c"># &quot;&quot;&quot;</span>
+<span class="c"># @app.put(&#39;/company/department/&#39;)</span>
+<span class="c"># &quot;&quot;&quot;</span>
+
+<span class="c"># from bottle import route</span>
+<span class="c">#</span>
+<span class="c"># route?</span>
+<span class="c"># route?</span>
+<span class="c"># % edit</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># from bottle import redirect</span>
+<span class="c">#</span>
+<span class="c"># redirect?</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># from bottle.ex</span>
+<span class="c"># import bottle.ext</span>
+<span class="c">#</span>
+<span class="c"># dir(bottle.ext)</span>
+<span class="c"># bottle.ext.__all__</span>
+<span class="c"># impoer</span>
+<span class="c"># bottle_mysql</span>
+<span class="c"># import bottle_mysql</span>
+<span class="c"># import bottle_mysq;</span>
+<span class="c"># import bottle_mysql</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># % edit / tmp / ipython_edit_dzYKrA.py</span>
+<span class="c"># from requests import put</span>
+<span class="c"># import json</span>
+<span class="c">#</span>
+<span class="c"># json?</span>
+<span class="c"># d = {&#39;key&#39;: 123, &#39;password&#39;: 567}</span>
+<span class="c"># put?</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/categories/&#39;, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/categories/&#39;, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/categories/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/categories/&#39;, data=d)</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># put?</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># d = {&#39;key&#39;: 123, &#39;password&#39;: 567, &#39;name&#39;: &#39;Rice&#39;}</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># ret.content</span>
+<span class="c"># from requests import get</span>
+<span class="c">#</span>
+<span class="c"># ret = get(&#39;http://localhost:8800/dish/category/&#39;)</span>
+<span class="c"># ret</span>
+<span class="c"># ret = get(&#39;http://localhost:8800/dish/categories/&#39;)</span>
+<span class="c"># ret</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = get(&#39;http://localhost:8800/ingredients/&#39;)</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = get(&#39;http://localhost:8800/ingredients/&#39;)</span>
+<span class="c"># d = {&#39;key&#39;: 123, &#39;password&#39;: 567, &#39;name&#39;: &#39;Rice&#39;}</span>
+<span class="c"># ret.headers</span>
+<span class="c"># ret = get(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># from bottle import request</span>
+<span class="c"># from bottle import request as req</span>
+<span class="c">#</span>
+<span class="c"># req.json?</span>
+<span class="c"># ret</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret.headers</span>
+<span class="c"># put?</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, {&#39;content-type&#39;: &#39;application/json&#39;})</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, {&#39;content-type&#39; = &#39;application/json&#39;})</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, {&#39;content-type&#39;: &#39;application/json&#39;})</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, &#39;content-type&#39; = &#39;application/json&#39;)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, {&#39;content-type&#39;: &#39;application/json&#39;})</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, &#39;content-type&#39; = &#39;application/json&#39;)</span>
+<span class="c"># headers = {&#39;content-type&#39;: &#39;application/json&#39;}</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, headers)</span>
+<span class="c"># put?</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, headers, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, headers)</span>
+<span class="c"># put?</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, headers)</span>
+<span class="c"># d.update(headers)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d)</span>
+<span class="c"># ret.headers</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret.headers</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret.headers</span>
+<span class="c"># ret.headers</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># headers = {&#39;Content-type&#39;: &#39;application/json&#39;}</span>
+<span class="c"># d.update(headers)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d))</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d), headers=headers)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d), headers=headers)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d), headers=headers)</span>
+<span class="c"># ret.content</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=d, headers=headers)</span>
+<span class="c"># ret = put(&#39;http://localhost:8800/dish/category/&#39;, data=json.dumps(d), headers=headers)</span>
+<span class="c">#</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

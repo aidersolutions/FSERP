@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/notification.png</file>
+        <file>images/inventory.png</file>
+        <file>images/billing.png</file>
+        <file>images/employee.png</file>
+        <file>images/menu.png</file>
+        <file>images/report.png</file>
+        <file>images/waste.png</file>
+        <file>images/inventory_frame.png</file>
+        <file>images/billing_frame.png</file>
+        <file>images/employee_frame.png</file>
+        <file>images/menu_frame.png</file>
+        <file>images/report_frame.png</file>
+        <file>images/waste_frame.png</file>
+        <file>images/down.png</file>
+        <file>images/refresh.png</file>
+        <file>images/admin.png</file>
+        <file>images/home.png</file>
+        <file>images/settings.png</file>
+    </qresource>
+</RCC>
+

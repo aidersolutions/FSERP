@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Stock Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stock-module">
+<h1>Stock Module<a class="headerlink" href="#stock-module" title="Permalink to this headline">¶</a></h1>
+<p>The stock module defines fundamentals for all stock management
+situations: Locations where product are stored, moves between these
+locations, shipments for product arrivals and departures and inventory
+to control and update stock levels.</p>
+<div class="section" id="location">
+<h2>Location<a class="headerlink" href="#location" title="Permalink to this headline">¶</a></h2>
+<p>Locations are generic places where products are physically or
+virtually stored. There are six types of locations:</p>
+<ul>
+<li><p class="first">Storage</p>
+<p>Storage locations define real places where products are stored.</p>
+</li>
+<li><p class="first">Warehouse</p>
+<p>Warehouses are meta-locations which define input, storage and output
+locations. These locations are all of type Storage. Input and Output
+are locations where incoming an outgoing product are temporally
+stored awaiting transportation. The storage location is often the
+biggest location where products are stored for middle or long
+periods of time.</p>
+</li>
+<li><p class="first">Customer</p>
+<p>Customer locations are virtual locations accumulating products that
+have been sent to customers.</p>
+</li>
+<li><p class="first">Supplier</p>
+<p>Supplier locations are virtual locations accumulating products that have
+been received from suppliers.</p>
+</li>
+<li><p class="first">Lost And Found</p>
+<p>Lost And Found locations collects inventory gaps. See
+:ref:inventory for details.</p>
+</li>
+</ul>
+<p>Locations are organised in tree structures, allowing to define
+fine grained structures.</p>
+</div>
+<div class="section" id="move">
+<h2>Move<a class="headerlink" href="#move" title="Permalink to this headline">¶</a></h2>
+<p>A move is a movement of a product in a given quantity between two
+locations. It may eventually defines a unit price and a currency for
+the products that are moved from or to another company, allowing to
+compute stock value at any time (and to update the cost prices if the
+choosen cost price method is <em>Average</em>). A move also defines a planned
+date (when one plan to do the move) and an effective date (when the
+move is actually made). Products that are used in stock move must of
+of type <em>Goods</em> or <em>Assets</em>. Stock levels are ignored for
+consumable, this means that they can be always assigned. <em>Service</em>
+products are ignored by the stock module.</p>
+<p>A move can be in one of this states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>The initial state, used when the move is created and to define
+future stock movement that are planned, but still subject to
+modifications.</p>
+</li>
+<li><p class="first">Assigned</p>
+<p>An assigned move allow to reserve some products. Thus preventing
+other user to assign them.</p>
+</li>
+<li><p class="first">Done</p>
+<p>The move is in state Done when the real movement is made.</p>
+</li>
+<li><p class="first">Cancel</p>
+<p>A cancelled move will be ignored by the system. Only Draft or
+Assigned move can be cancelled. To revert a move in state Done, an
+opposite move must be created.</p>
+</li>
+<li><p class="first">Staging</p>
+<p>A phantom state used to create in advance move that should not be taken for
+stock computation.</p>
+</li>
+</ul>
+<div class="section" id="product-quantities">
+<h3>Product Quantities<a class="headerlink" href="#product-quantities" title="Permalink to this headline">¶</a></h3>
+<p>Product quantities on each location are the sum of all moves coming
+from or going to this location.  For quantities that are computed for
+a date in the past, only confirmed moves (i.e. in state Done) with an
+effective date inferior to the considered date are taken into account,
+reflecting the real situation. For future quantities, Draft and
+Assigned move with a planned date greater than today and smaller than
+the given date are also summed.</p>
+</div>
+</div>
+<div class="section" id="shipment">
+<h2>Shipment<a class="headerlink" href="#shipment" title="Permalink to this headline">¶</a></h2>
+<p>A Shipment define a group of moves happening at the same date and
+around the same location.</p>
+<div class="section" id="supplier-shipment">
+<h3>Supplier Shipment<a class="headerlink" href="#supplier-shipment" title="Permalink to this headline">¶</a></h3>
+<p>A supplier shipment is used when products are received from a
+supplier. It is mainly composed of a party (the supplier), a location
+(the warehouse in which the products are coming) and two list of moves:</p>
+<ul>
+<li><p class="first">Incoming moves</p>
+<p>The moves between the supplier location and the input location
+(as defined on the warehouse).</p>
+</li>
+<li><p class="first">Inventory moves</p>
+<p>The inventory moves are between the input location and the storage
+location (or one of his child locations).</p>
+</li>
+</ul>
+<p>The supplier shipment can be in one of this states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>Incoming moves and inventory moves (if they exist) are in draft.</p>
+</li>
+<li><p class="first">Received</p>
+<p>Incoming move are set in state Done, inventory moves are created if
+necessary.</p>
+</li>
+<li><p class="first">Done</p>
+<p>Inventory and incoming moves are in state Done.</p>
+</li>
+<li><p class="first">Cancel</p>
+<p>All moves are cancelled.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="customer-shipment">
+<h3>Customer Shipment<a class="headerlink" href="#customer-shipment" title="Permalink to this headline">¶</a></h3>
+<p>A customer shipment is used for sending products to customer. It is
+mainly composed of a party (the customer), a location (the warehouse
+out of which the product are going) and two list of moves:</p>
+<ul>
+<li><p class="first">Inventory moves</p>
+<p>The moves between a storage location and the output location of the
+warehouse</p>
+</li>
+<li><p class="first">Outgoing moves</p>
+<p>The moves between the output location of the warehouse and a
+customer location.</p>
+</li>
+</ul>
+<p>The customer shipment can be in one of this states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>Outgoing moves and inventory moves (if they exist) are in draft.</p>
+</li>
+<li><p class="first">Waiting</p>
+<p>When a customer shipment is set to waiting, the inventory moves are
+created (or completed) to balance the outgoing moves. The waiting
+state also means that the shipment should be processed.</p>
+</li>
+<li><p class="first">Assigned</p>
+<p>The assigned state is when products have been assigned (or reserved)
+from the storage locations.</p>
+</li>
+<li><p class="first">Packed</p>
+<p>The packed state is when the inventory moves have been made, i.e
+when the products have been physically moved to the outgoing
+locations.</p>
+</li>
+<li><p class="first">Done</p>
+<p>The shipment is Done when the outgoing moves have been made,
+e.g. when a truck left the warehouse.</p>
+</li>
+<li><p class="first">Cancel</p>
+<p>A shipment which is not yet completed (not in state Done) can be
+cancelled at any time. This also cancel all the moves.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="internal-shipment">
+<h3>Internal Shipment<a class="headerlink" href="#internal-shipment" title="Permalink to this headline">¶</a></h3>
+<p>An internal shipment is used for sending products across locations
+inside the company. It is mainly composed of two locations and a list
+of moves. It can be in one of these states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>The moves (if they exist) are in draft.</p>
+</li>
+<li><p class="first">Waiting</p>
+<p>The waiting state means that the shipment should be processed.</p>
+</li>
+<li><p class="first">Assigned</p>
+<p>The assigned state is when products have been assigned.</p>
+</li>
+<li><p class="first">Done</p>
+<p>The shipment is Done when the moves have been made.</p>
+</li>
+<li><p class="first">Cancel</p>
+<p>A shipment which is not yet completed (not in state Done) can be
+cancelled at any time. This also cancel all the moves.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="inventory">
+<h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
+<p>Inventories allow to control and update stock levels. They are mainly
+composed of two locations (a Storage location and a Lost And Found
+location), and a list of inventory lines. A button allow to
+auto-complete inventory lines with respect to the expected quantities
+for each product in the location. Inventory lines consist of: a
+product and it&#8217;s default unit of measure, an expected quantity and the
+real quantity (the real products on the shelves).</p>
+<p>When the inventory is confirmed, moves are created to balance expected
+quantities and real ones.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Stock Module</a><ul>
+<li><a class="reference internal" href="#location">Location</a></li>
+<li><a class="reference internal" href="#move">Move</a><ul>
+<li><a class="reference internal" href="#product-quantities">Product Quantities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shipment">Shipment</a><ul>
+<li><a class="reference internal" href="#supplier-shipment">Supplier Shipment</a></li>
+<li><a class="reference internal" href="#customer-shipment">Customer Shipment</a></li>
+<li><a class="reference internal" href="#internal-shipment">Internal Shipment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inventory">Inventory</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/stock/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

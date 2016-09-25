@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Statement Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-statement-scenario">
+<h1>Account Statement Scenario<a class="headerlink" href="#account-statement-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span><span class="p">,</span> <span class="n">Report</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account.tests.tools</span> <span class="kn">import</span> <span class="n">create_fiscalyear</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">create_chart</span><span class="p">,</span> <span class="n">get_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">from</span><span class="o">.</span><span class="n">trytond</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">account_invoice</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">tools</span> <span class="kn">import</span> \
+<span class="gp">... </span>    <span class="nn">set_fiscalyear_invoice_sequences</span><span class="o">,</span> <span class="nn">create_payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install account_statement and account_invoice:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;in&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;account_statement&#39;</span><span class="p">,</span> <span class="s">&#39;account_invoice&#39;</span><span class="p">)),</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create fiscal year:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span> <span class="o">=</span> <span class="n">set_fiscalyear_invoice_sequences</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">create_fiscalyear</span><span class="p">(</span><span class="n">company</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;create_period&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create chart of accounts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_chart</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">get_accounts</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payable</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;payable&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;revenue&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;expense&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cash</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create parties:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Supplier&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Customer&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create payment term:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">create_payment_term</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create 2 customer invoices:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Invoice</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">customer_invoice1</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;100&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">customer_invoice2</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;150&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+</pre></div>
+</div>
+<p>Create 1 customer credit note:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_credit_note&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">customer_credit_note</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;50&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+</pre></div>
+</div>
+<p>Create 1 supplier invoices:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;in_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">supplier_invoice</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;50&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">expense</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+</pre></div>
+</div>
+<p>Create statement:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">StatementJournal</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.statement.journal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Statement</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.statement&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">StatementLine</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.statement.line&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Sequence</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.sequence&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AccountJournal</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.journal&#39;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Satement&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">code</span><span class="o">=</span><span class="s">&#39;account.journal&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_journal</span> <span class="o">=</span> <span class="n">AccountJournal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Statement&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="s">&#39;statement&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">credit_account</span><span class="o">=</span><span class="n">cash</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">debit_account</span><span class="o">=</span><span class="n">cash</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_journal</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_journal</span> <span class="o">=</span> <span class="n">StatementJournal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Test&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">account_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">validation</span><span class="o">=</span><span class="s">&#39;balance&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_journal</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;test&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">statement_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">start_balance</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">end_balance</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;80&#39;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Received 180 from customer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">StatementLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statement_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;180&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_invoice1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;80.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">==</span> <span class="n">customer</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_invoice2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;80.00&#39;)</span>
+</pre></div>
+</div>
+<p>Paid 50 to customer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">StatementLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statement_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-50&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_credit_note</span>
+</pre></div>
+</div>
+<p>Paid 50 to supplier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">StatementLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statement_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-60&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">payable</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">supplier_invoice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;-50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;-10.00&#39;)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Validate statement:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;validated&#39;</span>
+</pre></div>
+</div>
+<p>Test invoice state:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice1</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;paid&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice2</span><span class="o">.</span><span class="n">amount_to_pay</span>
+<span class="go">Decimal(&#39;70.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_credit_note</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;paid&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;paid&#39;</span>
+</pre></div>
+</div>
+<p>Test statement report:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="s">&#39;account.statement&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">execute</span><span class="p">([</span><span class="n">statement</span><span class="p">],</span> <span class="p">{})</span>
+</pre></div>
+</div>
+<p>Let&#8217;s test the negative amount version of the supplier/customer invoices:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice3</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice3</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice3</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">customer_invoice3</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-120&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice3</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice3</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;in_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-40&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">expense</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">invoice_date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice2</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;test negative&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">statement_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">end_balance</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">StatementLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statement_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="o">-</span><span class="mi">120</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_invoice3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">customer_invoice3</span><span class="o">.</span><span class="n">id</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">StatementLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statement_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">payable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">supplier_invoice2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;40.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;10.00&#39;)</span>
+</pre></div>
+</div>
+<p>Testing the use of an invoice in multiple statements:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice4</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice4</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice4</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">customer_invoice4</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;300&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice4</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice4</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="n">journal</span><span class="o">=</span><span class="n">statement_journal</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">end_balance</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">380</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">statement1</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_invoice4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement2</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="n">journal</span><span class="o">=</span><span class="n">statement_journal</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement2</span><span class="o">.</span><span class="n">end_balance</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">680</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span> <span class="o">=</span> <span class="n">statement2</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement_line</span><span class="o">.</span><span class="n">invoice</span> <span class="o">=</span> <span class="n">customer_invoice4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">UserWarning</span>: <span class="n">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement2</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user.warning&#39;</span><span class="p">)(</span><span class="n">user</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">statement2</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">always</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;validated&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement1</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">statement1</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">invoice</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement2</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">statement2</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">invoice</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>Testing balance validation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">journal_balance</span> <span class="o">=</span> <span class="n">StatementJournal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Balance&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">account_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">validation</span><span class="o">=</span><span class="s">&#39;balance&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">journal_balance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;balance&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_balance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">start_balance</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;50.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">end_balance</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;150.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;60.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">UserError</span>: <span class="n">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;40.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Testing amount validation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">journal_amount</span> <span class="o">=</span> <span class="n">StatementJournal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Amount&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">account_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">validation</span><span class="o">=</span><span class="s">&#39;amount&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">journal_amount</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;amount&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_amount</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">total_amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;80.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;50.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">UserError</span>: <span class="n">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;30.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Test number of lines validation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">journal_number</span> <span class="o">=</span> <span class="n">StatementJournal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Number&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">journal</span><span class="o">=</span><span class="n">account_journal</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">validation</span><span class="o">=</span><span class="s">&#39;number_of_lines&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">journal_number</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;number&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_number</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">number_of_lines</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;50.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">UserError</span>: <span class="n">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;10.00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">second_line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statement</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;validate_statement&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_statement/tests/scenario_account_statement.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

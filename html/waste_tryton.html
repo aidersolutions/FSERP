@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>waste_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="prev" title="waste module" href="waste.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="waste.html" title="waste module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-waste_tryton">
+<span id="waste-tryton-module"></span><h1>waste_tryton module<a class="headerlink" href="#module-waste_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Waste Module backend</p>
+<dl class="class">
+<dt id="waste_tryton.WasteIngredients">
+<em class="property">class </em><tt class="descclassname">waste_tryton.</tt><tt class="descname">WasteIngredients</tt><a class="reference internal" href="_modules/waste_tryton.html#WasteIngredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteIngredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the wasted Ingredients</p>
+<dl class="attribute">
+<dt id="waste_tryton.WasteIngredients.Move">
+<tt class="descname">Move</tt><a class="headerlink" href="#waste_tryton.WasteIngredients.Move" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.move</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteIngredients.find_itemdiscard">
+<tt class="descname">find_itemdiscard</tt><big>(</big><em>from_date</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteIngredients.find_itemdiscard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteIngredients.find_itemdiscard" title="Permalink to this definition">¶</a></dt>
+<dd><p>shows the ingredients discarded on those days
+:param from_date:start date
+:param to_date:end date
+:return:list of moves</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteIngredients.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#waste_tryton.WasteIngredients.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="waste_tryton.WasteMenu">
+<em class="property">class </em><tt class="descclassname">waste_tryton.</tt><tt class="descname">WasteMenu</tt><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the wastes produced in the menu items</p>
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.Location">
+<tt class="descname">Location</tt><a class="headerlink" href="#waste_tryton.WasteMenu.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.location</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.Menu">
+<tt class="descname">Menu</tt><a class="headerlink" href="#waste_tryton.WasteMenu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.Move">
+<tt class="descname">Move</tt><a class="headerlink" href="#waste_tryton.WasteMenu.Move" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.move</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#waste_tryton.WasteMenu.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.Shipment">
+<tt class="descname">Shipment</tt><a class="headerlink" href="#waste_tryton.WasteMenu.Shipment" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.shipment.internal</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.ShipmentMoves">
+<tt class="descname">ShipmentMoves</tt><a class="headerlink" href="#waste_tryton.WasteMenu.ShipmentMoves" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.move</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.discard">
+<tt class="descname">discard</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.discard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds the dish to the wastes for the present day
+:param <a class="reference external" href="data:the">data:the</a> dictionary of the dish and other details
+:return: boolean value True if the process was successful</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.find_itemdiscard">
+<tt class="descname">find_itemdiscard</tt><big>(</big><em>from_date</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.find_itemdiscard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.find_itemdiscard" title="Permalink to this definition">¶</a></dt>
+<dd><p>shows the items discarded on those days
+:param from_date:start date
+:param to_date:end date
+:return:list of dictionary of the items in the waste category of the given dates</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds dish,category corresponding to the code
+:param code: dish code
+:return: dictionary of the dish and other details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds code,category of the item
+:param item: dish name
+:return: dictionary of the dish and other details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.move">
+<tt class="descname">move</tt><big>(</big><em>from_location</em>, <em>to_location</em>, <em>item</em>, <em>quantity</em>, <em>reason=None</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves an item to the waste
+:param from_location: the start location
+:param to_location: the end location
+:param item: the item to be sent to the waste
+:param quantity: the quantity
+:param reason: the reason optional
+:return: boolean value True if the item was moved</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="waste_tryton.WasteMenu.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#waste_tryton.WasteMenu.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="waste_tryton.WasteMenu.populate_item">
+<tt class="descname">populate_item</tt><big>(</big><em>model</em><big>)</big><a class="reference internal" href="_modules/waste_tryton.html#WasteMenu.populate_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#waste_tryton.WasteMenu.populate_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the dish items
+:param model: the Qt model in which the item names are to be populated
+:return: returns a filled model</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="waste.html"
+                        title="previous chapter">waste module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/waste_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="waste.html" title="waste module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

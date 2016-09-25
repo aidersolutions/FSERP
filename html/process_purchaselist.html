@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>process_purchaselist module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="psetup module" href="psetup.html" />
+    <link rel="prev" title="printer package" href="printer.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="psetup.html" title="psetup module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="printer.html" title="printer package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-process_purchaselist">
+<span id="process-purchaselist-module"></span><h1>process_purchaselist module<a class="headerlink" href="#module-process_purchaselist" title="Permalink to this headline">¶</a></h1>
+<p>Purchase Process backend only calculation not updating the db</p>
+<dl class="class">
+<dt id="process_purchaselist.CalculateDayIngredients">
+<em class="property">class </em><tt class="descclassname">process_purchaselist.</tt><tt class="descname">CalculateDayIngredients</tt><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mechanism to calculate the ingredients of the day</p>
+<dl class="attribute">
+<dt id="process_purchaselist.CalculateDayIngredients.Ingredient">
+<tt class="descname">Ingredient</tt><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.Ingredient" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.ingredientsofdish</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="process_purchaselist.CalculateDayIngredients.Weekly">
+<tt class="descname">Weekly</tt><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.Weekly" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">weeklymenu.weeklymenu</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.add_quantity">
+<tt class="descname">add_quantity</tt><big>(</big><em>from_uom</em>, <em>from_quantity</em>, <em>to_uom</em>, <em>to_quantity</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.add_quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.add_quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>converts all the quantity to the higher order eg: gm to kg and adds them. The from and to doesnt matter but
+their pair with quantities do matter
+:param from_uom: uom1
+:param to_uom: uom2
+:param from_quantity: quantity1
+:param to_quantity: quantity2
+:return: higher_uom,sum_of_quantity_in_higher_uom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.aggregate_ingredients">
+<tt class="descname">aggregate_ingredients</tt><big>(</big><em>previousdata</em>, <em>newdata</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.aggregate_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.aggregate_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregates the data from two data sets
+:param previousdata: previously aggregated data
+:param newdata: new data from a day
+:return:new aggregated data object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.calculate_requirement">
+<tt class="descname">calculate_requirement</tt><big>(</big><em>from_date</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.calculate_requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.calculate_requirement" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds the difference between the current stock with the future requirement after considering the present need
+and return a dataobj purchase schedule preparation
+:param from_date:the start date
+:param to_date: the end date
+:return:list of dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.compare_remove_ingredients">
+<tt class="descname">compare_remove_ingredients</tt><big>(</big><em>source</em>, <em>target</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.compare_remove_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.compare_remove_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>compares two data objects source and target, if there exists any objects from source in target, subtract it
+from the target or remove it if needed
+:param source:lower_data_set
+:param target: larger_data_set
+:return:difference data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.convert_uom_to_higher">
+<tt class="descname">convert_uom_to_higher</tt><big>(</big><em>uom</em>, <em>quantity</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.convert_uom_to_higher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.convert_uom_to_higher" title="Permalink to this definition">¶</a></dt>
+<dd><p>converts the uom to higher uom and its quantity to higher uom equivalent
+:param uom:unit of measurement
+:param quantity:the quantity
+:return:the higher uom and equivalent quantity</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.get_ingredients">
+<tt class="descname">get_ingredients</tt><big>(</big><em>from_date</em>, <em>to_date</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.get_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.get_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the required ingredients from a date to a date
+:param from_date: start date
+:param to_date: end date
+:return: dict of ingredients</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="process_purchaselist.CalculateDayIngredients.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.sub_quantity">
+<tt class="descname">sub_quantity</tt><big>(</big><em>from_uom</em>, <em>from_quantity</em>, <em>to_uom</em>, <em>to_quantity</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.sub_quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.sub_quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>converts all the quantity to the higher order eg: gm to kg and subtracts them. The from and to doesnt matter but
+their pair with quantities do matter
+:param from_uom: uom1
+:param to_uom: uom2
+:param from_quantity: quantity1
+:param to_quantity: quantity2
+:return: higher_uom,difference_of_quantity_in_higher_uom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.CalculateDayIngredients.update_ingredients">
+<tt class="descname">update_ingredients</tt><big>(</big><em>day</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#CalculateDayIngredients.update_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.CalculateDayIngredients.update_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the ingredients required for a day=[monday,tuesday..etc]
+:param day: day in a week
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="process_purchaselist.ManageInventory">
+<em class="property">class </em><tt class="descclassname">process_purchaselist.</tt><tt class="descname">ManageInventory</tt><a class="reference internal" href="_modules/process_purchaselist.html#ManageInventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.ManageInventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the Inventory</p>
+<dl class="attribute">
+<dt id="process_purchaselist.ManageInventory.Inventory">
+<tt class="descname">Inventory</tt><a class="headerlink" href="#process_purchaselist.ManageInventory.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.inventory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="process_purchaselist.ManageInventory.Location">
+<tt class="descname">Location</tt><a class="headerlink" href="#process_purchaselist.ManageInventory.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">stock.location</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="process_purchaselist.ManageInventory.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#process_purchaselist.ManageInventory.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.ManageInventory.calculate_ingredients">
+<tt class="descname">calculate_ingredients</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#ManageInventory.calculate_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.ManageInventory.calculate_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>aggregates the data such that no multiple entries exists and they have summed up
+:param data: {(inventory_location_id,ingredient_id):ingredient_quantity}
+:return: wihtout repeated keys {(inventory_location_id,ingredient_id):ingredient_quantity}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.ManageInventory.convert_stock">
+<tt class="descname">convert_stock</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#ManageInventory.convert_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.ManageInventory.convert_stock" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert the data
+:param data: {(inventory_location_id,ingredient_id):ingredient_quantity}
+:return:{ingredient_name:(ingredient_uom,ingredient_quantity)}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.ManageInventory.get_stock">
+<tt class="descname">get_stock</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#ManageInventory.get_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.ManageInventory.get_stock" title="Permalink to this definition">¶</a></dt>
+<dd><p>fetches the stock from MyInventory
+:return: stocks in my inventory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="process_purchaselist.ManageInventory.load_stock">
+<tt class="descname">load_stock</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/process_purchaselist.html#ManageInventory.load_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#process_purchaselist.ManageInventory.load_stock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="process_purchaselist.ManageInventory.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#process_purchaselist.ManageInventory.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="printer.html"
+                        title="previous chapter">printer package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="psetup.html"
+                        title="next chapter">psetup module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/process_purchaselist.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="psetup.html" title="psetup module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="printer.html" title="printer package"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

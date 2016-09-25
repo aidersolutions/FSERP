@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p>Proteus is a high level api for the Trytond Modules.
+It provides an interface to use the modules in the trytond without using the client front end.</p>
+<p>Inastallation:</p>
+<blockquote>
+<div>Just download the proteus module from pypi and run the setup.py file.</div></blockquote>
+<p>Usage:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+</pre></div>
+</div>
+<p>This provides us with the interface to configure trytond and create a Model or install a  new Model with the Wizard</p>
+<p>The main function of proteus is to by pass the client implementation and use the functionality provided by the Modules in the trytond</p>
+<p>Thus it provides various functions to manipulate the database entries through the Model</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>Step 1: Configuration:</dt>
+<dd><p class="first">The configuration provides the instance to create a connection between the local machine and the trytond server like instance</p>
+<dl class="last docutils">
+<dt>Functions:</dt>
+<dd><p class="first">1.proteus.config.set_trytond(database=None, user=&#8217;admin&#8217;, language=&#8217;en_US&#8217;, password=&#8217;&#8216;, config_file=None)</p>
+<blockquote class="last">
+<div><p>parameter -&gt; database : (string)it is the name of the database used in local machine for storing the data.</p>
+<p>parameter -&gt; user : (string)is the username used to access the database in the local machine</p>
+<p>parameter -&gt; language : (string)is the language used in the database</p>
+<p>parameter -&gt; password : (string)is the password used in the database entry.</p>
+<p>parameter -&gt; config_file : (string)is the location used to acces the config file if exists</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>Step 2: Installing a Module:</dt>
+<dd><p class="first">After instializing the connection with the database through the Modules and passing the config file location.</p>
+<p>The following steps provide the details of how to install a module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">module_name</span><span class="p">,)</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span><span class="s">&#39;=&#39;</span><span class="p">,</span><span class="s">&#39;module_name&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module_name</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">After this step the Module will be installed and can be used after creating an instance of the Module.</p>
+</dd>
+<dt>Step 3: Creating an Instance of the Module:</dt>
+<dd><p class="first">Lets consider example Module Party
+The following steps will provide a detail about how to create an instance of Party and use it to manipulate the database entries.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span> <span class="o">=</span> <span class="n">Party</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>At this instance we would feel we need to know what are all the fields that are present in the Module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">_get_eval</span><span class="p">()</span>
+<span class="go">{&#39;account_payable&#39;: None,</span>
+<span class="go">&#39;account_receivable&#39;: None,</span>
+<span class="go">&#39;active&#39;: True,</span>
+<span class="go">&#39;addresses&#39;: [-6],</span>
+<span class="go">&#39;categories&#39;: [],</span>
+<span class="go">&#39;code&#39;: None,</span>
+<span class="go">&#39;code_readonly&#39;: True,</span>
+<span class="go">&#39;contact_mechanisms&#39;: [],</span>
+<span class="go">&#39;create_date&#39;: datetime.datetime(2015, 4, 17, 13, 57, 50, 467923),</span>
+<span class="go">&#39;create_uid&#39;: 1,</span>
+<span class="go">&#39;customer_location&#39;: 6,</span>
+<span class="go">&#39;customer_tax_rule&#39;: None,</span>
+<span class="go">&#39;email&#39;: None,</span>
+<span class="go">&#39;fax&#39;: None,</span>
+<span class="go">&#39;full_name&#39;: None,</span>
+<span class="go">&#39;id&#39;: -5,</span>
+<span class="go">&#39;lang&#39;: None,</span>
+<span class="go">&#39;mobile&#39;: None,</span>
+<span class="go">&#39;name&#39;: None,</span>
+<span class="go">&#39;payable&#39;: None,</span>
+<span class="go">&#39;payable_today&#39;: None,</span>
+<span class="go">&#39;phone&#39;: None,</span>
+<span class="go">&#39;rec_name&#39;: None,</span>
+<span class="go">&#39;receivable&#39;: None,</span>
+<span class="go">&#39;receivable_today&#39;: None,</span>
+<span class="go">&#39;supplier_location&#39;: 5,</span>
+<span class="go">&#39;supplier_tax_rule&#39;: None,</span>
+<span class="go">&#39;vat_code&#39;: None,</span>
+<span class="go">&#39;vat_country&#39;: None,</span>
+<span class="go">&#39;vat_number&#39;: None,</span>
+<span class="go">&#39;website&#39;: None,</span>
+<span class="go">&#39;write_date&#39;: None,</span>
+<span class="go">&#39;write_uid&#39;: None}</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;my_company&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">name</span>
+<span class="go">u&#39;my_company&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">_get_eval</span><span class="p">()</span>
+<span class="go">{&#39;account_payable&#39;: None,</span>
+<span class="go">&#39;account_receivable&#39;: None,</span>
+<span class="go">&#39;active&#39;: True,</span>
+<span class="go">&#39;addresses&#39;: [],</span>
+<span class="go">&#39;categories&#39;: [],</span>
+<span class="go">&#39;code&#39;: u&#39;1&#39;,</span>
+<span class="go">&#39;code_readonly&#39;: True,</span>
+<span class="go">&#39;contact_mechanisms&#39;: [],</span>
+<span class="go">&#39;create_date&#39;: datetime.datetime(2015, 4, 17, 14, 5, 48, 985328),</span>
+<span class="go">&#39;create_uid&#39;: 1,</span>
+<span class="go">&#39;customer_location&#39;: 6,</span>
+<span class="go">&#39;customer_tax_rule&#39;: None,</span>
+<span class="go">&#39;email&#39;: &#39;&#39;,</span>
+<span class="go">&#39;fax&#39;: &#39;&#39;,</span>
+<span class="go">&#39;full_name&#39;: u&#39;my_company&#39;,</span>
+<span class="go">&#39;id&#39;: 1,</span>
+<span class="go">&#39;lang&#39;: None,</span>
+<span class="go">&#39;mobile&#39;: &#39;&#39;,</span>
+<span class="go">&#39;name&#39;: u&#39;my_company&#39;,</span>
+<span class="go">&#39;payable&#39;: Decimal(&#39;0.0&#39;),</span>
+<span class="go">&#39;payable_today&#39;: Decimal(&#39;0.0&#39;),</span>
+<span class="go">&#39;phone&#39;: &#39;&#39;,</span>
+<span class="go">&#39;rec_name&#39;: u&#39;my_company&#39;,</span>
+<span class="go">&#39;receivable&#39;: Decimal(&#39;0.0&#39;),</span>
+<span class="go">&#39;receivable_today&#39;: Decimal(&#39;0.0&#39;),</span>
+<span class="go">&#39;supplier_location&#39;: 5,</span>
+<span class="go">&#39;supplier_tax_rule&#39;: None,</span>
+<span class="go">&#39;vat_code&#39;: &#39;&#39;,</span>
+<span class="go">&#39;vat_country&#39;: None,</span>
+<span class="go">&#39;vat_number&#39;: None,</span>
+<span class="go">&#39;website&#39;: &#39;&#39;,</span>
+<span class="go">&#39;write_date&#39;: None,</span>
+<span class="go">&#39;write_uid&#39;: None}</span>
+</pre></div>
+</div>
+<p>We can see the name atribute has been updated so does the fields have also increased.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd>
+<dt>Step 3:Setting the language of the party</dt>
+<dd><p class="first">The language on party is a Many2One relation field. So it requires to get a Model instance as value.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Lang</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.lang&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">en</span><span class="p">,)</span> <span class="o">=</span> <span class="n">Lang</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;en_US&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="n">en</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">code</span>
+<span class="go">u&#39;en_US&#39;</span>
+</pre></div>
+</div>
+</dd>
+<dt>Step 4:Adding an Address</dt>
+<dd><p class="first">Addresses are store on party with a One2Many field. So the new address just needs to be appended to the list addresses.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Address</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.address&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">addresses</span> 
+<span class="go">[proteus.Model.get(&#39;party.address&#39;)(...)]</span>
+</pre></div>
+</div>
+</dd>
+<dt>Step 5:Adding a category</dt>
+<dd><p class="first">Categories are linked to party with a Many2Many field.</p>
+<p>So first create a category</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Category</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.category&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">category</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;spam&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">category</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Append it to categories of the party</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">categories</span> 
+<span class="go">[proteus.Model.get(&#39;party.category&#39;)(...)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/proteus_documentation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

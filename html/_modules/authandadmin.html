@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>authandadmin &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for authandadmin</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Authorization and Admin panel ui &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">authAndAdminGUI.admin</span> <span class="kn">import</span> <span class="n">Ui_Dialog</span> <span class="k">as</span> <span class="n">AdminPop</span>
+<span class="kn">from</span> <span class="nn">authAndAdminGUI.login</span> <span class="kn">import</span> <span class="n">Ui_Dialog</span> <span class="k">as</span> <span class="n">LoginPop</span>
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QMessageBox</span>
+<span class="kn">from</span> <span class="nn">PySide.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">authandadmin_tryton</span> <span class="kn">import</span> <span class="n">AccessUser</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+
+<div class="viewcode-block" id="Login"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Login">[docs]</a><span class="k">class</span> <span class="nc">Login</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Login</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">LoginPop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_reset_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clear_linedit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_login_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">authenticate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">access</span> <span class="o">=</span> <span class="n">AccessUser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_admin</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="Login.clear_linedit"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Login.clear_linedit">[docs]</a>    <span class="k">def</span> <span class="nf">clear_linedit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:clears the field from the line edit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_password_linedit</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_usename_linedit</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Login.authenticate"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Login.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: closes the dialog if the user is authenticated else the error is shown</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_usename_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_password_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">validate_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">userid</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">userid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_admin</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">loginpopup_error_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;Wrong Password&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;get_details&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Admin"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin">[docs]</a><span class="k">class</span> <span class="nc">Admin</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Admin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">AdminPop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_close_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ask_and_close</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_dev_checkbox</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_level</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authenticate</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Admin.authenticate"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">Login</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">user_admin</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_details</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">user_admin</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Admin.change_level"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin.change_level">[docs]</a>    <span class="k">def</span> <span class="nf">change_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set_settings</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="Admin.ask_and_close"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin.ask_and_close">[docs]</a>    <span class="k">def</span> <span class="nf">ask_and_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:closes with a prompt</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ask</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Confirm&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;This will close the Admin Panel and any unsaved details will be lost&#39;</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ask</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Admin.save"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:saves the details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_hotelname_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">street</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_street_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_city_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_pin_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_longitude_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_latitude_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">apikey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_apikey_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_tax_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">profileid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_profileid_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_password_linedit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;xxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="n">searching</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">searching</span><span class="p">:</span>
+            <span class="n">ask</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Confirm&#39;</span><span class="p">,</span>
+                                       <span class="s">&#39;The password has been changed, do you want to save the new password?&#39;</span><span class="p">,</span>
+                                       <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ask</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">password</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;street&#39;</span><span class="p">:</span> <span class="n">street</span><span class="p">,</span> <span class="s">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span> <span class="s">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span> <span class="s">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
+                   <span class="s">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span> <span class="s">&#39;apikey&#39;</span><span class="p">:</span> <span class="n">apikey</span><span class="p">,</span> <span class="s">&#39;tax&#39;</span><span class="p">:</span> <span class="n">tax</span><span class="p">,</span>
+                   <span class="s">&#39;profileid&#39;</span><span class="p">:</span> <span class="n">profileid</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">}</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Struct&#39;</span><span class="p">,</span> <span class="n">details</span><span class="o">.</span><span class="n">keys</span><span class="p">())(</span><span class="o">*</span><span class="n">details</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">save_details</span><span class="p">(</span>
+            <span class="n">details</span><span class="p">)</span>  <span class="c">###also check if the password is changed and prompt a message box</span>
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Success!!!&quot;</span><span class="p">,</span> <span class="s">&quot;The details have been saved&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Admin.load_details"><a class="viewcode-back" href="../authandadmin.html#authandadmin.Admin.load_details">[docs]</a>    <span class="k">def</span> <span class="nf">load_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:load the fields</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_hotelname_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_street_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">street</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_city_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_pin_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_longitude_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_latitude_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_apikey_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">apikey</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_tax_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">tax</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_profileid_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">profileid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_password_linedit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">adminpopup_dev_checkbox</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

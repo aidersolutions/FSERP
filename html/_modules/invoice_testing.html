@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>invoice_testing &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for invoice_testing</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">FSERP</span>
+<span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">Wizard</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="create_account"><a class="viewcode-back" href="../invoice_testing.html#invoice_testing.create_account">[docs]</a><span class="k">def</span> <span class="nf">create_account</span><span class="p">(</span><span class="n">company</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">Account</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.account&#39;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">account</span>
+
+</div>
+<div class="viewcode-block" id="creat_types"><a class="viewcode-back" href="../invoice_testing.html#invoice_testing.creat_types">[docs]</a><span class="k">def</span> <span class="nf">creat_types</span><span class="p">(</span><span class="n">company</span><span class="p">):</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.account.type&#39;</span><span class="p">)</span>
+
+    <span class="n">typ</span> <span class="o">=</span> <span class="n">types</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">)</span>
+    <span class="n">typ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Income Statement&#39;</span>
+    <span class="n">typ</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">typ</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">(</span><span class="s">&#39;testdb&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;admin&#39;</span><span class="p">,</span>
+                       <span class="n">config_file</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;FSERP&#39;</span><span class="p">,</span> <span class="s">&#39;trytond&#39;</span><span class="p">,</span> <span class="s">&#39;etc&#39;</span><span class="p">,</span> <span class="s">&#39;trytond.conf&#39;</span><span class="p">))</span>
+    <span class="n">Currency</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;currency.currency&#39;</span><span class="p">)</span>
+    <span class="n">currencies</span> <span class="o">=</span> <span class="n">Currency</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;INR&#39;</span><span class="p">)])</span>
+    <span class="n">currency</span><span class="p">,</span> <span class="o">=</span> <span class="n">currencies</span>
+
+    <span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+    <span class="n">party</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">company_config</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;company.company.config&#39;</span><span class="p">)</span>
+    <span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+    <span class="n">Group</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.group&#39;</span><span class="p">)</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">con</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="n">company_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;company&#39;</span><span class="p">)</span>
+    <span class="n">company</span> <span class="o">=</span> <span class="n">company_config</span><span class="o">.</span><span class="n">form</span>
+    <span class="n">company</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">party</span>
+    <span class="n">company</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="n">currency</span>
+    <span class="n">company_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;add&#39;</span><span class="p">)</span>
+
+    <span class="n">con</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">con</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">con</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">company</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">main_company</span>
+
+    <span class="n">Tax</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.tax&#39;</span><span class="p">)</span>
+    <span class="n">tax</span> <span class="o">=</span> <span class="n">Tax</span><span class="p">()</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Tax 11.5%&#39;</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">tax</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;percentage&#39;</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.115&#39;</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">company</span> <span class="o">=</span> <span class="n">company</span>
+
+    <span class="n">account</span> <span class="o">=</span> <span class="n">create_account</span><span class="p">(</span><span class="n">company</span><span class="p">,</span> <span class="s">&#39;expense&#39;</span><span class="p">,</span> <span class="s">&#39;Main Tax&#39;</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">creat_types</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">reconcile</span><span class="o">=</span><span class="bp">True</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">Account</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.account&#39;</span><span class="p">)</span>
+    <span class="n">accounts</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+        <span class="p">(</span><span class="s">&#39;kind&#39;</span><span class="p">,</span> <span class="s">&#39;in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">,</span> <span class="s">&#39;payable&#39;</span><span class="p">,</span> <span class="s">&#39;revenue&#39;</span><span class="p">,</span> <span class="s">&#39;expense&#39;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s">&#39;company&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">company</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">])</span>
+
+    <span class="n">accounts</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">}</span>
+
+    <span class="n">taxlist</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+        <span class="p">(</span><span class="s">&#39;kind&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;expense&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;company&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">company</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Main Tax&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+
+    <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;tax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxlist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">tax</span><span class="o">.</span><span class="n">credit_note_account</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;tax&#39;</span><span class="p">]</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">invoice_account</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;tax&#39;</span><span class="p">]</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">ProductUom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+    <span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+
+    <span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+    <span class="n">Product</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+
+    <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Wada&#39;</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;service&#39;</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;40&#39;</span><span class="p">)</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;25&#39;</span><span class="p">)</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">customer_taxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tax</span><span class="p">)</span>
+    <span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+    <span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">PaymentTerm</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice.payment_term&#39;</span><span class="p">)</span>
+    <span class="n">payment_term</span> <span class="o">=</span> <span class="n">PaymentTerm</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Full&#39;</span><span class="p">)])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c"># line = payment_term.lines.new(type=&#39;percent&#39;, percentage=Decimal(50))</span>
+    <span class="c"># line.days = 20</span>
+    <span class="c"># line = payment_term.lines.new(type=&#39;remainder&#39;)</span>
+    <span class="c"># line.days = 40</span>
+    <span class="c">#</span>
+    <span class="c"># payment_term.save()</span>
+
+    <span class="n">Invoice</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice&#39;</span><span class="p">)</span>
+    <span class="n">invoice</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">()</span>
+    <span class="n">invoice</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">party</span>
+    <span class="n">invoice</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">invoice</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="n">account</span> <span class="o">=</span> <span class="n">create_account</span><span class="p">(</span><span class="n">company</span><span class="p">,</span> <span class="s">&#39;revenue&#39;</span><span class="p">,</span> <span class="s">&#39;Main Income&#39;</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">creat_types</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">reconcile</span><span class="o">=</span><span class="bp">True</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="c"># pdb.set_trace()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>  <span class="c"># &lt;&lt;----line of error</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="c"># line.save()</span>
+    <span class="c"># invoice.lines.append(line)</span>
+
+
+    <span class="n">line</span> <span class="o">=</span> <span class="n">invoice</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>  <span class="c"># &lt;&lt;----line of error</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="c"># line.save()</span>
+    <span class="c"># invoice.lines.append(line)</span>
+
+    <span class="n">account</span> <span class="o">=</span> <span class="n">create_account</span><span class="p">(</span><span class="n">company</span><span class="p">,</span> <span class="s">&#39;receivable&#39;</span><span class="p">,</span> <span class="s">&#39;Main Income&#39;</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">creat_types</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">reconcile</span><span class="o">=</span><span class="bp">True</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">invoice</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+    <span class="n">invoice</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="n">invoice</span><span class="o">.</span><span class="n">amount_to_pay</span>
+    <span class="k">print</span> <span class="n">invoice</span><span class="o">.</span><span class="n">total_amount</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

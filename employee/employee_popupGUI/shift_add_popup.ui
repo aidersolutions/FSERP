@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>shift_popup</class>
+ <widget class="QDialog" name="shift_popup">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>333</width>
+    <height>376</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Shift</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="3">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Slot</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" colspan="2">
+      <widget class="QLineEdit" name="shift_name_linedit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>In Time</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Out Time</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="shift_mon_checkbox">
+       <property name="text">
+        <string>Monday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QCheckBox" name="shift_fri_checkbox">
+       <property name="text">
+        <string>Friday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QCheckBox" name="shift_tue_checkbox">
+       <property name="text">
+        <string>Tuesday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QCheckBox" name="shift_sat_checkbox">
+       <property name="text">
+        <string>Saturday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QCheckBox" name="shift_wed_checkbox">
+       <property name="text">
+        <string>Wednesday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QCheckBox" name="shift_sun_checkbox">
+       <property name="text">
+        <string>Sunday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="2">
+      <widget class="QCheckBox" name="shift_thu_checkbox">
+       <property name="text">
+        <string>Thursday</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QTimeEdit" name="shift_intime_timeedit">
+       <property name="displayFormat">
+        <string>hh:mm AP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" colspan="2">
+      <widget class="QTimeEdit" name="shift_outtime_timeedit">
+       <property name="displayFormat">
+        <string>hh:mm AP</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="shift_delete_button">
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>130</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="shift_save_button">
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <zorder>shift_save_button</zorder>
+  <zorder>shift_delete_button</zorder>
+  <zorder>horizontalSpacer</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>shift_name_linedit</tabstop>
+  <tabstop>shift_intime_timeedit</tabstop>
+  <tabstop>shift_outtime_timeedit</tabstop>
+  <tabstop>shift_mon_checkbox</tabstop>
+  <tabstop>shift_tue_checkbox</tabstop>
+  <tabstop>shift_wed_checkbox</tabstop>
+  <tabstop>shift_thu_checkbox</tabstop>
+  <tabstop>shift_fri_checkbox</tabstop>
+  <tabstop>shift_sat_checkbox</tabstop>
+  <tabstop>shift_sun_checkbox</tabstop>
+  <tabstop>shift_save_button</tabstop>
+  <tabstop>shift_delete_button</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

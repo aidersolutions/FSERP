@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Production Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="production-module">
+<h1>Production Module<a class="headerlink" href="#production-module" title="Permalink to this headline">¶</a></h1>
+<p>The production module defines basics for production management: Bill of
+material and production order.</p>
+<div class="section" id="bill-of-material">
+<h2>Bill of Material<a class="headerlink" href="#bill-of-material" title="Permalink to this headline">¶</a></h2>
+<p>Bills of Material are list of products and quantities needed to produce a
+product. It is often shorten with BOM.</p>
+</div>
+<div class="section" id="production">
+<h2>Production<a class="headerlink" href="#production" title="Permalink to this headline">¶</a></h2>
+<p>A Production is mainly defined by a product, a BOM, a location, a quantity and
+two lists of moves:</p>
+<ul>
+<li><p class="first">Inputs</p>
+<p>The moves between the storage location and the production location (as
+defined on the warehouse) for products used for production.</p>
+</li>
+<li><p class="first">Outputs</p>
+<p>The moves between the production location and the storage location for
+products produced.</p>
+</li>
+</ul>
+<p>The production can be in one of this states:</p>
+<ul>
+<li><p class="first">Request</p>
+<p>The production is requested by the system.</p>
+</li>
+<li><p class="first">Draft</p>
+<p>Input and output moves are in draft.</p>
+</li>
+<li><p class="first">Waiting</p>
+<p>The production is waiting for action and all moves are still in draft.</p>
+</li>
+<li><p class="first">Assigned</p>
+<p>The input moves are assigned.</p>
+</li>
+<li><p class="first">Running</p>
+<p>The input moves are in state done.</p>
+</li>
+<li><p class="first">Done</p>
+<p>The output moves are in state done.</p>
+</li>
+<li><p class="first">Cancel</p>
+<p>All moves are cancelled.</p>
+</li>
+</ul>
+<p>The cost of the production is computed with the sum of the cost price of all
+incoming products. If a product is selected, it will have the cost as unit
+price. The production verify that all the cost is spread on the unit price of
+output moves.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Production Module</a><ul>
+<li><a class="reference internal" href="#bill-of-material">Bill of Material</a></li>
+<li><a class="reference internal" href="#production">Production</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/production/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

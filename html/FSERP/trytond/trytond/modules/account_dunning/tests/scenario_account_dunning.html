@@ -1,0 +1,372 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Dunning Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-dunning-scenario">
+<h1>Account Dunning Scenario<a class="headerlink" href="#account-dunning-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account.tests.tools</span> <span class="kn">import</span> <span class="n">create_fiscalyear</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">create_chart</span><span class="p">,</span> <span class="n">get_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install account_dunning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="p">,</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;account_dunning&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Group</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.group&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create account admin user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Account Admin&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;account_admin&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Account Administration&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">account_admin_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_admin_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create account user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">account_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Account&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;account&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Account&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">account_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create dunning user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Dunning&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_user</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="s">&#39;dunning&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_group</span><span class="p">,</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Dunning&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dunning_group</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create fiscal year:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span> <span class="o">=</span> <span class="n">create_fiscalyear</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;create_period&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">period</span> <span class="o">=</span> <span class="n">fiscalyear</span><span class="o">.</span><span class="n">periods</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create chart of accounts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_chart</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">get_accounts</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;revenue&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cash</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create dunning procedure:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">account_admin_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Procedure</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.dunning.procedure&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">procedure</span> <span class="o">=</span> <span class="n">Procedure</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Procedure&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span> <span class="o">=</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">days</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span> <span class="o">=</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">days</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span> <span class="o">=</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level</span><span class="o">.</span><span class="n">days</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">procedure</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create parties:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Customer&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">dunning_procedure</span> <span class="o">=</span> <span class="n">procedure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create some moves:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">account_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Journal</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.journal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Move</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.move&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">journal_revenue</span><span class="p">,</span> <span class="o">=</span> <span class="n">Journal</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;REV&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">journal_cash</span><span class="p">,</span> <span class="o">=</span> <span class="n">Journal</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;CASH&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">credit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">debit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">maturity_date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile1</span><span class="p">,</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_cash</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">cash</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">debit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">credit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile2</span><span class="p">,</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_lines</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.move.reconcile_lines&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">reconcile1</span><span class="p">,</span> <span class="n">reconcile2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">credit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">debit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">maturity_date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning_line</span><span class="p">,</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create dunnings on 4 days:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">dunning_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Dunning</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.dunning&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>Create dunnings on 5 days:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="p">,</span> <span class="o">=</span> <span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">procedure</span> <span class="o">==</span> <span class="n">procedure</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;draft&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">line</span> <span class="o">==</span> <span class="n">dunning_line</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Create dunnings on 30 days with draft dunning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="p">,</span> <span class="o">=</span> <span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">procedure</span> <span class="o">==</span> <span class="n">procedure</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;draft&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">line</span> <span class="o">==</span> <span class="n">dunning_line</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Process dunning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">process_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.process&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">dunning</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+</pre></div>
+</div>
+<p>Create dunnings on 30 days with blocked dunning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">blocked</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="p">,</span> <span class="o">=</span> <span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">procedure</span> <span class="o">==</span> <span class="n">procedure</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">line</span> <span class="o">==</span> <span class="n">dunning_line</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">dunning</span><span class="o">.</span><span class="n">blocked</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">blocked</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create dunnings on 30 days:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="p">,</span> <span class="o">=</span> <span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">procedure</span> <span class="o">==</span> <span class="n">procedure</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">procedure</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;draft&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dunning</span><span class="o">.</span><span class="n">line</span> <span class="o">==</span> <span class="n">dunning_line</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Pay dunning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">account_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MoveLine</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.move.line&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="n">journal_cash</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">cash</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">debit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">receivable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">credit</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile2</span><span class="p">,</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">move</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">receivable</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_lines</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.move.reconcile_lines&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">MoveLine</span><span class="p">(</span><span class="n">dunning</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">reconcile2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>Create dunnings on 50 days:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">dunning_user</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.dunning.create&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">period</span><span class="o">.</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_dunning</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Dunning</span><span class="o">.</span><span class="n">find</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_dunning/tests/scenario_account_dunning.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

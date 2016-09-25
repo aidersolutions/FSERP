@@ -1,0 +1,463 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>process_purchaselist &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for process_purchaselist</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Purchase Process backend only calculation not updating the db&quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">trytond.pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">trytond.cache</span> <span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="s">&#39;testdb&#39;</span>
+
+
+<div class="viewcode-block" id="CalculateDayIngredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients">[docs]</a><span class="k">class</span> <span class="nc">CalculateDayIngredients</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mechanism to calculate the ingredients of the day</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Weekly</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;weeklymenu.weeklymenu&#39;</span><span class="p">)</span>
+        <span class="n">Ingredient</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.ingredientsofdish&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside CalculateDayIngredients&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<div class="viewcode-block" id="CalculateDayIngredients.calculate_requirement"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.calculate_requirement">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_requirement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_date</span><span class="p">,</span>
+                              <span class="n">to_date</span><span class="p">):</span>  <span class="c"># the only method used by us, original name of function &#39;difference_with_stock&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        finds the difference between the current stock with the future requirement after considering the present need</span>
+<span class="sd">        and return a dataobj purchase schedule preparation</span>
+<span class="sd">        :param from_date:the start date</span>
+<span class="sd">        :param to_date: the end date</span>
+<span class="sd">        :return:list of dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">from_date</span> <span class="o">=</span> <span class="n">from_date</span>
+            <span class="n">to_date</span> <span class="o">=</span> <span class="n">to_date</span>
+            <span class="n">today</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">future_required_ingredients</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ingredients</span><span class="p">(</span><span class="n">from_date</span><span class="o">=</span><span class="n">from_date</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="n">to_date</span><span class="p">)</span>
+            <span class="n">intermediate_requirement_ingredients</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">today</span> <span class="o">!=</span> <span class="n">from_date</span><span class="p">):</span>
+                <span class="n">intermediate_requirement_ingredients</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ingredients</span><span class="p">(</span><span class="n">from_date</span><span class="o">=</span><span class="n">today</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="n">from_date</span><span class="p">)</span>
+            <span class="n">stock</span> <span class="o">=</span> <span class="n">ManageInventory</span><span class="p">()</span>
+            <span class="n">current_stock</span> <span class="o">=</span> <span class="n">stock</span><span class="o">.</span><span class="n">get_stock</span><span class="p">()</span>
+            <span class="n">newdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_remove_ingredients</span><span class="p">(</span><span class="n">current_stock</span><span class="p">,</span> <span class="n">intermediate_requirement_ingredients</span><span class="p">)</span>
+            <span class="n">differnecedata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_remove_ingredients</span><span class="p">(</span><span class="n">future_required_ingredients</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+            <span class="c"># explaination</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            new_stock=stock(source)-intermediate_requirement(target)</span>
+<span class="sd">            requirement=future_requirement(source)-new_stock(target)</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">differnecedata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.compare_remove_ingredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.compare_remove_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">compare_remove_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        compares two data objects source and target, if there exists any objects from source in target, subtract it</span>
+<span class="sd">        from the target or remove it if needed</span>
+<span class="sd">        :param source:lower_data_set</span>
+<span class="sd">        :param target: larger_data_set</span>
+<span class="sd">        :return:difference data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="c"># print &#39;\nsource&#39;, source</span>
+            <span class="c"># print &#39;\ntarget&#39;, target</span>
+            <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                        <span class="n">source_uom</span><span class="p">,</span> <span class="n">source_quantity</span> <span class="o">=</span> <span class="n">j</span>
+                        <span class="n">target_uom</span><span class="p">,</span> <span class="n">target_quantity</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_quantity</span><span class="p">(</span><span class="n">from_uom</span><span class="o">=</span><span class="n">source_uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="o">=</span><span class="n">source_quantity</span><span class="p">,</span>
+                                                                <span class="n">to_uom</span><span class="o">=</span><span class="n">target_uom</span><span class="p">,</span>
+                                                                <span class="n">to_quantity</span><span class="o">=</span><span class="n">target_quantity</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">newquantity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">source</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">source</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">newuom</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                <span class="c"># print &#39;\ntarget returned&#39;, source</span>
+                <span class="k">return</span> <span class="n">source</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">source</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.add_quantity"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.add_quantity">[docs]</a>    <span class="k">def</span> <span class="nf">add_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="p">,</span> <span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts all the quantity to the higher order eg: gm to kg and adds them. The from and to doesnt matter but</span>
+<span class="sd">        their pair with quantities do matter</span>
+<span class="sd">        :param from_uom: uom1</span>
+<span class="sd">        :param to_uom: uom2</span>
+<span class="sd">        :param from_quantity: quantity1</span>
+<span class="sd">        :param to_quantity: quantity2</span>
+<span class="sd">        :return: higher_uom,sum_of_quantity_in_higher_uom</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_uom_to_higher</span><span class="p">(</span><span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span><span class="p">)</span>
+            <span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_uom_to_higher</span><span class="p">(</span><span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="p">)</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">from_quantity</span> <span class="o">+</span> <span class="n">to_quantity</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.111&#39;</span><span class="p">))</span>
+            <span class="c"># print &#39;the quantity&#39;, quantity</span>
+            <span class="k">return</span> <span class="n">to_uom</span><span class="p">,</span> <span class="n">quantity</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.sub_quantity"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.sub_quantity">[docs]</a>    <span class="k">def</span> <span class="nf">sub_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="p">,</span> <span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts all the quantity to the higher order eg: gm to kg and subtracts them. The from and to doesnt matter but</span>
+<span class="sd">        their pair with quantities do matter</span>
+<span class="sd">        :param from_uom: uom1</span>
+<span class="sd">        :param to_uom: uom2</span>
+<span class="sd">        :param from_quantity: quantity1</span>
+<span class="sd">        :param to_quantity: quantity2</span>
+<span class="sd">        :return: higher_uom,difference_of_quantity_in_higher_uom</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_uom_to_higher</span><span class="p">(</span><span class="n">to_uom</span><span class="p">,</span> <span class="n">to_quantity</span><span class="p">)</span>
+            <span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_uom_to_higher</span><span class="p">(</span><span class="n">from_uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="p">)</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">from_quantity</span> <span class="o">-</span> <span class="n">to_quantity</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.111&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">to_uom</span><span class="p">,</span> <span class="n">quantity</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.convert_uom_to_higher"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.convert_uom_to_higher">[docs]</a>    <span class="k">def</span> <span class="nf">convert_uom_to_higher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uom</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts the uom to higher uom and its quantity to higher uom equivalent</span>
+<span class="sd">        :param uom:unit of measurement</span>
+<span class="sd">        :param quantity:the quantity</span>
+<span class="sd">        :return:the higher uom and equivalent quantity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lower_uom</span> <span class="o">=</span> <span class="n">uom</span>
+            <span class="n">lower_quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">lower_uom</span><span class="o">.</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">lower_quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">lower_quantity</span><span class="p">)</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">lower_quantity</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">uom</span><span class="p">,</span> <span class="o">=</span> <span class="n">lower_uom</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;category&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">lower_uom</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;factor&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.111&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">uom</span><span class="p">,</span> <span class="n">quantity</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.get_ingredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.get_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">get_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_date</span><span class="p">,</span> <span class="n">to_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the required ingredients from a date to a date</span>
+<span class="sd">        :param from_date: start date</span>
+<span class="sd">        :param to_date: end date</span>
+<span class="sd">        :return: dict of ingredients</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">previousdata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">from_date</span><span class="p">,</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">to_date</span><span class="p">,</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span>
+                                                                          <span class="n">minutes</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">59</span><span class="p">)</span>
+            <span class="n">daterange</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">-</span> <span class="n">start_date</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">daterange</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>  <span class="c"># loops through each day in the date range and finds the ingredients</span>
+                <span class="n">day</span> <span class="o">=</span> <span class="p">(</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%A&quot;</span><span class="p">)</span>
+                <span class="n">newdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_ingredients</span><span class="p">(</span><span class="n">day</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                <span class="n">previousdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_ingredients</span><span class="p">(</span><span class="n">previousdata</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">previousdata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.update_ingredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.update_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">update_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets the ingredients required for a day=[monday,tuesday..etc]</span>
+<span class="sd">        :param day: day in a week</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># to store data in the format of {product_name:(UOM,Quantity)}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
+            <span class="n">weekdishes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Weekly</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weekdishes</span><span class="p">):</span>
+                <span class="n">product</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">dish</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">default_quantity</span>  <span class="c"># dishes quantity</span>
+                <span class="n">ingredientslist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ingredient</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;dish&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ingredientslist</span><span class="p">:</span>
+                    <span class="n">namekey</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">ingredient</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># in the begining start appending the value</span>
+                        <span class="n">new_uom</span><span class="p">,</span> <span class="n">new_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_uom_to_higher</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">quantity_uom</span><span class="p">,</span>
+                                                                           <span class="n">j</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+                        <span class="n">data</span><span class="p">[</span><span class="n">namekey</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_uom</span><span class="p">,</span> <span class="n">new_quantity</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c"># later update if the value exists else append</span>
+                        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">namekey</span><span class="p">):</span>  <span class="c"># update</span>
+                            <span class="n">quantity_unit</span><span class="p">,</span> <span class="n">ingredient_quantity</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">namekey</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">quantity_uom</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">quantity_unit</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                                <span class="n">uom</span><span class="p">,</span> <span class="n">ingredient_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_quantity</span><span class="p">(</span><span class="n">from_uom</span><span class="o">=</span><span class="n">j</span><span class="o">.</span><span class="n">quantity_uom</span><span class="p">,</span>
+                                                                             <span class="n">from_quantity</span><span class="o">=</span><span class="n">j</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span>
+                                                                             <span class="n">to_uom</span><span class="o">=</span><span class="n">quantity_unit</span><span class="p">,</span>
+                                                                             <span class="n">to_quantity</span><span class="o">=</span><span class="n">ingredient_quantity</span><span class="p">)</span>
+                                <span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">ingredient_quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.111&#39;</span><span class="p">))</span>
+                                <span class="n">data</span><span class="p">[</span><span class="n">namekey</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uom</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>  <span class="c"># append</span>
+                            <span class="n">quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.111&#39;</span><span class="p">))</span>
+                            <span class="n">data</span><span class="p">[</span><span class="n">namekey</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">quantity_uom</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalculateDayIngredients.aggregate_ingredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.CalculateDayIngredients.aggregate_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">aggregate_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousdata</span><span class="p">,</span> <span class="n">newdata</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregates the data from two data sets</span>
+<span class="sd">        :param previousdata: previously aggregated data</span>
+<span class="sd">        :param newdata: new data from a day</span>
+<span class="sd">        :return:new aggregated data object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">previousdata</span> <span class="o">=</span> <span class="n">previousdata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">dataobj</span> <span class="o">=</span> <span class="n">previousdata</span>
+            <span class="c"># print &quot;previous data&quot;, previousdata, &quot;\n&quot;</span>
+            <span class="c"># print &quot;next data&quot;, newdata, &quot;\n&quot;</span>
+            <span class="k">if</span> <span class="n">previousdata</span> <span class="o">!=</span> <span class="p">{}:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">newdata</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">previousdata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                        <span class="c"># print i, j</span>
+                        <span class="n">quantity_unit</span><span class="p">,</span> <span class="n">ingredient_quantity</span> <span class="o">=</span> <span class="n">previousdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">quantity_unit</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                            <span class="n">uom</span><span class="p">,</span> <span class="n">ingredient_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_quantity</span><span class="p">(</span><span class="n">from_uom</span><span class="o">=</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">from_quantity</span><span class="o">=</span><span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                                         <span class="n">to_uom</span><span class="o">=</span><span class="n">quantity_unit</span><span class="p">,</span>
+                                                                         <span class="n">to_quantity</span><span class="o">=</span><span class="n">ingredient_quantity</span><span class="p">)</span>
+                            <span class="n">dataobj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uom</span><span class="p">,</span> <span class="n">ingredient_quantity</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c"># append</span>
+                        <span class="n">dataobj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">dataobj</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">newdata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ManageInventory"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.ManageInventory">[docs]</a><span class="k">class</span> <span class="nc">ManageInventory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the Inventory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">logger</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+
+        <span class="c"># Clean the global cache for multi-instance</span>
+        <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">DBNAME</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">Location</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.location&#39;</span><span class="p">)</span>
+        <span class="n">Product</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+        <span class="n">Inventory</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.inventory&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside ManageInventory&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Location</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;MyInventory&#39;</span><span class="p">)])</span>
+
+
+<div class="viewcode-block" id="ManageInventory.get_stock"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.ManageInventory.get_stock">[docs]</a>    <span class="k">def</span> <span class="nf">get_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fetches the stock from MyInventory</span>
+<span class="sd">        :return: stocks in my inventory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">stockdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_stock</span><span class="p">()</span>
+            <span class="n">newdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_stock</span><span class="p">(</span><span class="n">stockdata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">newdata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ManageInventory.convert_stock"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.ManageInventory.convert_stock">[docs]</a>    <span class="k">def</span> <span class="nf">convert_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert the data</span>
+<span class="sd">        :param data: {(inventory_location_id,ingredient_id):ingredient_quantity}</span>
+<span class="sd">        :return:{ingredient_name:(ingredient_uom,ingredient_quantity)}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newdata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">processing</span> <span class="o">=</span> <span class="n">CalculateDayIngredients</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Product</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">uom</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span>
+                <span class="n">quantity</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">if</span> <span class="n">newdata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                    <span class="n">olduom</span><span class="p">,</span> <span class="n">oldquantity</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span> <span class="o">=</span> <span class="n">processing</span><span class="o">.</span><span class="n">add_quantity</span><span class="p">(</span><span class="n">from_uom</span><span class="o">=</span><span class="n">uom</span><span class="p">,</span> <span class="n">from_quantity</span><span class="o">=</span><span class="n">quantity</span><span class="p">,</span> <span class="n">to_uom</span><span class="o">=</span><span class="n">olduom</span><span class="p">,</span>
+                                                                  <span class="n">to_quantity</span><span class="o">=</span><span class="n">oldquantity</span><span class="p">)</span>
+                    <span class="n">newdata</span><span class="p">[</span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">newdata</span><span class="p">[</span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uom</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">newdata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ManageInventory.calculate_ingredients"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.ManageInventory.calculate_ingredients">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ingredients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>  <span class="c"># todo deprecate after test, not needed</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        aggregates the data such that no multiple entries exists and they have summed up</span>
+<span class="sd">        :param data: {(inventory_location_id,ingredient_id):ingredient_quantity}</span>
+<span class="sd">        :return: wihtout repeated keys {(inventory_location_id,ingredient_id):ingredient_quantity}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newdata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">processing</span> <span class="o">=</span> <span class="n">CalculateDayIngredients</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># 1st iteration</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span><span class="p">:</span>
+                    <span class="n">newdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># 1st iteration no more</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">newdata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                        <span class="n">uom</span><span class="p">,</span> <span class="n">quantity</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span> <span class="o">=</span> <span class="n">processing</span><span class="o">.</span><span class="n">add_quantity</span><span class="p">(</span><span class="n">from_uom</span><span class="o">=</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">from_quantity</span><span class="o">=</span><span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">to_uom</span><span class="o">=</span><span class="n">uom</span><span class="p">,</span>
+                                                                      <span class="n">to_quantity</span><span class="o">=</span><span class="n">quantity</span><span class="p">)</span>
+                        <span class="n">newdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">newuom</span><span class="p">,</span> <span class="n">newquantity</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">newdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">newdata</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ManageInventory.load_stock"><a class="viewcode-back" href="../process_purchaselist.html#process_purchaselist.ManageInventory.load_stock">[docs]</a>    <span class="k">def</span> <span class="nf">load_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">stock_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Inventory</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s">&#39;state&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;done&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">stock_lines</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">stock_lines</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
+                        <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+                        <span class="n">expiry</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">expiry_date</span> <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">expiry_date</span> <span class="k">else</span> <span class="n">today</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">expiry</span> <span class="o">&gt;=</span> <span class="n">today</span><span class="p">:</span>
+                            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">j</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">quantity</span>
+                            <span class="n">dictionary</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">dictionary</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;raised exception&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

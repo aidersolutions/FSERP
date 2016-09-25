@@ -1,0 +1,19 @@
+         Aider Solutions          
+##################################
+Bill Paid                         
+Bill No:4                         
+            [01-Apr-2016] 07:06 AM
+==================================
+No Item          Qty  Rate   Total
+==================================
+1  Tomato Fry    1    35     35.00
+==================================
+          Net Total:         35.00
+Service Tax @11.49%:          4.02
+   Round Off Amount:          0.98
+        Grand Total:         40.00
+
+              Authorized Signatory
+
+         AIDER SOLUTIONS          
+ (C)http://www.aidersolutions.in/ 

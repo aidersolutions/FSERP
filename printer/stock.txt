@@ -1,0 +1,21 @@
+         Aider Solutions          
+             Plakkat              
+           680666 Kochi           
+##################################
+Stock                             
+            [09-Oct-2015] 11:15 AM
+==================================
+No Code Item Qty  BatchSupp   Exp
+==================================
+1  101  Sugar3.00 1510 Rame  17-1
+                  003  sh   0-20 
+2  101  Sugar3.00 1510 Rame  14-1
+                  002  sh   0-20 
+3  100  Tea  3.00 1510 Sure  13-1
+                  001  sh   0-20 
+==================================
+
+              Authorized Signatory
+
+         AIDER SOLUTIONS          
+ (C)http://www.aidersolutions.in/ 

@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration file for Tryton &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration-file-for-tryton">
+<span id="topics-configuration"></span><h1>Configuration file for Tryton<a class="headerlink" href="#configuration-file-for-tryton" title="Permalink to this headline">¶</a></h1>
+<p>The configuration file controls some aspects of the behavior of Tryton.
+The file uses a simple ini-file format. It consists of sections, led by a
+<cite>[section]</cite> header and followed by <cite>name = value</cite> entries:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[database]</span>
+<span class="na">uri</span> <span class="o">=</span> <span class="s">postgresql://user:password@localhost/</span>
+<span class="na">path</span> <span class="o">=</span> <span class="s">/var/lib/trytond</span>
+</pre></div>
+</div>
+<p>For more information see <a class="reference external" href="http://docs.python.org/2/library/configparser.html">ConfigParser</a>.</p>
+<div class="section" id="sections">
+<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the different main sections that may appear in a Tryton
+configuration file, the purpose of each section, its possible keys, and their
+possible values.
+Some modules could request the usage of other sections for which the guideline
+asks them to be named like their module.</p>
+<div class="section" id="jsonrpc">
+<h3>jsonrpc<a class="headerlink" href="#jsonrpc" title="Permalink to this headline">¶</a></h3>
+<p>Defines the behavior of the <a class="reference external" href="http://en.wikipedia.org/wiki/JSON-RPC">JSON-RPC</a> network interface.</p>
+<div class="section" id="listen">
+<h4>listen<a class="headerlink" href="#listen" title="Permalink to this headline">¶</a></h4>
+<p>Defines a comma separated list of couples of host (or IP address) and port
+number separated by a colon to listen on.</p>
+<p>Default <cite>localhost:8000</cite></p>
+</div>
+<div class="section" id="hostname">
+<h4>hostname<a class="headerlink" href="#hostname" title="Permalink to this headline">¶</a></h4>
+<p>Defines the hostname for this network interface.</p>
+</div>
+<div class="section" id="data">
+<h4>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h4>
+<p>Defines the root path to retrieve data for <cite>GET</cite> requests.</p>
+<p>Default: <cite>/var/www/localhost/tryton</cite></p>
+</div>
+</div>
+<div class="section" id="xmlrpc">
+<h3>xmlrpc<a class="headerlink" href="#xmlrpc" title="Permalink to this headline">¶</a></h3>
+<p>Defines the behavior of the <a class="reference external" href="http://en.wikipedia.org/wiki/XML-RPC">XML-RPC</a> network interface.</p>
+<div class="section" id="id1">
+<h4>listen<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Same as for <cite>jsonrpc</cite> except it has no default value.</p>
+</div>
+</div>
+<div class="section" id="webdav">
+<h3>webdav<a class="headerlink" href="#webdav" title="Permalink to this headline">¶</a></h3>
+<p>Define the behavior of the <a class="reference external" href="http://en.wikipedia.org/wiki/WebDAV">WebDAV</a> network interface.</p>
+<div class="section" id="id2">
+<h4>listen<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Same as for <cite>jsonrpc</cite> except it has no default value.</p>
+</div>
+</div>
+<div class="section" id="database">
+<h3>database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h3>
+<p>Defines how the database is managed.</p>
+<div class="section" id="uri">
+<h4>uri<a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h4>
+<p>Contains the URI to connect to the SQL database. The URI follows the <a class="reference external" href="http://tools.ietf.org/html/rfc3986">RFC-3986</a>.
+The typical form is:</p>
+<blockquote>
+<div>database://username:password&#64;host:port/</div></blockquote>
+<p>Default: <cite>sqlite://</cite></p>
+<p>The available databases are:</p>
+<div class="section" id="postgresql">
+<h5>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h5>
+<p><cite>pyscopg2</cite> supports two type of connections:</p>
+<blockquote>
+<div><ul class="simple">
+<li>TCP/IP connection: <cite>postgresql://user:password&#64;localhost:5432/</cite></li>
+<li>Unix domain connection: <cite>postgresql://username:password&#64;/</cite></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sqlite">
+<h5>SQLite<a class="headerlink" href="#sqlite" title="Permalink to this headline">¶</a></h5>
+<p>The only possible URI is: <cite>sqlite://</cite></p>
+</div>
+<div class="section" id="mysql">
+<h5>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h5>
+<p>Same as for PostgreSQL.</p>
+</div>
+</div>
+<div class="section" id="path">
+<h4>path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h4>
+<p>The directory where Tryton stores files and so the user running <cite>trytond</cite>
+must have write access on this directory.</p>
+<p>Default: <cite>/var/lib/trytond/</cite></p>
+</div>
+<div class="section" id="list">
+<h4>list<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h4>
+<p>A boolean value to list available databases.</p>
+<p>Default: <cite>True</cite></p>
+</div>
+<div class="section" id="retry">
+<h4>retry<a class="headerlink" href="#retry" title="Permalink to this headline">¶</a></h4>
+<p>The number of retries when a database operational error occurs during a request.</p>
+<p>Default: <cite>5</cite></p>
+</div>
+<div class="section" id="language">
+<h4>language<a class="headerlink" href="#language" title="Permalink to this headline">¶</a></h4>
+<p>The main language of the database that will be used for storage in the main
+table for translations.</p>
+<p>Default: <cite>en_US</cite></p>
+</div>
+</div>
+<div class="section" id="cache">
+<h3>cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h3>
+<p>Defines size of various cache.</p>
+<div class="section" id="model">
+<h4>model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h4>
+<p>The number of different model kept in the cache per transaction.</p>
+<p>Default: <cite>200</cite></p>
+</div>
+<div class="section" id="record">
+<h4>record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h4>
+<p>The number of record loaded kept in the cache of the list.
+It can be changed locally using the <cite>_record_cache_size</cite> key in
+<tt class="xref py py-attr docutils literal"><span class="pre">Transaction.context</span></tt>.</p>
+<p>Default: <cite>2000</cite></p>
+</div>
+<div class="section" id="field">
+<h4>field<a class="headerlink" href="#field" title="Permalink to this headline">¶</a></h4>
+<p>The number of field to load with an <cite>eager</cite> <tt class="xref py py-attr docutils literal"><span class="pre">Field.loading</span></tt>.</p>
+<p>Default: <cite>100</cite></p>
+</div>
+</div>
+<div class="section" id="ssl">
+<h3>ssl<a class="headerlink" href="#ssl" title="Permalink to this headline">¶</a></h3>
+<p>Activates <a class="reference external" href="http://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a> on all network protocols.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="http://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a> is activated by defining privatekey.
+Please refer to <a class="reference external" href="https://docs.python.org/library/ssl.html#ssl.wrap_socket">SSL-CERT</a> on how to use private keys and certficates.</p>
+</div>
+<div class="section" id="privatekey">
+<h4>privatekey<a class="headerlink" href="#privatekey" title="Permalink to this headline">¶</a></h4>
+<p>The path to the private key.</p>
+</div>
+<div class="section" id="certificate">
+<h4>certificate<a class="headerlink" href="#certificate" title="Permalink to this headline">¶</a></h4>
+<p>The path to the certificate.</p>
+</div>
+</div>
+<div class="section" id="email">
+<h3>email<a class="headerlink" href="#email" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>uri<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="http://tools.ietf.org/html/draft-earhart-url-smtp-00">SMTP-URL</a> to connect to the SMTP server which is extended to support <a class="reference external" href="http://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a>
+and <a class="reference external" href="http://en.wikipedia.org/wiki/STARTTLS">STARTTLS</a>.
+The available protocols are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>smtp</cite>: simple SMTP</li>
+<li><cite>smtp+tls</cite>: SMTP with STARTTLS</li>
+<li><cite>smtps</cite>: SMTP with SSL</li>
+</ul>
+</div></blockquote>
+<p>Default: <cite>smtp://localhost:25</cite></p>
+</div>
+<div class="section" id="from">
+<h4>from<a class="headerlink" href="#from" title="Permalink to this headline">¶</a></h4>
+<p>Defines the default <cite>From</cite> address for emails sent by Tryton.</p>
+</div>
+</div>
+<div class="section" id="session">
+<h3>session<a class="headerlink" href="#session" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="timeout">
+<h4>timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h4>
+<p>The time in seconds until a session expires.</p>
+<p>Default: <cite>600</cite></p>
+</div>
+<div class="section" id="super-pwd">
+<h4>super_pwd<a class="headerlink" href="#super-pwd" title="Permalink to this headline">¶</a></h4>
+<p>The server password used to authenticate from the client for database
+management tasks. It is encrypted using using the Unix <cite>crypt(3)</cite> routine.
+A password can be generated using this command line:</p>
+<div class="highlight-ini"><div class="highlight"><pre>python -c &#39;import getpass,crypt,random,string; print crypt.crypt(getpass.getpass(), &quot;&quot;.join(random.sample(string.ascii_letters + string.digits, 8)))&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="report">
+<h3>report<a class="headerlink" href="#report" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="unoconv">
+<h4>unoconv<a class="headerlink" href="#unoconv" title="Permalink to this headline">¶</a></h4>
+<p>The parameters for <cite>unoconv</cite>.</p>
+<p>Default: <cite>pipe,name=trytond;urp;StarOffice.ComponentContext</cite></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration file for Tryton</a><ul>
+<li><a class="reference internal" href="#sections">Sections</a><ul>
+<li><a class="reference internal" href="#jsonrpc">jsonrpc</a><ul>
+<li><a class="reference internal" href="#listen">listen</a></li>
+<li><a class="reference internal" href="#hostname">hostname</a></li>
+<li><a class="reference internal" href="#data">data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#xmlrpc">xmlrpc</a><ul>
+<li><a class="reference internal" href="#id1">listen</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#webdav">webdav</a><ul>
+<li><a class="reference internal" href="#id2">listen</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database">database</a><ul>
+<li><a class="reference internal" href="#uri">uri</a><ul>
+<li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
+<li><a class="reference internal" href="#sqlite">SQLite</a></li>
+<li><a class="reference internal" href="#mysql">MySQL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#path">path</a></li>
+<li><a class="reference internal" href="#list">list</a></li>
+<li><a class="reference internal" href="#retry">retry</a></li>
+<li><a class="reference internal" href="#language">language</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cache">cache</a><ul>
+<li><a class="reference internal" href="#model">model</a></li>
+<li><a class="reference internal" href="#record">record</a></li>
+<li><a class="reference internal" href="#field">field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ssl">ssl</a><ul>
+<li><a class="reference internal" href="#privatekey">privatekey</a></li>
+<li><a class="reference internal" href="#certificate">certificate</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#email">email</a><ul>
+<li><a class="reference internal" href="#id3">uri</a></li>
+<li><a class="reference internal" href="#from">from</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#session">session</a><ul>
+<li><a class="reference internal" href="#timeout">timeout</a></li>
+<li><a class="reference internal" href="#super-pwd">super_pwd</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#report">report</a><ul>
+<li><a class="reference internal" href="#unoconv">unoconv</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/topics/configuration.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

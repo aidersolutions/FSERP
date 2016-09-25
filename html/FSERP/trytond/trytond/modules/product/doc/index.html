@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Product Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="product-module">
+<h1>Product Module<a class="headerlink" href="#product-module" title="Permalink to this headline">¶</a></h1>
+<p>The Product module defines the following models: Category of Unit of
+Measure, Unit of Measure, Product Template, Product and Product
+Category.</p>
+<div class="section" id="category-of-unit-of-measure">
+<h2>Category of Unit of Measure<a class="headerlink" href="#category-of-unit-of-measure" title="Permalink to this headline">¶</a></h2>
+<p>A Category of Unit of Measure is simply defined by a name.</p>
+</div>
+<div class="section" id="unit-of-measure">
+<h2>Unit of Measure<a class="headerlink" href="#unit-of-measure" title="Permalink to this headline">¶</a></h2>
+<p>A Unit of Measure is defined by:</p>
+<ul class="simple">
+<li>Name.</li>
+<li>Symbol.</li>
+<li>UOM category.</li>
+<li>Rate and a Factor (the later is the inverse of the former).</li>
+<li>Rounding Precision and Display Digits, used to round and display
+quantities expressed in the given UOM.</li>
+<li>Active, allow to disable a UOM.</li>
+</ul>
+</div>
+<div class="section" id="product-category">
+<h2>Product category<a class="headerlink" href="#product-category" title="Permalink to this headline">¶</a></h2>
+<p>The Product Category Model is just composed of a name. Product
+Categories are organised in a tree structure.</p>
+</div>
+<div class="section" id="product-template-and-product">
+<h2>Product Template and Product<a class="headerlink" href="#product-template-and-product" title="Permalink to this headline">¶</a></h2>
+<p>The product concept in Tryton is composed of two models: Product
+Template and Product.</p>
+<p>The Product Template model contains the following fields:</p>
+<ul class="simple">
+<li>Name.</li>
+<li>Type, whose value can be <em>Goods</em>, <em>Assets</em>, <em>Service</em>.</li>
+<li>Category.</li>
+<li>List Price, the default sale price expressed in the List Price UOM.
+product.</li>
+<li>List Price UOM.</li>
+<li>Cost Price, the cost for one unit of this product expressed in the
+Cost Price UOM.</li>
+<li>Cost Price UOM.</li>
+<li>Cost Price Method, which can be <em>Fixed</em> or <em>Average</em>. Defines how
+the cost price should be updated. <em>Fixed</em> means that the cost price
+stay unchanged. <em>Average</em> means that the cost price is the average
+cost of all the items that are in stock.</li>
+<li>Default UOM. The default UOM for this product. Used for example to
+express stock levels.</li>
+<li>Active, allow to disable a product.</li>
+</ul>
+<p>The Product model extend the Product Template with two fields: Code
+and Description.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The product module uses the section <cite>product</cite> to retrieve some parameters:</p>
+<ul class="simple">
+<li><cite>price_decimal</cite>: defines the number of decimal with which the unit prices are
+stored. The default value is <cite>4</cite>.</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It can not be lowered once a database is created.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Product Module</a><ul>
+<li><a class="reference internal" href="#category-of-unit-of-measure">Category of Unit of Measure</a></li>
+<li><a class="reference internal" href="#unit-of-measure">Unit of Measure</a></li>
+<li><a class="reference internal" href="#product-category">Product category</a></li>
+<li><a class="reference internal" href="#product-template-and-product">Product Template and Product</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/product/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

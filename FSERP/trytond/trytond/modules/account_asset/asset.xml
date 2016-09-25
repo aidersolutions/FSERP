@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of this
+     repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data>
+
+        <menuitem name="Assets" parent="account.menu_account"
+            id="menu_asset" sequence="48"/>
+
+        <record model="account.journal.type" id="journal_type_asset">
+            <field name="name">Asset</field>
+            <field name="code">asset</field>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_update">
+            <field name="name">Update Asset</field>
+            <field name="wiz_name">account.asset.update</field>
+        </record>
+
+        <record model="ir.ui.view" id="asset_view_form">
+            <field name="model">account.asset</field>
+            <field name="type">form</field>
+            <field name="name">asset_form</field>
+        </record>
+        <record model="ir.ui.view" id="asset_view_tree">
+            <field name="model">account.asset</field>
+            <field name="type">tree</field>
+            <field name="name">asset_tree</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_asset_form">
+            <field name="name">Assets</field>
+            <field name="res_model">account.asset</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_asset_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="asset_view_tree"/>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_asset_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="asset_view_form"/>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+            id="act_asset_form_domain_draft">
+            <field name="name">Draft</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain" eval="[('state', '=', 'draft')]" pyson="1"/>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+            id="act_asset_form_domain_running">
+            <field name="name">Running</field>
+            <field name="sequence" eval="20"/>
+            <field name="domain" eval="[('state', '=', 'running')]" pyson="1"/>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+            id="act_asset_form_domain_closed">
+            <field name="name">Closed</field>
+            <field name="sequence" eval="30"/>
+            <field name="domain" eval="[('state', '=', 'closed')]" pyson="1"/>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+            id="act_asset_form_domain_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="9999"/>
+            <field name="domain"></field>
+            <field name="act_window" ref="act_asset_form"/>
+        </record>
+        <menuitem parent="menu_asset" sequence="10"
+            action="act_asset_form" id="menu_asset_form"/>
+
+        <record model="ir.sequence.type" id="sequence_type_asset">
+            <field name="name">Asset</field>
+            <field name="code">account.asset</field>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_asset_group_admin">
+            <field name="sequence_type" ref="sequence_type_asset"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_asset_group_account_admin">
+            <field name="sequence_type" ref="sequence_type_asset"/>
+            <field name="group" ref="account.group_account_admin"/>
+        </record>
+
+        <record model="ir.sequence" id="sequence_asset">
+            <field name="name">Asset</field>
+            <field name="code">account.asset</field>
+        </record>
+
+        <record model="ir.rule.group" id="rule_group_asset">
+            <field name="model" search="[('model', '=', 'account.asset')]"/>
+            <field name="global_p" eval="True"/>
+        </record>
+        <record model="ir.rule" id="rule_asset1">
+            <field name="domain"
+                eval="[('company', '=', Eval('user', {}).get('company', None))]"
+                pyson="1"/>
+            <field name="rule_group" ref="rule_group_asset"/>
+        </record>
+
+        <record model="ir.model.access" id="access_asset">
+            <field name="model" search="[('model', '=', 'account.asset')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access" id="access_asset_account_admin">
+            <field name="model" search="[('model', '=', 'account.asset')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+        <record model="ir.model.access" id="access_asset_account">
+            <field name="model" search="[('model', '=', 'account.asset')]"/>
+            <field name="group" ref="account.group_account"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.ui.view" id="asset_line_view_form">
+            <field name="model">account.asset.line</field>
+            <field name="type">form</field>
+            <field name="name">asset_line_form</field>
+        </record>
+        <record model="ir.ui.view" id="asset_line_view_tree">
+            <field name="model">account.asset.line</field>
+            <field name="type">tree</field>
+            <field name="name">asset_line_tree</field>
+        </record>
+
+        <record model="ir.model.access" id="access_asset_line">
+            <field name="model" search="[('model', '=', 'account.asset.line')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access" id="access_asset_line_account_admin">
+            <field name="model" search="[('model', '=', 'account.asset.line')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+        <record model="ir.model.access" id="access_asset_line_account">
+            <field name="model" search="[('model', '=', 'account.asset.line')]"/>
+            <field name="group" ref="account.group_account"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.ui.view" id="asset_create_moves_start_view_form">
+            <field name="model">account.asset.create_moves.start</field>
+            <field name="type">form</field>
+            <field name="name">asset_create_moves_start_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="asset_update_start_view_form">
+            <field name="model">account.asset.update.start</field>
+            <field name="type">form</field>
+            <field name="name">asset_update_start_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="asset_update_show_depreciation_view_form">
+            <field name="model">account.asset.update.show_depreciation</field>
+            <field name="type">form</field>
+            <field name="name">asset_update_show_depreciation_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_create_moves">
+            <field name="name">Create Assets Moves</field>
+            <field name="wiz_name">account.asset.create_moves</field>
+        </record>
+        <menuitem name="Create Assets Moves" parent="menu_asset" sequence="10"
+            action="wizard_create_moves" id="menu_create_moves"/>
+
+        <record model="ir.action.report" id="report_depreciation_table">
+            <field name="name">Depreciation Table</field>
+            <field name="model">account.asset</field>
+            <field name="report_name">account.asset.depreciation_table</field>
+            <field name="report">account_asset/asset_table.odt</field>
+        </record>
+        <record model="ir.ui.view"
+            id="print_depreciation_table_start_view_form">
+            <field name="model">account.asset.print_depreciation_table.start</field>
+            <field name="type">form</field>
+            <field name="name">print_depreciation_table_start</field>
+        </record>
+        <record model="ir.action.wizard" id="wizard_print_depreciation_table">
+            <field name="name">Print Depreciation Table</field>
+            <field name="wiz_name">account.asset.print_depreciation_table</field>
+        </record>
+        <menuitem name="Print Depreciation Table" icon="tryton-print"
+            parent="account.menu_reporting"
+            action="wizard_print_depreciation_table"
+            id="menu_create_depreciation_table"/>
+    </data>
+    <data noupdate="1">
+        <record model="account.journal" id="journal_asset">
+            <field name="name">Asset</field>
+            <field name="code">ASS</field>
+            <field name="type">asset</field>
+            <field name="sequence" ref="account.sequence_account_journal"/>
+        </record>
+    </data>
+</tryton>

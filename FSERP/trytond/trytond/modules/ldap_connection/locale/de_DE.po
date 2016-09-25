@@ -1,0 +1,135 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:ldap.connection,active_directory:"
+msgid "Active Directory"
+msgstr "Active Directory"
+
+msgctxt "field:ldap.connection,bind_dn:"
+msgid "Bind DN"
+msgstr "Bind DN"
+
+msgctxt "field:ldap.connection,bind_pass:"
+msgid "Bind Pass"
+msgstr "Bind Passwort"
+
+msgctxt "field:ldap.connection,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:ldap.connection,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:ldap.connection,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:ldap.connection,port:"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "field:ldap.connection,rec_name:"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "field:ldap.connection,secure:"
+msgid "Secure"
+msgstr "Sicherheit"
+
+msgctxt "field:ldap.connection,server:"
+msgid "Server"
+msgstr "Server"
+
+msgctxt "field:ldap.connection,uri:"
+msgid "URI"
+msgstr "URI"
+
+msgctxt "field:ldap.connection,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:ldap.connection,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:ldap.test_connection.result,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "help:ldap.connection,bind_dn:"
+msgid "LDAP DN used to bind"
+msgstr "LDAP DN für die Verbindung"
+
+msgctxt "help:ldap.connection,bind_pass:"
+msgid "LDAP password used to bind"
+msgstr "LDAP Passwort für die Verbindung"
+
+msgctxt "help:ldap.connection,port:"
+msgid "LDAP server port"
+msgstr "Passwort für den LDAP-Server"
+
+msgctxt "help:ldap.connection,secure:"
+msgid "LDAP secure connection"
+msgstr "Sicherheit für die Verbindung zum LDAP-Server"
+
+msgctxt "help:ldap.connection,server:"
+msgid "LDAP server name"
+msgstr "Name des LDAP-Servers"
+
+msgctxt "model:ir.action,name:act_connection_form"
+msgid "Connection"
+msgstr "Verbindung"
+
+msgctxt "model:ir.action,name:wizard_test_connection"
+msgid "Test LDAP Connection"
+msgstr "Verbindungstest LDAP"
+
+msgctxt "model:ir.ui.menu,name:menu_administration"
+msgid "LDAP"
+msgstr "LDAP"
+
+msgctxt "model:ir.ui.menu,name:menu_connection"
+msgid "Connection"
+msgstr "Verbindung"
+
+msgctxt "model:ldap.connection,name:"
+msgid "LDAP Connection"
+msgstr "LDAP Verbindung"
+
+msgctxt "model:ldap.test_connection.result,name:"
+msgid "Test Connection"
+msgstr "Verbindungstest"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "Never"
+msgstr "Keine"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "SSL"
+msgstr "SSL"
+
+msgctxt "selection:ldap.connection,secure:"
+msgid "TLS"
+msgstr "TLS"
+
+msgctxt "view:ldap.connection:"
+msgid "LDAP Connection"
+msgstr "LDAP Verbindung"
+
+msgctxt "view:ldap.connection:"
+msgid "_Test Connection"
+msgstr "Verbindungs_test"
+
+msgctxt "view:ldap.test_connection.result:"
+msgid "Test Connection Succeed!"
+msgstr "Verbindungstest erfolgreich!"
+
+msgctxt "view:ldap.test_connection.result:"
+msgid "Test LDAP Connection"
+msgstr "Verbindungstest LDAP"
+
+msgctxt "wizard_button:ldap.test_connection,result,end:"
+msgid "Close"
+msgstr "Schließen"

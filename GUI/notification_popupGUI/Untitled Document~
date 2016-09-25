@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/region.png</file>
+        <file>staticfiles/styles.css</file>
+    </qresource>
+</RCC>

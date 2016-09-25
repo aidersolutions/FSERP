@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mainfile &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for mainfile</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Food Safety Restaurant ERP &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="c"># Standard Libraries</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span>
+
+<span class="n">logformat</span> <span class="o">=</span> <span class="s">&#39;[</span><span class="si">%(asctime)s</span><span class="s">] </span><span class="si">%(levelname)s</span><span class="s">:</span><span class="si">%(name)s</span><span class="s">:</span><span class="si">%(message)s</span><span class="s">&#39;</span>
+<span class="n">datefmt</span> <span class="o">=</span> <span class="s">&#39;%a %b </span><span class="si">%d</span><span class="s"> %H:%M:%S %Y&#39;</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;fserp.log&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">logformat</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">datefmt</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="c"># logger.addHandler(logging.StreamHandler())</span>
+
+<span class="c"># PySide</span>
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QApplication</span>
+
+<span class="c"># Tryton related imports</span>
+<span class="kn">import</span> <span class="nn">FSERP</span>
+<span class="kn">import</span> <span class="nn">trytond</span>
+<span class="kn">from</span> <span class="nn">trytond.config</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">parse_listen</span>
+<span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span> <span class="k">as</span> <span class="n">con</span>
+
+<span class="kn">import</span> <span class="nn">config_fserp</span>
+
+<span class="n">conf</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">(</span><span class="s">&#39;testdb&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;admin&#39;</span><span class="p">,</span>
+                       <span class="n">config_file</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;FSERP&#39;</span><span class="p">,</span> <span class="s">&#39;trytond&#39;</span><span class="p">,</span> <span class="s">&#39;etc&#39;</span><span class="p">,</span> <span class="s">&#39;trytond.conf&#39;</span><span class="p">))</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">update_etc</span><span class="p">(</span><span class="n">config_fserp</span><span class="o">.</span><span class="n">TRYTON_CONFIG_FILE</span><span class="p">)</span>
+
+
+<span class="c"># local module imports </span>
+<span class="kn">from</span> <span class="nn">notification</span> <span class="kn">import</span> <span class="n">Notification</span>
+<span class="kn">from</span> <span class="nn">authandadmin</span> <span class="kn">import</span> <span class="n">Login</span><span class="p">,</span> <span class="n">Admin</span>  <span class="c">##call this to check the authenticity of the user</span>
+<span class="kn">from</span> <span class="nn">gui</span> <span class="kn">import</span> <span class="n">Gui</span>
+
+
+<div class="viewcode-block" id="MainWindow"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow">[docs]</a><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       The main application</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;inside constructor...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">Gui</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MainWindow.setup"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">Login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">centralWidget</span><span class="o">.</span><span class="n">setAutoFillBackground</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">centralWidget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setAutoFillBackground</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c"># self.mainwindow.inventory_tab_1.setAttribute(Qt.WA_StyledBackground, True)</span>
+        <span class="c"># self.set_background_for_eachtab()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span> <span class="o">=</span> <span class="n">Notification</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span>
+            <span class="bp">False</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">isVisible</span><span class="p">()</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">go_home</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">localstylesheet</span> <span class="o">=</span> <span class="s">&quot;GUI/staticfiles/styles.qss&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inlinestylesheet</span> <span class="o">=</span> <span class="s">&quot;GUI/staticfiles/inline.qss&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inlinestylesheet</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="c"># with open(self.localstylesheet, &#39;r&#39;) as fp:</span>
+            <span class="c"># self.mainwindow.main_tabWidget.setStyleSheet(fp.read())</span>
+            <span class="c"># self.mainwindow.inventory_tab_1.setAutoFillBackground(True)</span>
+            <span class="c"># plt = QPalette()</span>
+            <span class="c"># plt.setColor(QPalette.Active, QPalette.Background, QColor(&#39;#ADEBFF&#39;))</span>
+            <span class="c"># plt.setColor(QPalette.Inactive, QPalette.Background, QColor(&#39;#ADEBFF&#39;))</span>
+            <span class="c"># plt.setColor(QPalette.Disabled, QPalette.Background, QColor(&#39;#ADEBFF&#39;))</span>
+            <span class="c"># self.mainwindow.inventory_tab_1.setPalette(plt)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Admin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;executed the login dialog now going to add mouseReleaseEvents&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">0</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">2</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">3</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">4</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="mi">5</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_widget</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.verify_login"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow.verify_login">[docs]</a>    <span class="k">def</span> <span class="nf">verify_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s">&quot;invalid login access&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">resizeEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_event</span>
+</div>
+<div class="viewcode-block" id="MainWindow.go_home"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow.go_home">[docs]</a>    <span class="k">def</span> <span class="nf">go_home</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Goes back to the home screen</span>
+<span class="sd">        :return:none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;going to home screen&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.goto_widget"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow.goto_widget">[docs]</a>    <span class="k">def</span> <span class="nf">goto_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">who</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param who:the tab widget index</span>
+<span class="sd">        :return:transition to the required widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">who</span><span class="p">)</span>
+        <span class="c"># self.set_background_for_eachtab()</span>
+        <span class="c"># self.mainwindow.inventory_tab_1.setAttribute(Qt.WA_StyledBackground,True)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.resize_event"><a class="viewcode-back" href="../mainfile.html#mainfile.MainWindow.resize_event">[docs]</a>    <span class="k">def</span> <span class="nf">resize_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Starting the app...&quot;</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;created the app...&quot;</span><span class="p">)</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">verify_login</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;created the main window&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">win</span><span class="o">.</span><span class="n">localstylesheet</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;showing the mainwindow&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;closing the app..&quot;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

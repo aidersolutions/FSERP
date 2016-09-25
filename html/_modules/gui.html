@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gui &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gui</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Main Gui file &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">inventory</span> <span class="kn">import</span> <span class="n">Inventory</span>
+<span class="kn">from</span> <span class="nn">billing</span> <span class="kn">import</span> <span class="n">Billing</span>
+<span class="kn">from</span> <span class="nn">employee</span> <span class="kn">import</span> <span class="n">Employee</span>
+<span class="kn">from</span> <span class="nn">menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<span class="kn">from</span> <span class="nn">report</span> <span class="kn">import</span> <span class="n">Report</span>
+<span class="kn">from</span> <span class="nn">waste</span> <span class="kn">import</span> <span class="n">Waste</span>
+<span class="kn">from</span> <span class="nn">GUI</span> <span class="kn">import</span> <span class="n">resources_rc</span>
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> \
+    <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleFactory</span><span class="p">,</span> <span class="n">QStylePainter</span><span class="p">,</span> <span class="n">QStyleOptionTabV3</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPalette</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> \
+    <span class="n">QStackedWidget</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QMenuBar</span><span class="p">,</span> <span class="n">QToolBar</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStatusBar</span>
+
+<span class="kn">from</span> <span class="nn">PySide.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QMetaObject</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="EventHandlerForTabBar"><a class="viewcode-back" href="../gui.html#gui.EventHandlerForTabBar">[docs]</a><span class="k">class</span> <span class="nc">EventHandlerForTabBar</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+<div class="viewcode-block" id="EventHandlerForTabBar.eventFilter"><a class="viewcode-back" href="../gui.html#gui.EventHandlerForTabBar.eventFilter">[docs]</a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Paint</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">QStyleFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&#39;Windows&#39;</span><span class="p">))</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">QStylePainter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="n">QStyleOptionTabV3</span><span class="p">()</span>
+            <span class="c"># selected = obj.currentIndex()</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">initStyleOption</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#ADEBFF&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#6CBED2&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#0099CC&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#297ACC&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#006BB2&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="n">bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;#003D7A&#39;</span><span class="p">)</span>
+                    <span class="n">fg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+                <span class="n">tab</span><span class="o">.</span><span class="n">palette</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Window</span><span class="p">,</span> <span class="n">bg_color</span><span class="p">)</span>
+                <span class="n">tab</span><span class="o">.</span><span class="n">palette</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">QPalette</span><span class="o">.</span><span class="n">WindowText</span><span class="p">,</span> <span class="n">fg_color</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">drawControl</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">CE_TabBarTab</span><span class="p">,</span> <span class="n">tab</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># standard event processing</span>
+            <span class="k">return</span> <span class="n">QObject</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Gui"><a class="viewcode-back" href="../gui.html#gui.Gui">[docs]</a><span class="k">class</span> <span class="nc">Gui</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">QMainWindow</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Gui.setup"><a class="viewcode-back" href="../gui.html#gui.Gui.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">832</span><span class="p">,</span> <span class="mi">668</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;QToolBar{</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;background: qlineargradient(x1:0, y1:0, x2:1, y2:1,</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;stop:0 rgba(0,0,0),stop:1 rgb(162, 162, 162, 162));</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;border: 0px;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;}</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;QToolBar &gt; QWidget{</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;color:white;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;}</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;QToolBar &gt; QWidget:hover {</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;background:transparent;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot; }</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;QToolBar &gt; QWidget:checked {</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;background:transparent;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot; }</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;#MainWindow{</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;background: qlineargradient(x1:0, y1:0, x2:1, y2:1,</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;stop:0 rgba(0,0,0),stop:1 rgb(162, 162, 162, 162));</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;border: 0px;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;}</span><span class="se">\n</span><span class="s">&quot;</span>
+                                      <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;centralWidget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_2</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_2</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout_2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span> <span class="o">=</span> <span class="n">QStackedWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;stackedWidget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home_page</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;home_page&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/billing_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                           <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                           <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                           <span class="s">&quot;background-color:#6CBED2;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;billing_frame_2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_4</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_4</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_4&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">217</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_4</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_10</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_10</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_10</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_10&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_4</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/employee_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                            <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                            <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                            <span class="s">&quot;background-color:#0099CC;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;employee_frame_3&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_5</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_5</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_5&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem1</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">217</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_5</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_11</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_11</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_11</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_11&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_5</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_11</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/menu_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                        <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                        <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                        <span class="s">&quot;background-color:#297ACC;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menu_frame_4&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_3</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_3</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_3&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem2</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_3</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_12</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_12</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_12</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_12&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/report_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                          <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                          <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                          <span class="s">&quot;background-color:#006BB2;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_frame_5&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_6</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_6</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_6&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem3</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_6</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_13</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_13</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_13</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_13&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_6</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_13</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/waste_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                         <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                         <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                         <span class="s">&quot;background-color:#003D7A;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;waste_frame_6&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_7</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_7</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_7&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem4</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_7</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_14</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_14</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_14</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_14&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_7</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_14</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-image:url(:/images/inventory_frame.png);</span><span class="se">\n</span><span class="s">&quot;</span>
+                                             <span class="s">&quot;background-repeat: no-repeat;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                             <span class="s">&quot;background-position: center;</span><span class="se">\n</span><span class="s">&quot;</span>
+                                             <span class="s">&quot;background-color:#ADEBFF;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">StyledPanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">setFrameShadow</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;inventory_frame_1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_2</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_2</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;verticalLayout_2&quot;</span><span class="p">)</span>
+        <span class="n">spacerItem5</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">217</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_2</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_9</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_9</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background:transparent;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_9</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_9&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_9</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detail_page</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detail_page</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;detail_page&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detail_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_2</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;horizontalLayout_2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detail_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setAutoFillBackground</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setTabPosition</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">West</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setIconSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setElideMode</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ElideNone</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;main_tabWidget&quot;</span><span class="p">)</span>
+        <span class="c">##initializes the tabs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tabs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span><span class="p">)</span>
+        <span class="c">######</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detail_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span> <span class="o">=</span> <span class="n">QMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">832</span><span class="p">,</span> <span class="mi">29</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;menuBar&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span> <span class="o">=</span> <span class="n">QToolBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span><span class="o">.</span><span class="n">setLayoutDirection</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">RightToLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextBesideIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;mainToolBar&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainToolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span> <span class="o">=</span> <span class="n">QStatusBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;statusBar&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setStatusBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span> <span class="o">=</span> <span class="n">QToolBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">setLayoutDirection</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">RightToLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextBesideIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;toolBar&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">icon6</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon6</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/notification.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setAutoRepeat</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setIconVisibleInMenu</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;actionNotification&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">icon7</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon7</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/admin.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;actionAdmin&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="n">icon8</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon8</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/refresh.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;actionRefresh&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">icon7</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon7</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/home.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;actionHome&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="p">)</span>
+        <span class="c">##retranslates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;COHEART Food Safety Restaurant ERP &quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_10</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span>
+                                                     <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;BILLING&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                                     <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_11</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span>
+                                                     <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;EMPLOYEE&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                                     <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_12</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;MENU&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                   <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_13</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span>
+                                                     <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;REPORT&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                                     <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_14</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;WASTE&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                   <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_9</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span>
+                                                    <span class="s">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=</span><span class="se">\&quot;</span><span class="s">center</span><span class="se">\&quot;</span><span class="s">&gt;INVENTORY&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+                                                    <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_frame_1</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Inventory Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">billing_frame_2</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Billing Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employee_frame_3</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Employee Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_frame_4</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Menu Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_frame_5</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Report Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waste_frame_6</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go to the Waste Tab&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;toolBar&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Notification&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setIconText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Notification&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Click to see new notifications&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                   <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNotification</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl+Shift+N&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Admin&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Click to go to admin interface&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                                           <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionAdmin</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl+Shift+A&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Refresh&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;refreshes the data from the server&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                   <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionRefresh</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl+Shift+R&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Home&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Go back to the home screen&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                   <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionHome</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl+Shift+H&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span>
+        <span class="c"># self.add_tool_tip(self.ob) todo avoided due to segmentation fault error, left for future fixes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb</span> <span class="o">=</span> <span class="n">EventHandlerForTabBar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ob</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">)</span>
+
+        <span class="n">QMetaObject</span><span class="o">.</span><span class="n">connectSlotsByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Gui.add_tabs"><a class="viewcode-back" href="../gui.html#gui.Gui.add_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">add_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:adds new tabs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">logger</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Inventory&#39;</span><span class="p">)</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/inventory.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">inventory</span> <span class="o">=</span> <span class="n">Inventory</span><span class="p">()</span>
+        <span class="c"># inventory.inventory_tab_1.setToolTip(&quot;Inventory Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">inventory</span><span class="o">.</span><span class="n">inventory_tab_1</span><span class="p">,</span> <span class="n">icon</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">inventory</span><span class="o">.</span><span class="n">inventory_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Billing&#39;</span><span class="p">)</span>
+        <span class="n">icon1</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon1</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/billing.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">bill</span> <span class="o">=</span> <span class="n">Billing</span><span class="p">()</span>
+        <span class="c"># bill.billing_tab_2.setToolTip(&quot;Billing Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">bill</span><span class="o">.</span><span class="n">billing_tab_2</span><span class="p">,</span> <span class="n">icon1</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">bill</span><span class="o">.</span><span class="n">billing_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Employee&#39;</span><span class="p">)</span>
+        <span class="n">icon2</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon2</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/employee.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">employee</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">()</span>
+        <span class="c"># employee.employee_tab_3.setToolTip(&quot;Employee Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">employee</span><span class="o">.</span><span class="n">employee_tab_3</span><span class="p">,</span> <span class="n">icon2</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">employee</span><span class="o">.</span><span class="n">employee_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Menu&#39;</span><span class="p">)</span>
+        <span class="n">icon3</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon3</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/menu.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">()</span>
+        <span class="c"># menu.menu_tab_4.setToolTip(&quot;Menu Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">menu_tab_4</span><span class="p">,</span> <span class="n">icon3</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">menu_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Report&#39;</span><span class="p">)</span>
+        <span class="n">icon4</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon4</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/report.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">()</span>
+        <span class="c"># report.report_tab_5.setToolTip(&quot;Report Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">report_tab_5</span><span class="p">,</span> <span class="n">icon4</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">report</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;initiating Waste&#39;</span><span class="p">)</span>
+        <span class="n">icon5</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon5</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/images/waste.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">waste</span> <span class="o">=</span> <span class="n">Waste</span><span class="p">()</span>
+        <span class="c"># waste.waste_tab_6.setToolTip(&quot;Waste Section&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">waste</span><span class="o">.</span><span class="n">waste_tab_6</span><span class="p">,</span> <span class="n">icon5</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">waste</span><span class="o">.</span><span class="n">waste_detail_tabWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Gui.change_focus"><a class="viewcode-back" href="../gui.html#gui.Gui.change_focus">[docs]</a>    <span class="k">def</span> <span class="nf">change_focus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_tabWidget</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">wid</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+            <span class="k">print</span> <span class="n">wid</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s">&#39;1y&#39;</span>
+            <span class="n">wid</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gui.add_tool_tip"><a class="viewcode-back" href="../gui.html#gui.Gui.add_tool_tip">[docs]</a>    <span class="k">def</span> <span class="nf">add_tool_tip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob</span><span class="p">):</span>  <span class="c"># todo not working causing segmentation fault, avoided calling this function</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param ob: Tab bar</span>
+<span class="sd">        :return:tool tips</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">ob</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">hardcode</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;Inventory Section&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">&quot;Billing Section&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">&quot;Employee Section&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">&quot;Menu Section&quot;</span><span class="p">,</span>
+                    <span class="mi">4</span><span class="p">:</span> <span class="s">&quot;Report Section&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">&quot;Waste Section&quot;</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">setTabToolTip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">hardcode</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

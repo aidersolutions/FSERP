@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Transaction &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-trytond.transaction"><span id="ref-transaction"></span></span><div class="section" id="transaction">
+<h1>Transaction<a class="headerlink" href="#transaction" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="trytond.transaction.Transaction">
+<em class="property">class </em><tt class="descclassname">trytond.transaction.</tt><tt class="descname">Transaction</tt><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This class is a <a class="reference external" href="http://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> that contains thread-local parameters of the
+database transaction.</p>
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.cursor">
+<tt class="descclassname">Transaction.</tt><tt class="descname">cursor</tt><a class="headerlink" href="#trytond.transaction.Transaction.cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The database cursor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.database">
+<tt class="descclassname">Transaction.</tt><tt class="descname">database</tt><a class="headerlink" href="#trytond.transaction.Transaction.database" title="Permalink to this definition">¶</a></dt>
+<dd><p>The database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.user">
+<tt class="descclassname">Transaction.</tt><tt class="descname">user</tt><a class="headerlink" href="#trytond.transaction.Transaction.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the user.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.context">
+<tt class="descclassname">Transaction.</tt><tt class="descname">context</tt><a class="headerlink" href="#trytond.transaction.Transaction.context" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.create_records">
+<tt class="descclassname">Transaction.</tt><tt class="descname">create_records</tt><a class="headerlink" href="#trytond.transaction.Transaction.create_records" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.delete_records">
+<tt class="descclassname">Transaction.</tt><tt class="descname">delete_records</tt><a class="headerlink" href="#trytond.transaction.Transaction.delete_records" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.delete">
+<tt class="descclassname">Transaction.</tt><tt class="descname">delete</tt><a class="headerlink" href="#trytond.transaction.Transaction.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.timestamp">
+<tt class="descclassname">Transaction.</tt><tt class="descname">timestamp</tt><a class="headerlink" href="#trytond.transaction.Transaction.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.language">
+<tt class="descclassname">Transaction.</tt><tt class="descname">language</tt><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.language" title="Permalink to this definition">¶</a></dt>
+<dd><p>The language code defines in the context.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trytond.transaction.Transaction.counter">
+<tt class="descclassname">Transaction.</tt><tt class="descname">counter</tt><a class="headerlink" href="#trytond.transaction.Transaction.counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the number of modification made in this transaction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.start">
+<tt class="descclassname">Transaction.</tt><tt class="descname">start</tt><big>(</big><em>database_name</em>, <em>user</em><span class="optional">[</span>, <em>readonly</em><span class="optional">[</span>, <em>context</em><span class="optional">[</span>, <em>close</em><span class="optional">[</span>, <em>autocommit</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a new transaction and return a <a class="reference external" href="http://docs.python.org/reference/datamodel.html#context-managers">context manager</a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.stop">
+<tt class="descclassname">Transaction.</tt><tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop a started transaction. This method should not be called directly as it
+will be by the context manager when exiting the <cite>with</cite> statement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.set_context">
+<tt class="descclassname">Transaction.</tt><tt class="descname">set_context</tt><big>(</big><em>context</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.set_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.set_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the transaction context and return a <a class="reference external" href="http://docs.python.org/reference/datamodel.html#context-managers">context manager</a>. The context
+will be restored when exiting the <cite>with</cite> statement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.set_user">
+<tt class="descclassname">Transaction.</tt><tt class="descname">set_user</tt><big>(</big><em>user</em><span class="optional">[</span>, <em>set_context</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.set_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.set_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the user of the transaction and return a <a class="reference external" href="http://docs.python.org/reference/datamodel.html#context-managers">context manager</a>.
+<cite>set_context</cite> will put the previous user id in the context to simulate the
+record rules. The user will be restored when exiting the <cite>with</cite> statement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.set_cursor">
+<tt class="descclassname">Transaction.</tt><tt class="descname">set_cursor</tt><big>(</big><em>cursor</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.set_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.set_cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the cursor of the transaction and return a <a class="reference external" href="http://docs.python.org/reference/datamodel.html#context-managers">context manager</a>. The
+previous cursor will be restored when exiting the <cite>with</cite> statement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trytond.transaction.Transaction.new_cursor">
+<tt class="descclassname">Transaction.</tt><tt class="descname">new_cursor</tt><big>(</big><span class="optional">[</span><em>autocommit</em><span class="optional">[</span>, <em>readonly</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/transaction.html#Transaction.new_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.transaction.Transaction.new_cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the cursor of the transaction with a new one on the same database
+and return a <a class="reference external" href="http://docs.python.org/reference/datamodel.html#context-managers">context manager</a>. The previous cursor will be restored when
+exiting the <cite>with</cite> statement and the new one will be closed.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/ref/transaction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

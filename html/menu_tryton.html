@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>menu_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="notification module" href="notification.html" />
+    <link rel="prev" title="menu_popupGUI package" href="menu_popupGUI.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notification.html" title="notification module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="menu_popupGUI.html" title="menu_popupGUI package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-menu_tryton">
+<span id="menu-tryton-module"></span><h1>menu_tryton module<a class="headerlink" href="#module-menu_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Menu Module backend</p>
+<dl class="class">
+<dt id="menu_tryton.CategoryOfProduct">
+<em class="property">class </em><tt class="descclassname">menu_tryton.</tt><tt class="descname">CategoryOfProduct</tt><a class="reference internal" href="_modules/menu_tryton.html#CategoryOfProduct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.CategoryOfProduct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the category of the products</p>
+<dl class="attribute">
+<dt id="menu_tryton.CategoryOfProduct.Category">
+<tt class="descname">Category</tt><a class="headerlink" href="#menu_tryton.CategoryOfProduct.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.CategoryOfProduct.create_category">
+<tt class="descname">create_category</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#CategoryOfProduct.create_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.CategoryOfProduct.create_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a new category
+:param name: category name
+:return: boolean values True if the category was saved</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.CategoryOfProduct.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#menu_tryton.CategoryOfProduct.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.CategoryOfProduct.search_categories">
+<tt class="descname">search_categories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#CategoryOfProduct.search_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.CategoryOfProduct.search_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>lists all the categories
+:return:list of all category names</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="menu_tryton.IngredientsInMenu">
+<em class="property">class </em><tt class="descclassname">menu_tryton.</tt><tt class="descname">IngredientsInMenu</tt><big>(</big><em>product_code</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the ingredients in a dish</p>
+<dl class="attribute">
+<dt id="menu_tryton.IngredientsInMenu.Category">
+<tt class="descname">Category</tt><a class="headerlink" href="#menu_tryton.IngredientsInMenu.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.IngredientsInMenu.Ingredient">
+<tt class="descname">Ingredient</tt><a class="headerlink" href="#menu_tryton.IngredientsInMenu.Ingredient" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.ingredientsofdish</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.IngredientsInMenu.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#menu_tryton.IngredientsInMenu.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.IngredientsInMenu.ProductUom">
+<tt class="descname">ProductUom</tt><a class="headerlink" href="#menu_tryton.IngredientsInMenu.ProductUom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.get_categories">
+<tt class="descname">get_categories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.get_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.get_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates a list of categories
+:return:list of category names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the item, category and units based on the code
+:param code: code of the product
+:return: dictionary of item and its corresponding values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the item, category and units based on the code
+:param item: name of the product
+:return: dictionary of item and its corresponding values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.get_item">
+<tt class="descname">get_item</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.get_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.get_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the item(dish) list
+:return:list of item names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.get_quantity_uom">
+<tt class="descname">get_quantity_uom</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.get_quantity_uom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.get_quantity_uom" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the measurement list
+:return:list of unit names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.load_ingredients">
+<tt class="descname">load_ingredients</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.load_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.load_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the ingredients of the product
+:return: the list of dictionary of ingredients and its corresponding values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.IngredientsInMenu.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#menu_tryton.IngredientsInMenu.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.remove_ingredient_item">
+<tt class="descname">remove_ingredient_item</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.remove_ingredient_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.remove_ingredient_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes an ingredient from the dish
+:param code: code of the ingredient
+:return:boolean value True is successfully deleted the dish</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.IngredientsInMenu.update_ingredients">
+<tt class="descname">update_ingredients</tt><big>(</big><em>dataobject</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#IngredientsInMenu.update_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.IngredientsInMenu.update_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the ingredients of the product
+:param dataobject: the list of dictionaries of ingredients and it corresponding values
+:return: boolean value True if the ingredients was saved successfully</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="menu_tryton.MenuProduct">
+<em class="property">class </em><tt class="descclassname">menu_tryton.</tt><tt class="descname">MenuProduct</tt><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages menu items</p>
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.Category">
+<tt class="descname">Category</tt><a class="headerlink" href="#menu_tryton.MenuProduct.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#menu_tryton.MenuProduct.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.ProductCategory">
+<tt class="descname">ProductCategory</tt><a class="headerlink" href="#menu_tryton.MenuProduct.ProductCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.category</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.ProductTemplate">
+<tt class="descname">ProductTemplate</tt><a class="headerlink" href="#menu_tryton.MenuProduct.ProductTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.template</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.ProductUom">
+<tt class="descname">ProductUom</tt><a class="headerlink" href="#menu_tryton.MenuProduct.ProductUom" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.uom</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.Tax">
+<tt class="descname">Tax</tt><a class="headerlink" href="#menu_tryton.MenuProduct.Tax" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.tax</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.MenuProduct.delete_rows">
+<tt class="descname">delete_rows</tt><big>(</big><em>id=None</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct.delete_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct.delete_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes a dish from the menu item
+:param id: id of the product
+:return: boolean value True if the dish was deleted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.MenuProduct.load_menus">
+<tt class="descname">load_menus</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct.load_menus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct.load_menus" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the menu items
+:return: list of dictionary of menu items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.MenuProduct.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>id=None</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the dish corresponding to the id of the dish
+:return: dictionary of the dish and its corresponding  values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.MenuProduct.new_dish">
+<tt class="descname">new_dish</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct.new_dish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct.new_dish" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a new dish to the menu
+:param obj: the dictionary of dish and its corresponding data
+:return:boolean value True if the dish was saved</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.MenuProduct.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#menu_tryton.MenuProduct.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.MenuProduct.update_dish">
+<tt class="descname">update_dish</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#MenuProduct.update_dish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.MenuProduct.update_dish" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates a dish in the menu
+:param obj: the dictionary of dish and its corresponding data
+:return:boolean value True if the dish was saved</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="menu_tryton.WeeklyMenu">
+<em class="property">class </em><tt class="descclassname">menu_tryton.</tt><tt class="descname">WeeklyMenu</tt><big>(</big><em>code=None</em>, <em>name=None</em>, <em>day=None</em>, <em>quantity=None</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a mechanism to manage menu per week</p>
+<dl class="attribute">
+<dt id="menu_tryton.WeeklyMenu.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#menu_tryton.WeeklyMenu.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.WeeklyMenu.Weekly">
+<tt class="descname">Weekly</tt><a class="headerlink" href="#menu_tryton.WeeklyMenu.Weekly" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">weeklymenu.weeklymenu</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.load_dish_notin_per_Day">
+<tt class="descname">load_dish_notin_per_Day</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.load_dish_notin_per_Day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.load_dish_notin_per_Day" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads rows not in the menu of the day
+:return: list of rows</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.load_dish_per_Day">
+<tt class="descname">load_dish_per_Day</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.load_dish_per_Day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.load_dish_per_Day" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the menu of the day
+:param day: day of the week
+:return: list of dictionary of dishes and its corresponding data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="menu_tryton.WeeklyMenu.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#menu_tryton.WeeklyMenu.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.remove_from_all_days">
+<tt class="descname">remove_from_all_days</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.remove_from_all_days"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.remove_from_all_days" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes the menu entry from all the weekdays
+:return:boolean value True if the dish was deleted successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.remove_weekly_row">
+<tt class="descname">remove_weekly_row</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.remove_weekly_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.remove_weekly_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes the entry form the day
+:return: boolean value True if the process was successful</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.save_dish_per_day">
+<tt class="descname">save_dish_per_day</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.save_dish_per_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.save_dish_per_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the dish to the day of the week
+:param args: list of dictionary of dish details and day
+:return:boolean</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu_tryton.WeeklyMenu.update_weekly_row">
+<tt class="descname">update_weekly_row</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/menu_tryton.html#WeeklyMenu.update_weekly_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu_tryton.WeeklyMenu.update_weekly_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates the weekly data info of the dish
+:return:boolean True if the process was successful</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="menu_popupGUI.html"
+                        title="previous chapter">menu_popupGUI package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="notification.html"
+                        title="next chapter">notification module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/menu_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notification.html" title="notification module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="menu_popupGUI.html" title="menu_popupGUI package"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

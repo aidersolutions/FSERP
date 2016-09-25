@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fserpapi module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="gui module" href="gui.html" />
+    <link rel="prev" title="employee_tryton module" href="employee_tryton.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="gui module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="employee_tryton.html" title="employee_tryton module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-fserpapi">
+<span id="fserpapi-module"></span><h1>fserpapi module<a class="headerlink" href="#module-fserpapi" title="Permalink to this headline">¶</a></h1>
+<p>API functions file
+Every method returns a list with a boolean and JSON or String of error</p>
+<dl class="function">
+<dt id="fserpapi.add_dish_category">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">add_dish_category</tt><big>(</big><em>dish</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="_modules/fserpapi.html#add_dish_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.add_dish_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>add dish categories
+:param dish: the new dish category name
+:param parent: the parent category</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.add_ingredients_category">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">add_ingredients_category</tt><big>(</big><em>category</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="_modules/fserpapi.html#add_ingredients_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.add_ingredients_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>add dish ingredient category
+:param category: the new ingredient category name
+:param parent: the parent category of the ingredient</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_billing_last">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_billing_last</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_billing_last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_billing_last" title="Permalink to this definition">¶</a></dt>
+<dd><p>get last bill</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_billing_summary">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_billing_summary</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_billing_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_billing_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>get billing summary</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_company_departments">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_company_departments</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_company_departments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_company_departments" title="Permalink to this definition">¶</a></dt>
+<dd><p>get company departments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_designation">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_designation</tt><big>(</big><em>design_id</em><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_designation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the employee designation of the passed id
+:param design_id: the id of the designation</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_dish_categories">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_dish_categories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_dish_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_dish_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>get dish categories</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_employee_designations">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_employee_designations</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_employee_designations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_employee_designations" title="Permalink to this definition">¶</a></dt>
+<dd><p>get employee designations</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_ingredient_categories">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_ingredient_categories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_ingredient_categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_ingredient_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>get dish ingredient categories</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_ingredients">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_ingredients</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_ingredients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_ingredients" title="Permalink to this definition">¶</a></dt>
+<dd><p>get dish ingredients</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_inventory_last">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_inventory_last</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_inventory_last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_inventory_last" title="Permalink to this definition">¶</a></dt>
+<dd><p>get last inventory</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_inventory_summary">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_inventory_summary</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_inventory_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_inventory_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>get inventory summary</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_message">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_message</tt><big>(</big><em>msgid</em><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>get message updates of the id
+:param msgid: the message id</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.get_messages_updates">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">get_messages_updates</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fserpapi.html#get_messages_updates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.get_messages_updates" title="Permalink to this definition">¶</a></dt>
+<dd><p>get message updates</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fserpapi.ingredient_add">
+<tt class="descclassname">fserpapi.</tt><tt class="descname">ingredient_add</tt><big>(</big><em>ingredient</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="_modules/fserpapi.html#ingredient_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fserpapi.ingredient_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>add dish ingredient
+:param ingredient: the new ingredient name
+:param parent: the parent category of the ingredient</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="employee_tryton.html"
+                        title="previous chapter">employee_tryton module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gui.html"
+                        title="next chapter">gui module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/fserpapi.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="gui module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="employee_tryton.html" title="employee_tryton module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'new_item.ui'
+#
+# Created: Thu May 28 19:20:07 2015
+#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PySide import QtCore, QtGui
+
+class Ui_new_item(object):
+    def setupUi(self, new_item):
+        new_item.setObjectName("new_item")
+        new_item.resize(429, 474)
+        self.verticalLayout = QtGui.QVBoxLayout(new_item)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.formLayout = QtGui.QFormLayout()
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
+        self.formLayout.setObjectName("formLayout")
+        self.label_4 = QtGui.QLabel(new_item)
+        self.label_4.setObjectName("label_4")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_4)
+        self.itemdialogue_codenumber_lineedit = QtGui.QLineEdit(new_item)
+        self.itemdialogue_codenumber_lineedit.setObjectName("itemdialogue_codenumber_lineedit")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.itemdialogue_codenumber_lineedit)
+        self.label = QtGui.QLabel(new_item)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label)
+        self.itemdialogue_itemname_lineedit = QtGui.QLineEdit(new_item)
+        self.itemdialogue_itemname_lineedit.setObjectName("itemdialogue_itemname_lineedit")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.itemdialogue_itemname_lineedit)
+        self.label_5 = QtGui.QLabel(new_item)
+        self.label_5.setObjectName("label_5")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_5)
+        self.itemdialogue_itemunit_combobox = QtGui.QComboBox(new_item)
+        self.itemdialogue_itemunit_combobox.setObjectName("itemdialogue_itemunit_combobox")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.itemdialogue_itemunit_combobox)
+        self.label_2 = QtGui.QLabel(new_item)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_2)
+        self.itemdialogue_itemcategory_combobox = QtGui.QComboBox(new_item)
+        self.itemdialogue_itemcategory_combobox.setObjectName("itemdialogue_itemcategory_combobox")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.itemdialogue_itemcategory_combobox)
+        self.label_3 = QtGui.QLabel(new_item)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.LabelRole, self.label_3)
+        self.itemdialogue_rate_lineedit = QtGui.QLineEdit(new_item)
+        self.itemdialogue_rate_lineedit.setObjectName("itemdialogue_rate_lineedit")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.itemdialogue_rate_lineedit)
+        self.verticalLayout.addLayout(self.formLayout)
+        self.itemdialogue_supplier_table = QtGui.QTableWidget(new_item)
+        self.itemdialogue_supplier_table.setObjectName("itemdialogue_supplier_table")
+        self.itemdialogue_supplier_table.setColumnCount(2)
+        self.itemdialogue_supplier_table.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.itemdialogue_supplier_table.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.itemdialogue_supplier_table.setHorizontalHeaderItem(1, item)
+        self.itemdialogue_supplier_table.horizontalHeader().setStretchLastSection(True)
+        self.verticalLayout.addWidget(self.itemdialogue_supplier_table)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.itemdialogue_delete_button = QtGui.QPushButton(new_item)
+        self.itemdialogue_delete_button.setObjectName("itemdialogue_delete_button")
+        self.horizontalLayout.addWidget(self.itemdialogue_delete_button)
+        self.itemdialogue_newcategory_button = QtGui.QPushButton(new_item)
+        self.itemdialogue_newcategory_button.setObjectName("itemdialogue_newcategory_button")
+        self.horizontalLayout.addWidget(self.itemdialogue_newcategory_button)
+        self.itemdialogue_addsuplier_button = QtGui.QPushButton(new_item)
+        self.itemdialogue_addsuplier_button.setObjectName("itemdialogue_addsuplier_button")
+        self.horizontalLayout.addWidget(self.itemdialogue_addsuplier_button)
+        self.itemdialogue_additem_button = QtGui.QPushButton(new_item)
+        self.itemdialogue_additem_button.setObjectName("itemdialogue_additem_button")
+        self.horizontalLayout.addWidget(self.itemdialogue_additem_button)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.retranslateUi(new_item)
+        QtCore.QMetaObject.connectSlotsByName(new_item)
+        new_item.setTabOrder(self.itemdialogue_codenumber_lineedit, self.itemdialogue_itemname_lineedit)
+        new_item.setTabOrder(self.itemdialogue_itemname_lineedit, self.itemdialogue_itemunit_combobox)
+        new_item.setTabOrder(self.itemdialogue_itemunit_combobox, self.itemdialogue_itemcategory_combobox)
+        new_item.setTabOrder(self.itemdialogue_itemcategory_combobox, self.itemdialogue_rate_lineedit)
+        new_item.setTabOrder(self.itemdialogue_rate_lineedit, self.itemdialogue_additem_button)
+        new_item.setTabOrder(self.itemdialogue_additem_button, self.itemdialogue_delete_button)
+        new_item.setTabOrder(self.itemdialogue_delete_button, self.itemdialogue_newcategory_button)
+
+    def retranslateUi(self, new_item):
+        new_item.setWindowTitle(QtGui.QApplication.translate("new_item", "New Item", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setText(QtGui.QApplication.translate("new_item", "Code", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("new_item", "Item", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_5.setText(QtGui.QApplication.translate("new_item", "Units", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("new_item", "Category", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("new_item", "Rate", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_supplier_table.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("new_item", "Code", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_supplier_table.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("new_item", "Supplier", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_delete_button.setText(QtGui.QApplication.translate("new_item", "Delete", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_newcategory_button.setText(QtGui.QApplication.translate("new_item", "New Category", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_addsuplier_button.setText(QtGui.QApplication.translate("new_item", "New Supplier", None, QtGui.QApplication.UnicodeUTF8))
+        self.itemdialogue_additem_button.setText(QtGui.QApplication.translate("new_item", "Add Item", None, QtGui.QApplication.UnicodeUTF8))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    new_item = QtGui.QDialog()
+    ui = Ui_new_item()
+    ui.setupUi(new_item)
+    new_item.show()
+    sys.exit(app.exec_())
+

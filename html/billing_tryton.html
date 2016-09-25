@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>billing_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="config_fserp module" href="config_fserp.html" />
+    <link rel="prev" title="billing module" href="billing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config_fserp.html" title="config_fserp module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="billing.html" title="billing module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-billing_tryton">
+<span id="billing-tryton-module"></span><h1>billing_tryton module<a class="headerlink" href="#module-billing_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Billing module backend</p>
+<dl class="class">
+<dt id="billing_tryton.SaveBill">
+<em class="property">class </em><tt class="descclassname">billing_tryton.</tt><tt class="descname">SaveBill</tt><a class="reference internal" href="_modules/billing_tryton.html#SaveBill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SaveBill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the bill</p>
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.Account">
+<tt class="descname">Account</tt><a class="headerlink" href="#billing_tryton.SaveBill.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.account</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.Invoice">
+<tt class="descname">Invoice</tt><a class="headerlink" href="#billing_tryton.SaveBill.Invoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.invoice</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.Journal">
+<tt class="descname">Journal</tt><a class="headerlink" href="#billing_tryton.SaveBill.Journal" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.journal</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.PaymentTerm">
+<tt class="descname">PaymentTerm</tt><a class="headerlink" href="#billing_tryton.SaveBill.PaymentTerm" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.invoice.payment_term</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.Product">
+<tt class="descname">Product</tt><a class="headerlink" href="#billing_tryton.SaveBill.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SaveBill.User">
+<tt class="descname">User</tt><a class="headerlink" href="#billing_tryton.SaveBill.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SaveBill.pay_bill">
+<tt class="descname">pay_bill</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SaveBill.pay_bill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SaveBill.pay_bill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the payment of the bill
+:id: the id of the bill
+:return:boolean True if the value is saved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SaveBill.save_bill">
+<tt class="descname">save_bill</tt><big>(</big><em>dataobj</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SaveBill.save_bill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SaveBill.save_bill" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataobj</strong> &#8211; product to be added into the invoice</td>
+</tr>
+</tbody>
+</table>
+<p>:return:id of the invoice and status</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="billing_tryton.Search">
+<em class="property">class </em><tt class="descclassname">billing_tryton.</tt><tt class="descname">Search</tt><a class="reference internal" href="_modules/billing_tryton.html#Search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.Search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches through the bills</p>
+<dl class="attribute">
+<dt id="billing_tryton.Search.Invoice">
+<tt class="descname">Invoice</tt><a class="headerlink" href="#billing_tryton.Search.Invoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.invoice</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.Search.invoice_list">
+<tt class="descname">invoice_list</tt><a class="headerlink" href="#billing_tryton.Search.invoice_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.Search.percent">
+<tt class="descname">percent</tt><big>(</big><em>taxed</em>, <em>untaxed</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#Search.percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.Search.percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the tax value for the corresponding values
+:param taxed:the taxed amount
+:param untaxed:the untaxed amount
+:return:the percentage value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.Search.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#billing_tryton.Search.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.Search.search_bills">
+<tt class="descname">search_bills</tt><big>(</big><em>from_date=None</em>, <em>to_date=None</em>, <em>bill_no=None</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#Search.search_bills"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.Search.search_bills" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches for the bill with the start and end date or the bill number
+:param from_date: start date
+:param to_date:end date
+:param bill_no:the bill number
+:return:the details</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.Search.select_bill">
+<tt class="descname">select_bill</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#Search.select_bill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.Search.select_bill" title="Permalink to this definition">¶</a></dt>
+<dd><p>shows the details of the bill of which the id is passed
+:param id:the id of the bill
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="billing_tryton.SearchMenu">
+<em class="property">class </em><tt class="descclassname">billing_tryton.</tt><tt class="descname">SearchMenu</tt><a class="reference internal" href="_modules/billing_tryton.html#SearchMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SearchMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search the dish to be billed</p>
+<dl class="attribute">
+<dt id="billing_tryton.SearchMenu.Menu">
+<tt class="descname">Menu</tt><a class="headerlink" href="#billing_tryton.SearchMenu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">product.product</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SearchMenu.Tax">
+<tt class="descname">Tax</tt><a class="headerlink" href="#billing_tryton.SearchMenu.Tax" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.tax</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SearchMenu.get_tax">
+<tt class="descname">get_tax</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SearchMenu.get_tax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SearchMenu.get_tax" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">gets the restaurant tax value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SearchMenu.pool">
+<tt class="descname">pool</tt><em class="property"> = &lt;trytond.pool.Pool object at 0xab0b70c&gt;</em><a class="headerlink" href="#billing_tryton.SearchMenu.pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SearchMenu.search_id">
+<tt class="descname">search_id</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SearchMenu.search_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SearchMenu.search_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>code</strong> &#8211; searches the menu based on the code</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">menu item</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SearchMenu.search_item">
+<tt class="descname">search_item</tt><big>(</big><em>model</em>, <em>item</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SearchMenu.search_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SearchMenu.search_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>:model:the completer model
+:item:the text typed in the lineedit
+:return: searches each instance of the menu item number</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="billing_tryton.SearchMenu.search_rate">
+<tt class="descname">search_rate</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/billing_tryton.html#SearchMenu.search_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#billing_tryton.SearchMenu.search_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>:param item:menu item
+:return: list price of the item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="billing_tryton.SearchMenu.transaction">
+<tt class="descname">transaction</tt><em class="property"> = &lt;trytond.transaction.Transaction object at 0xab08e6c&gt;</em><a class="headerlink" href="#billing_tryton.SearchMenu.transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="billing.html"
+                        title="previous chapter">billing module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="config_fserp.html"
+                        title="next chapter">config_fserp module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/billing_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config_fserp.html" title="config_fserp module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="billing.html" title="billing module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

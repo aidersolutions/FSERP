@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>notification_popupGUI.example &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for notification_popupGUI.example</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+
+<div class="viewcode-block" id="PMXMessageOverlay"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay">[docs]</a><span class="k">class</span> <span class="nc">PMXMessageOverlay</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">messageFadedOut</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">messageFadedIn</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    Mixin for displaying overlayed messages in a QWidget instance.</span>
+<span class="sd">    Please note that you should:</span>
+<span class="sd">        * Use the mixin on toplevel elements (no QWidgets, but QPlainTextEdit, QWebView, etc.)</span>
+<span class="sd">        * You should call updateMessagePosition at least in resizeEvent of your subclass </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Signals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span> <span class="o">=</span> <span class="n">LabelOverlayWidget</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">fadedIn</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messageFadedIn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">fadedOut</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messageFadedOut</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">messageClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messageClicked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">linkActivated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messageLinkActivated</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="PMXMessageOverlay.messageFadedIn"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.messageFadedIn">[docs]</a>    <span class="k">def</span> <span class="nf">messageFadedIn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Override &#39;&#39;&#39;</span>
+        <span class="c">#print &quot;Message appeared&quot;</span>
+        <span class="k">pass</span>
+    </div>
+<div class="viewcode-block" id="PMXMessageOverlay.messageFadedOut"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.messageFadedOut">[docs]</a>    <span class="k">def</span> <span class="nf">messageFadedOut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Override &#39;&#39;&#39;</span>
+        <span class="c">#print &quot;Message disappeared&quot;</span>
+        <span class="k">pass</span>
+    </div>
+<div class="viewcode-block" id="PMXMessageOverlay.messageLinkActivated"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.messageLinkActivated">[docs]</a>    <span class="k">def</span> <span class="nf">messageLinkActivated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Override &#39;&#39;&#39;</span>
+        <span class="k">pass</span>
+    </div>
+<div class="viewcode-block" id="PMXMessageOverlay.showMessage"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.showMessage">[docs]</a>    <span class="k">def</span> <span class="nf">showMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">icon</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="bp">None</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">adjustSize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">fadeIn</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">fadeOut</span><span class="p">()</span>
+            </div>
+<div class="viewcode-block" id="PMXMessageOverlay.clarMessage"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.clarMessage">[docs]</a>    <span class="k">def</span> <span class="nf">clarMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">fadeOut</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="PMXMessageOverlay.messageClicked"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.messageClicked">[docs]</a>    <span class="k">def</span> <span class="nf">messageClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clarMessage</span><span class="p">()</span>       
+        </div>
+<div class="viewcode-block" id="PMXMessageOverlay.updateMessagePosition"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.PMXMessageOverlay.updateMessagePosition">[docs]</a>    <span class="k">def</span> <span class="nf">updateMessagePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+
+        
+        </div></div>
+<div class="viewcode-block" id="LabelOverlayWidget"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget">[docs]</a><span class="k">class</span> <span class="nc">LabelOverlayWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    Inner message QLabel.</span>
+<span class="sd">    StyleSheet</span>
+<span class="sd">    Don&#39;t use this widget separately, please use PMXMessageOverlay API</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">fadedOut</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">fadedIn</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">messageClicked</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    
+    
+    <span class="n">STYLESHEET</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">    QLabel, QLabel link {</span>
+<span class="s">        color: rgb(0, 0, 0);</span>
+<span class="s">        background-color: rgb(248, 240, 200);</span>
+<span class="s">        border: 1px solid;</span>
+<span class="s">        border-color: rgb(173, 114, 47);</span>
+<span class="s">        border-radius: 5px;</span>
+<span class="s">        padding: 2px;</span>
+<span class="s">    }</span>
+<span class="s">    &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LabelOverlayWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paddingLeft</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paddingBottom</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateOpacity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STYLESHEET</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    
+<div class="viewcode-block" id="LabelOverlayWidget.setParent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.setParent">[docs]</a>    <span class="k">def</span> <span class="nf">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">LabelOverlayWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+  </div>
+<div class="viewcode-block" id="LabelOverlayWidget.updatePosition"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.updatePosition">[docs]</a>    <span class="k">def</span> <span class="nf">updatePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="s">&#39;viewport&#39;</span><span class="p">):</span>
+            <span class="n">parentRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">viewport</span><span class="p">()</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parentRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+            
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parentRect</span><span class="p">:</span>
+            <span class="k">return</span>
+            
+        <span class="n">x</span> <span class="o">=</span> <span class="n">parentRect</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">paddingLeft</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">parentRect</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">paddingBottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+        
+        
+    </div>
+<div class="viewcode-block" id="LabelOverlayWidget.resizeEvent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.resizeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LabelOverlayWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">resizeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="LabelOverlayWidget.showEvent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.showEvent">[docs]</a>    <span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">LabelOverlayWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+  </div>
+<div class="viewcode-block" id="LabelOverlayWidget.enterEvent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.enterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">enterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Mouse hovered the messge &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    </div>
+    <span class="n">FULL_THERSHOLD</span> <span class="o">=</span> <span class="mf">0.7</span>
+    <span class="n">DEFAULT_FADE_SPEED</span> <span class="o">=</span> <span class="mf">0.15</span>
+    
+<div class="viewcode-block" id="LabelOverlayWidget.fadeIn"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.fadeIn">[docs]</a>    <span class="k">def</span> <span class="nf">fadeIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FADE_SPEED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="LabelOverlayWidget.fadeOut"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.fadeOut">[docs]</a>    <span class="k">def</span> <span class="nf">fadeOut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FULL_THERSHOLD</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FADE_SPEED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        </div>
+    <span class="n">__color</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__color</span>
+    
+    <span class="nd">@color.setter</span>       
+<div class="viewcode-block" id="LabelOverlayWidget.color"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.color">[docs]</a>    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__color</span> <span class="o">=</span> <span class="n">value</span>
+       </div>
+    <span class="n">__backgroundColor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="mi">248</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__backgroundColor</span>
+    
+    <span class="nd">@backgroundColor.setter</span>       
+<div class="viewcode-block" id="LabelOverlayWidget.backgroundColor"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.backgroundColor">[docs]</a>    <span class="k">def</span> <span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__backgroundColor</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateStylesheetAlpha</span><span class="p">()</span>
+    
+    </div>
+    <span class="n">__borderColor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="mi">173</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">47</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">borderColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__borderColor</span>
+    
+    <span class="nd">@borderColor.setter</span>       
+<div class="viewcode-block" id="LabelOverlayWidget.borderColor"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.borderColor">[docs]</a>    <span class="k">def</span> <span class="nf">borderColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__borderColor</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateStylesheetAlpha</span><span class="p">()</span>
+            </div>
+    <span class="n">__opacity</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__opacity</span>
+    
+    <span class="nd">@opacity.setter</span>       
+<div class="viewcode-block" id="LabelOverlayWidget.opacity"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.opacity">[docs]</a>    <span class="k">def</span> <span class="nf">opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not in 0..1 value&quot;</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__opacity</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateStylesheetAlpha</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="LabelOverlayWidget.mousePressEvent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messageClicked</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="LabelOverlayWidget.updateOpacity"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.LabelOverlayWidget.updateOpacity">[docs]</a>    <span class="k">def</span> <span class="nf">updateOpacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isHidden</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FULL_THERSHOLD</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fadedIn</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fadedOut</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    </div>
+    <span class="n">COLOR_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;(?&lt;!-)color:\s*rgba?\([\d\,\s\%\w]*\);?&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+    <span class="n">BACKGROUND_COLOR_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;background-color:\s*rgba?\([\d\,\s\%\w]*\);?&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+    <span class="n">BORDER_COLOR_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;border-color:\s*rgba?\([\d\,\s\%\w]*\);?&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_updateStylesheetAlpha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">styleSheet</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">styleSheet</span><span class="p">())</span>
+        <span class="c">#re.sub(pattern, repl, string, count, flags)</span>
+        
+        <span class="k">for</span> <span class="n">regex</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">COLOR_PATTERN</span><span class="p">,</span> <span class="s">&#39;color&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">),</span>
+                                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BACKGROUND_COLOR_PATTERN</span><span class="p">,</span> <span class="s">&#39;background-color&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">backgroundColor</span><span class="p">),</span>
+                                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BORDER_COLOR_PATTERN</span><span class="p">,</span> <span class="s">&#39;border-color&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">borderColor</span><span class="p">)):</span>
+            <span class="n">repl</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">: rgba(</span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">, </span><span class="si">%d%%</span><span class="s">);&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">col</span><span class="o">.</span><span class="n">green</span><span class="p">(),</span> <span class="n">col</span><span class="o">.</span><span class="n">blue</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
+            <span class="n">styleSheet</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">styleSheet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">styleSheet</span><span class="p">)</span>
+    
+   
+
+            
+<span class="c">#---------------------------------------------------------------------- </span>
+<span class="c"># Example usage</span>
+<span class="c">#---------------------------------------------------------------------- </span>
+</div>
+<div class="viewcode-block" id="ExampleOverlayedText"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.ExampleOverlayedText">[docs]</a><span class="k">class</span> <span class="nc">ExampleOverlayedText</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextEdit</span><span class="p">,</span> <span class="n">PMXMessageOverlay</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextEdit</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PMXMessageOverlay</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+              
+<div class="viewcode-block" id="ExampleOverlayedText.resizeEvent"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.ExampleOverlayedText.resizeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExampleOverlayedText</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">resizeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMessagePosition</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="ExampleOverlayedText.messageLinkActivated"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.ExampleOverlayedText.messageLinkActivated">[docs]</a>    <span class="k">def</span> <span class="nf">messageLinkActivated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Link activated&quot;</span><span class="p">,</span> <span class="s">&quot;You just clicked on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">link</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="Window"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.Window">[docs]</a><span class="k">class</span> <span class="nc">Window</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineedit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">showNiceTooltip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="s">&quot;Please type here...&quot;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="Window.showNiceTooltip"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.Window.showNiceTooltip">[docs]</a>    <span class="k">def</span> <span class="nf">showNiceTooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">frnd</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="o">.</span><span class="n">messageOverlay</span><span class="o">.</span><span class="n">borderColor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">(),</span> <span class="n">frnd</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="Window.setupUi"><a class="viewcode-back" href="../../notification_popupGUI.html#notification_popupGUI.example.Window.setupUi">[docs]</a>    <span class="k">def</span> <span class="nf">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span> <span class="o">=</span> <span class="n">ExampleOverlayedText</span><span class="p">()</span>
+        <span class="c">#self.plaintext = QtGui.QTextEdit()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plaintext</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineedit</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s">&quot;Test messages here:&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lineedit</span><span class="p">)</span>
+        </div></div>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="n">Window</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

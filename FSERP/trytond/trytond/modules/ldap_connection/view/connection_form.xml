@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<form string="LDAP Connection" col="6">
+    <label name="server"/>
+    <field name="server"/>
+    <label name="port"/>
+    <field name="port"/>
+    <label name="secure"/>
+    <field name="secure"/>
+    <label name="bind_dn"/>
+    <field name="bind_dn"/>
+    <label name="bind_pass"/>
+    <field name="bind_pass" widget="password"/>
+    <label name="active_directory"/>
+    <field name="active_directory"/>
+    <group colspan="6" id="buttons">
+        <button name="test_connection" string="_Test Connection"/>
+    </group>
+</form>

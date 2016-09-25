@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>test_tansactions &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for test_tansactions</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="c"># -*- coding: iso-8859-1 -*-</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">FSERP</span>
+<span class="kn">import</span> <span class="nn">trytond</span>
+<span class="kn">from</span> <span class="nn">trytond.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="c"># Load the configuration file</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update_etc</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;FSERP&#39;</span><span class="p">,</span> <span class="s">&#39;trytond&#39;</span><span class="p">,</span> <span class="s">&#39;etc&#39;</span><span class="p">,</span> <span class="s">&#39;trytond.conf&#39;</span><span class="p">))</span>  <span class="c"># Replace with your path</span>
+<span class="kn">from</span> <span class="nn">trytond.pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="c"># from trytond.model import Cache</span>
+<span class="kn">from</span> <span class="nn">trytond.cache</span> <span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span> <span class="nn">trytond.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+
+<span class="c"># dbname contains the db you want to use</span>
+<span class="n">dbname</span> <span class="o">=</span> <span class="s">&#39;testdb&#39;</span>
+<span class="n">CONTEXT</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+
+<span class="c"># Instantiate the pool</span>
+<span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">CONTEXT</span><span class="p">):</span>
+    <span class="n">Pool</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span>
+
+    <span class="c"># Clean the global cache for multi-instance</span>
+    <span class="n">Cache</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="c"># User 0 is root user. We use it to get the admin id:</span>
+<span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+    <span class="n">user_obj</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">user_obj</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+    <span class="c"># user.name = &#39;raj&#39;</span>
+    <span class="c"># user.login = &#39;raj&#39;</span>
+    <span class="c"># user.password = &#39;raj&#39;</span>
+    <span class="c"># user.save()</span>
+    <span class="c"># user_obj.delete([user])</span>
+    <span class="c"># transaction.cursor.commit()</span>
+    <span class="c"># print &#39;success&#39;</span>
+    <span class="c"># user = user.search([(&#39;login&#39;, &#39;=&#39;, &#39;admin&#39;)], limit=1)[0]</span>
+    <span class="c"># user_id = user.id</span>
+    <span class="c"># print user_id</span>
+
+
+<div class="viewcode-block" id="func"><a class="viewcode-back" href="../test_tansactions.html#test_tansactions.func">[docs]</a><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">CONTEXT</span><span class="p">)</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+        <span class="c"># No password is needed, because we are working directly with the</span>
+        <span class="c"># API, bypassing any networking stuff.</span>
+        <span class="c"># don&#39;t forget to install the party&#39;s module before this test.</span>
+        <span class="n">party_obj</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+        <span class="n">new_party</span> <span class="o">=</span> <span class="n">party_obj</span><span class="o">.</span><span class="n">create</span><span class="p">([{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;test_transactions&#39;</span><span class="p">}])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new_party_id</span> <span class="o">=</span> <span class="n">new_party</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="n">new_party_id</span>
+    <span class="c"># Reset the global cache for multi-instance</span>
+    <span class="n">Cache</span><span class="o">.</span><span class="n">resets</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>inventory module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="inventory_popupGUI package" href="inventory_popupGUI.html" />
+    <link rel="prev" title="gui module" href="gui.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inventory_popupGUI.html" title="inventory_popupGUI package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="gui module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-inventory">
+<span id="inventory-module"></span><h1>inventory module<a class="headerlink" href="#module-inventory" title="Permalink to this headline">¶</a></h1>
+<p>Inventory Module Ui</p>
+<dl class="class">
+<dt id="inventory.AddStock">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">AddStock</tt><a class="reference internal" href="_modules/inventory.html#AddStock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.AddStock.add_new_blank_rows">
+<tt class="descname">add_new_blank_rows</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.add_new_blank_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.add_new_blank_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the schedules in the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.add_row_to_table">
+<tt class="descname">add_row_to_table</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.add_row_to_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.add_row_to_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>complex stuff of auto complete to be added to each combo box
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.calculate_amount">
+<tt class="descname">calculate_amount</tt><big>(</big><em>row</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.calculate_amount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.calculate_amount" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates the value of the amount
+:param row: the row number
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.commit">
+<tt class="descname">commit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the details in db before printing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.fill_item_list">
+<tt class="descname">fill_item_list</tt><big>(</big><em>combo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.fill_item_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.fill_item_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>fill the item combo box
+:param combo: the combobox object
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.get_batch">
+<tt class="descname">get_batch</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.get_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.get_batch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.get_data">
+<tt class="descname">get_data</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">fetches all the data for printing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>rowcount</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the item, category and units based on the code
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>rowcount</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the code, category and units based on the item
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.group_schedule_with_supplier">
+<tt class="descname">group_schedule_with_supplier</tt><big>(</big><em>dataobj</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.group_schedule_with_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.group_schedule_with_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>groups the table data according to the supplier
+:param dataobj: the list of dictionary from getdata
+:return:arranged list of dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.just_to_get_focus">
+<tt class="descname">just_to_get_focus</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.just_to_get_focus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.just_to_get_focus" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>just gets focus</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">none</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.populate_suppliers">
+<tt class="descname">populate_suppliers</tt><big>(</big><em>combo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.populate_suppliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.populate_suppliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the supplier list for each item line
+:param combo: the combo box of suppliers
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.search_batch">
+<tt class="descname">search_batch</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.search_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.search_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches the items of the batch number
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.select_all_checkboxes">
+<tt class="descname">select_all_checkboxes</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.select_all_checkboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.select_all_checkboxes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.AddStock.show_error">
+<tt class="descname">show_error</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/inventory.html#AddStock.show_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.AddStock.show_error" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pops up an error</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.CategoryAddDialogue">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">CategoryAddDialogue</tt><a class="reference internal" href="_modules/inventory.html#CategoryAddDialogue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.CategoryAddDialogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PySide.QtGui.QDialog</span></tt></p>
+<dl class="method">
+<dt id="inventory.CategoryAddDialogue.add_category">
+<tt class="descname">add_category</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#CategoryAddDialogue.add_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.CategoryAddDialogue.add_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a new category to the category types
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.CategoryAddDialogue.auto_capital">
+<tt class="descname">auto_capital</tt><big>(</big><em>linedit</em><big>)</big><a class="reference internal" href="_modules/inventory.html#CategoryAddDialogue.auto_capital"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.CategoryAddDialogue.auto_capital" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>linedit</strong> &#8211; the linedit object to be modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">none</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory.CategoryAddDialogue.staticMetaObject">
+<tt class="descname">staticMetaObject</tt><em class="property"> = &lt;PySide.QtCore.QMetaObject object at 0xc8aeb0c&gt;</em><a class="headerlink" href="#inventory.CategoryAddDialogue.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.Inventory">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">Inventory</tt><a class="reference internal" href="_modules/inventory.html#Inventory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Inventory" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.Inventory.add_tabs">
+<tt class="descname">add_tabs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Inventory.add_tabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Inventory.add_tabs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Inventory.change_focus">
+<tt class="descname">change_focus</tt><big>(</big><em>event=None</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Inventory.change_focus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Inventory.change_focus" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.Item">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">Item</tt><a class="reference internal" href="_modules/inventory.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.Item.add_item">
+<tt class="descname">add_item</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Item.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Pops up a new dialogue to add the items</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Item.add_row">
+<tt class="descname">add_row</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Item.add_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item.add_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Item.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Item.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return:checks and adds new rows</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Item.popup_edit">
+<tt class="descname">popup_edit</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Item.popup_edit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item.popup_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops up the item to be edited
+:param item: item clicked
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Item.update_item">
+<tt class="descname">update_item</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Item.update_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Item.update_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return:Populates the item table</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.ItemAddDialogue">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">ItemAddDialogue</tt><big>(</big><em>parent=None</em>, <em>code=None</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PySide.QtGui.QDialog</span></tt></p>
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.add_item">
+<tt class="descname">add_item</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds the new item item
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.add_rows">
+<tt class="descname">add_rows</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.add_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.add_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds the rows to the supplier table
+:param data: list of dictionary
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.add_supplier_popup">
+<tt class="descname">add_supplier_popup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.add_supplier_popup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.add_supplier_popup" title="Permalink to this definition">¶</a></dt>
+<dd><p>pops up a supplier list to be added
+:return:none, but updates the table in with the parent object passed to the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.auto_capital">
+<tt class="descname">auto_capital</tt><big>(</big><em>linedit</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.auto_capital"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.auto_capital" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>linedit</strong> &#8211; the linedit object to be modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">none</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.complete_category">
+<tt class="descname">complete_category</tt><big>(</big><em>event=None</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.complete_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.complete_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the category in the combobox
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.complete_unit">
+<tt class="descname">complete_unit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.complete_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.complete_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the unit
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.delete_item_item">
+<tt class="descname">delete_item_item</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.delete_item_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.delete_item_item" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">deletes the current item from the item</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>:param args:item code
+:return:Loads the rows from the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.load_supplier_table">
+<tt class="descname">load_supplier_table</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.load_supplier_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.load_supplier_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the supplier table data
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.popup_category">
+<tt class="descname">popup_category</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.popup_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.popup_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>pops up a dialogue for category
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.ItemAddDialogue.popup_delete">
+<tt class="descname">popup_delete</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#ItemAddDialogue.popup_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.ItemAddDialogue.popup_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops up the menu to be edited
+:param item: item clicked
+:return:none</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory.ItemAddDialogue.staticMetaObject">
+<tt class="descname">staticMetaObject</tt><em class="property"> = &lt;PySide.QtCore.QMetaObject object at 0xc8aea2c&gt;</em><a class="headerlink" href="#inventory.ItemAddDialogue.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.NewItemSupplierDialogue">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">NewItemSupplierDialogue</tt><big>(</big><em>parent=None</em>, <em>code=None</em><big>)</big><a class="reference internal" href="_modules/inventory.html#NewItemSupplierDialogue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.NewItemSupplierDialogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PySide.QtGui.QDialog</span></tt></p>
+<dl class="method">
+<dt id="inventory.NewItemSupplierDialogue.add_supplier">
+<tt class="descname">add_supplier</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#NewItemSupplierDialogue.add_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.NewItemSupplierDialogue.add_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds the supplier to the product_suppliers of the item
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.NewItemSupplierDialogue.change_label">
+<tt class="descname">change_label</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#NewItemSupplierDialogue.change_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.NewItemSupplierDialogue.change_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>changes the label according to the supplier selected
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.NewItemSupplierDialogue.set_supplier_name">
+<tt class="descname">set_supplier_name</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#NewItemSupplierDialogue.set_supplier_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.NewItemSupplierDialogue.set_supplier_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the suppliers name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory.NewItemSupplierDialogue.staticMetaObject">
+<tt class="descname">staticMetaObject</tt><em class="property"> = &lt;PySide.QtCore.QMetaObject object at 0xc8ae34c&gt;</em><a class="headerlink" href="#inventory.NewItemSupplierDialogue.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.PurchaseSchedule">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">PurchaseSchedule</tt><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.PurchaseSchedule.add_new_blank_rows">
+<tt class="descname">add_new_blank_rows</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.add_new_blank_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.add_new_blank_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes the schedules in the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.add_schedules">
+<tt class="descname">add_schedules</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.add_schedules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.add_schedules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the Schedules when we load the tab</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.clear_table">
+<tt class="descname">clear_table</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.clear_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.clear_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear table</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.commit_and_print">
+<tt class="descname">commit_and_print</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.commit_and_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.commit_and_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the details in db before printing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.fill_item_list">
+<tt class="descname">fill_item_list</tt><big>(</big><em>combo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.fill_item_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.fill_item_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>fill the item combo box
+:param combo: the combobox object
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.get_batch">
+<tt class="descname">get_batch</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.get_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.get_batch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.get_data">
+<tt class="descname">get_data</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">fetches all the data for printing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>rowcount</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the item, category and units based on the code
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>rowcount</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the code, category and units based on the item
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.group_schedule_with_supplier">
+<tt class="descname">group_schedule_with_supplier</tt><big>(</big><em>dataobj</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.group_schedule_with_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.group_schedule_with_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>groups the table data according to the supplier
+:param dataobj: the list of dictionary from getdata
+:return:arranged list of dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return:loads the rows</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.load_schedules">
+<tt class="descname">load_schedules</tt><big>(</big><em>load_type</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.load_schedules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.load_schedules" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads schedule according to the load_type
+:param load_type: today, tomorrow,week(this week),month(this month)
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.populate_suppliers">
+<tt class="descname">populate_suppliers</tt><big>(</big><em>combo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.populate_suppliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.populate_suppliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the supplier list for each item line
+:param combo: the combo box of suppliers
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.search_schedules">
+<tt class="descname">search_schedules</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.search_schedules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.search_schedules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for schedules when search button is pressed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.select_all_rows">
+<tt class="descname">select_all_rows</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.select_all_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.select_all_rows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.set_supplier_name">
+<tt class="descname">set_supplier_name</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.set_supplier_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.set_supplier_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the suppliers name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.PurchaseSchedule.show_error">
+<tt class="descname">show_error</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/inventory.html#PurchaseSchedule.show_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.PurchaseSchedule.show_error" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pops up an error</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.Release">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">Release</tt><a class="reference internal" href="_modules/inventory.html#Release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.Release.add_row_to_discardtable">
+<tt class="descname">add_row_to_discardtable</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.add_row_to_discardtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.add_row_to_discardtable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.add_row_to_releasetable">
+<tt class="descname">add_row_to_releasetable</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.add_row_to_releasetable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.add_row_to_releasetable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.auto_populate_discardtable">
+<tt class="descname">auto_populate_discardtable</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.auto_populate_discardtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.auto_populate_discardtable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.check_quantity">
+<tt class="descname">check_quantity</tt><big>(</big><em>item</em>, <em>table</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.check_quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.check_quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if the quantity is entered properly and checks the batch info for the product also add a new row below
+:param item: the table widget item
+:param table: the table of the widget
+:return:quantity</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.discard_stock">
+<tt class="descname">discard_stock</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.discard_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.discard_stock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.fill_item_list">
+<tt class="descname">fill_item_list</tt><big>(</big><em>combo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.fill_item_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.fill_item_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>fill the item combo box
+:param combo: the combobox object
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.focus_item_combo">
+<tt class="descname">focus_item_combo</tt><big>(</big><em>itemcombo</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.focus_item_combo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.focus_item_combo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.get_data">
+<tt class="descname">get_data</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">fetches all the data for printing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.get_data_discard">
+<tt class="descname">get_data_discard</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.get_data_discard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.get_data_discard" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">fetches all the data for printing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.get_details_of_code">
+<tt class="descname">get_details_of_code</tt><big>(</big><em>item</em>, <em>table</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.get_details_of_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.get_details_of_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the item, category and units based on the code
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.get_details_of_item">
+<tt class="descname">get_details_of_item</tt><big>(</big><em>item</em>, <em>table</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.get_details_of_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.get_details_of_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>fills the code, category and units based on the item
+:param rowcount: the row count
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.get_rowcount">
+<tt class="descname">get_rowcount</tt><big>(</big><em>item</em>, <em>table</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.get_rowcount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.get_rowcount" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the row count for the model
+:param item:any table item
+:param table:table object
+:return:row count</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.just_to_get_focus">
+<tt class="descname">just_to_get_focus</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.just_to_get_focus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.just_to_get_focus" title="Permalink to this definition">¶</a></dt>
+<dd><p>just to get focus
+:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.release_stock">
+<tt class="descname">release_stock</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.release_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.release_stock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.select_all_checkboxes_discard">
+<tt class="descname">select_all_checkboxes_discard</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.select_all_checkboxes_discard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.select_all_checkboxes_discard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.select_all_checkboxes_release">
+<tt class="descname">select_all_checkboxes_release</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.select_all_checkboxes_release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.select_all_checkboxes_release" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.show_error">
+<tt class="descname">show_error</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.show_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.show_error" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pops up an error</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Release.todays_release">
+<tt class="descname">todays_release</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Release.todays_release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Release.todays_release" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.Stock">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">Stock</tt><a class="reference internal" href="_modules/inventory.html#Stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Stock" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.Stock.add_row_in_stock_table">
+<tt class="descname">add_row_in_stock_table</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Stock.add_row_in_stock_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Stock.add_row_in_stock_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Stock.got_focus">
+<tt class="descname">got_focus</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Stock.got_focus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Stock.got_focus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.Stock.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Stock.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Stock.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return:Loads the rows with the data from the db</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Stock.print_pdf">
+<tt class="descname">print_pdf</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Stock.print_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Stock.print_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>prints the pdf of stock
+:return:none</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.Supplier">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">Supplier</tt><a class="reference internal" href="_modules/inventory.html#Supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="inventory.Supplier.add_new_supplier">
+<tt class="descname">add_new_supplier</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Supplier.add_new_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier.add_new_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>save new suppliers to the db</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Supplier.add_rows">
+<tt class="descname">add_rows</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Supplier.add_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier.add_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a new row to the supplier table</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Supplier.get_suppliers">
+<tt class="descname">get_suppliers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#Supplier.get_suppliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier.get_suppliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>populate the suppliers from db</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Supplier.load_rows">
+<tt class="descname">load_rows</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Supplier.load_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier.load_rows" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">adds the rows</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.Supplier.row_clicked">
+<tt class="descname">row_clicked</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="_modules/inventory.html#Supplier.row_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.Supplier.row_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops up the supplier to be edited
+:param item: item clicked
+:return:none</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="inventory.SupplierAddDialog">
+<em class="property">class </em><tt class="descclassname">inventory.</tt><tt class="descname">SupplierAddDialog</tt><big>(</big><em>parent=None</em>, <em>code=None</em><big>)</big><a class="reference internal" href="_modules/inventory.html#SupplierAddDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.SupplierAddDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PySide.QtGui.QDialog</span></tt></p>
+<dl class="method">
+<dt id="inventory.SupplierAddDialog.auto_capital">
+<tt class="descname">auto_capital</tt><big>(</big><em>linedit</em><big>)</big><a class="reference internal" href="_modules/inventory.html#SupplierAddDialog.auto_capital"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.SupplierAddDialog.auto_capital" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>linedit</strong> &#8211; the linedit object to be modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">none</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.SupplierAddDialog.delete_supplier">
+<tt class="descname">delete_supplier</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#SupplierAddDialog.delete_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.SupplierAddDialog.delete_supplier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inventory.SupplierAddDialog.load_supplier">
+<tt class="descname">load_supplier</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="_modules/inventory.html#SupplierAddDialog.load_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.SupplierAddDialog.load_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the supplier
+:param code: The code of the supplier
+:return:None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inventory.SupplierAddDialog.save_supplier">
+<tt class="descname">save_supplier</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/inventory.html#SupplierAddDialog.save_supplier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inventory.SupplierAddDialog.save_supplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>saves the Supplier details
+:return:None</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="inventory.SupplierAddDialog.staticMetaObject">
+<tt class="descname">staticMetaObject</tt><em class="property"> = &lt;PySide.QtCore.QMetaObject object at 0xc8ae32c&gt;</em><a class="headerlink" href="#inventory.SupplierAddDialog.staticMetaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gui.html"
+                        title="previous chapter">gui module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="inventory_popupGUI.html"
+                        title="next chapter">inventory_popupGUI package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/inventory.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inventory_popupGUI.html" title="inventory_popupGUI package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="gui module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

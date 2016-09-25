@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Salary Slip</title>
+    <style type="text/css">
+        @page{
+        margin-top:40mm;
+        @bottom-right {
+        font-size: 80%;
+        content: 'Aider Solutions(c)http://www.aidersolutions.in/';
+        }
+        }
+        body{
+        font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        }
+        #header_content{
+        width:100%;
+        }
+        #header-left{
+        display: inline-block;
+        vertical-align: top;
+        position:relative;
+        height:64px;
+        width:64px;
+        overflow:hidden;
+        }
+        #header-left img{
+        width:100%;
+        }
+        #header-middle{
+        display: inline-block;
+        vertical-align: top;
+        width: 180px;
+        position:relative;
+        }
+        #header-right{
+        display: inline-block;
+        vertical-align: top;
+        float: right;
+        position:relative;
+        }
+        #topic{
+        text-align: center;
+        }
+        table{
+        width: 100%;
+        border-collapse: collapse;
+        }
+        thead th{
+        background: grey;
+        color: white;
+        }
+        thead th:nth-child(1){
+        border-right: 1px solid white;
+        }
+        thead th:nth-child(2){
+        border-left: 1px solid white;
+        }
+        tbody tr:nth-child(even){
+        background: WhiteSmoke;
+        }
+        tfoot th:nth-child(1){
+        background: grey;
+        color: white;
+        text-align: right;
+        }
+        tfoot td{
+        border:1px solid WhiteSmoke;
+        text-align: right;
+        font-weight:bold;
+        }
+        #words{
+        margin-top: 15px;
+        text-align: right;
+        }
+        #acknowledgement{
+        margin-top: 40px;
+        text-align: right;
+        }
+        #right-corner{
+        text-align: right;
+        margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div id='header_content'>
+        <div id='header-left'>
+            <img src="{{user.company}}"/>
+            <!--{#should replace src="{{compay logo if available}}"#} -->
+        </div>
+        <div id='header-middle'>
+            {{user.name}},{{user.address}}
+        </div>
+        <div id='header-right'>{{user.date.strftime('%d %B %Y')}}</div>
+    </div>
+</header>
+<hr/>
+<div id='topic'>Salary Slip</div>
+<hr/>
+Name Of the Employee:{{user.employee}}<br/>
+Designation:{{user.designation}}<br/>
+PAN Number:{{user.pan}}<br/>
+Month &amp; Year:{{user.date.strftime('%B %Y')}}<br/>
+<table>
+    <thead>
+    <tr>
+        <th colspan=2>Earnings</th>
+        <th colspan=2>Deductions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Basic</td>
+        <td>{{user.basic_pay}}</td>
+        <td>Provident Fund</td>
+        <td>{{user.pf}}</td>
+    </tr>
+    <tr>
+        <td>DA</td>
+        <td>{{user.da}}</td>
+        <td>Professional Tax</td>
+        <td>{{user.professional_tax}}</td>
+    </tr>
+    <tr>
+        <td>HRA</td>
+        <td>{{user.hra}}</td>
+        <td>ESI</td>
+        <td>{{user.esi}}</td>
+    </tr>
+    <tr>
+        <td>Gross Salary</td>
+        <td>{{user.gross}}</td>
+        <td>Other Deductions</td>
+        <td>{{user.other_deductions}}</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>Total Deduction</td>
+        <td>{{user.total_deduction}}</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th colspan=3>Net Salary</th>
+        <td>Rs:{{user.net}}</td>
+    </tr>
+    </tfoot>
+</table>
+<div id='words'>
+    Rupees:{{user.rupees}} Only.
+</div>
+<hr/>
+<div id='acknowledgement'>
+    Authorized Signatory
+</div>
+<footer>
+    <div id='right-corner'>Aider Solutions(c)http://www.aidersolutions.in/</div>
+</footer>
+</body>
+</html>

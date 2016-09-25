@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sale Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sale-module">
+<h1>Sale Module<a class="headerlink" href="#sale-module" title="Permalink to this headline">¶</a></h1>
+<p>The sale module defines the Sale model.</p>
+<div class="section" id="sale">
+<h2>Sale<a class="headerlink" href="#sale" title="Permalink to this headline">¶</a></h2>
+<p>The sale is mainly defined by a party to which the products will be
+sold and a list of sale lines, each one containing a product and a
+quantity. Here is the extensive list of the fields, most of them are
+optional or completed with sensible default values:</p>
+<ul>
+<li><p class="first">Party: The customer.</p>
+</li>
+<li><p class="first">Invoice Address: The invoice address of the customer.</p>
+</li>
+<li><p class="first">Shipment Address: The address where the shipment will be sent.</p>
+</li>
+<li><p class="first">Description: An optional description for the order.</p>
+</li>
+<li><p class="first">Reference: The internal reference of the sale (will be generated
+automatically on confirmation).</p>
+</li>
+<li><p class="first">Sale Date: The date the sale is made.</p>
+</li>
+<li><p class="first">Payment Term: Define which payment term will be use for the future
+invoice.</p>
+</li>
+<li><p class="first">Warehouse: Define the warehouse from which the goods will be sent.</p>
+</li>
+<li><p class="first">Currency: define the currency to use for this sale. All product
+prices will be computed accordingly.</p>
+</li>
+<li><p class="first">Sale Lines:</p>
+<ul class="simple">
+<li>Type: The type of the line. The default value is <em>Line</em> which
+means that the current sale line contains the fields defined
+hereunder. The other values of Type (<em>Comment</em>, <em>Subtotal</em>,
+<em>Title</em>) are used to add extra lines that will appear on the
+report, thus allowing to easily customise it.</li>
+<li>Sequence: Allow to order lines. The value of this field is also
+updated with a drag and drop between the lines.</li>
+<li>Product: An optional reference to the product to sale.</li>
+<li>Description: The description of the product to sale.</li>
+<li>Quantity: The quantity to sale.</li>
+<li>Unit: The unit of measure in which is expressed the quantity.</li>
+<li>Unit Price: The unit price of the product expressed in the
+currency of the sale.</li>
+<li>Amount: The amount of the current line (Unit Price multiplied by
+Quantity).</li>
+<li>Taxes: The list of taxes that will be applied to the current line.</li>
+</ul>
+</li>
+<li><p class="first">Invoice State: The state of the invoice related to the sale.</p>
+</li>
+<li><p class="first">Shipment State: The state of the shipment related to the sale.</p>
+</li>
+<li><p class="first">Untaxed: The untaxed amount.</p>
+</li>
+<li><p class="first">Tax: The tax amount.</p>
+</li>
+<li><p class="first">Total: The total amount.</p>
+</li>
+<li><p class="first">State: The state of the sale. May take one of the following
+values: Draft, Quotation, Confirmed, Processing, Cancelled.</p>
+</li>
+<li><p class="first">Company: The company which issue the sale order.</p>
+</li>
+<li><p class="first">Invoice Method: May take one of the following values:</p>
+<ul class="simple">
+<li>On Order Processed: The invoice is created when the sale order is
+processed.</li>
+<li>On Shipment Sent: The invoice is created when the shipment is sent
+and will contains the shipped quantities. If there are several
+shipments for the same sale, several invoices will be created.</li>
+<li>Manual: Tryton doesn&#8217;t create any invoice automatically.</li>
+</ul>
+</li>
+<li><p class="first">Shipment Method: May take one of the following values:</p>
+<ul class="simple">
+<li>On Order Processed: The customer shipment is created when the sale
+order is processed.</li>
+<li>On Invoice Paid: The customer shipment is created when the invoice
+is paid.</li>
+<li>Manual: Tryton doesn&#8217;t create any shipment automatically.</li>
+</ul>
+<p>One should note that choosing <em>On Shipment Sent</em> for the Invoice
+Method and <em>On Invoice Paid</em> for the Shipment Method is an invalid
+combination.</p>
+</li>
+<li><p class="first">Comments: A text fields to add custom comments.</p>
+</li>
+<li><p class="first">Invoices: The list of related invoices.</p>
+</li>
+<li><p class="first">Moves: The list of related stock moves.</p>
+</li>
+<li><p class="first">Shipments: The list of related shipments.</p>
+</li>
+<li><p class="first">Return Shipments: The list of related shipments return.</p>
+</li>
+</ul>
+<p>The <em>Sale</em> report allow to print the sale orders or to send
+them by mail.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sale Module</a><ul>
+<li><a class="reference internal" href="#sale">Sale</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/sale/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Stock Continental Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-stock-continental-scenario">
+<h1>Account Stock Continental Scenario<a class="headerlink" href="#account-stock-continental-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account.tests.tools</span> <span class="kn">import</span> <span class="n">create_fiscalyear</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">create_chart</span><span class="p">,</span> <span class="n">get_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">from</span><span class="o">.</span><span class="n">trytond</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">account_invoice</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">tools</span> <span class="kn">import</span> \
+<span class="gp">... </span>    <span class="nn">set_fiscalyear_invoice_sequences</span><span class="o">,</span> <span class="nn">create_payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account_stock_continental.tests.tools</span> <span class="kn">import</span> \
+<span class="gp">... </span>    <span class="n">add_stock_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install account_stock_continental, sale and purchase:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;in&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;account_stock_continental&#39;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s">&#39;sale&#39;</span><span class="p">,</span> <span class="s">&#39;purchase&#39;</span><span class="p">,</span> <span class="s">&#39;sale_supply_drop_shipment&#39;</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create fiscal year:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span> <span class="o">=</span> <span class="n">set_fiscalyear_invoice_sequences</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">create_fiscalyear</span><span class="p">(</span><span class="n">company</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span><span class="o">.</span><span class="n">account_stock_method</span> <span class="o">=</span> <span class="s">&#39;continental&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;create_period&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create chart of accounts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_chart</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">add_stock_accounts</span><span class="p">(</span><span class="n">get_accounts</span><span class="p">(</span><span class="n">company</span><span class="p">),</span> <span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;receivable&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payable</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;payable&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;revenue&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;expense&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;stock&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;stock_customer&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_lost_found</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;stock_lost_found&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_production</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;stock_production&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;stock_supplier&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create parties:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Supplier&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Customer&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create category:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ProductCategory</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.category&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">category</span> <span class="o">=</span> <span class="n">ProductCategory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Category&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">category</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create product:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ProductUom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Product</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;product&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;goods&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">purchasable</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">salable</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;10&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;5&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">cost_price_method</span> <span class="o">=</span> <span class="s">&#39;fixed&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">delivery_time</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_expense</span> <span class="o">=</span> <span class="n">expense</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_revenue</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_stock</span> <span class="o">=</span> <span class="n">stock</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_stock_supplier</span> <span class="o">=</span> <span class="n">stock_supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_stock_customer</span> <span class="o">=</span> <span class="n">stock_customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_stock_production</span> <span class="o">=</span> <span class="n">stock_production</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">account_stock_lost_found</span> <span class="o">=</span> <span class="n">stock_lost_found</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template_average</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="o">.</span><span class="n">duplicate</span><span class="p">([</span><span class="n">template</span><span class="p">],</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s">&#39;cost_price_method&#39;</span><span class="p">:</span> <span class="s">&#39;average&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_average</span><span class="p">,</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">duplicate</span><span class="p">([</span><span class="n">product</span><span class="p">],</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s">&#39;template&#39;</span><span class="p">:</span> <span class="n">template_average</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">})</span>
+</pre></div>
+</div>
+<p>Create payment term:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">create_payment_term</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Purchase 12 products:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Purchase</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;purchase.purchase&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span> <span class="o">=</span> <span class="n">Purchase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">invoice_method</span> <span class="o">=</span> <span class="s">&#39;shipment&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span> <span class="o">=</span> <span class="n">purchase</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span> <span class="o">=</span> <span class="n">purchase</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product_average</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">7.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+</pre></div>
+</div>
+<p>Receive 9 products:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ShipmentIn</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.shipment.in&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Move</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.move&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span> <span class="o">=</span> <span class="n">ShipmentIn</span><span class="p">(</span><span class="n">supplier</span><span class="o">=</span><span class="n">supplier</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">(</span><span class="n">purchase</span><span class="o">.</span><span class="n">moves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">incoming_moves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">move</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">(</span><span class="n">purchase</span><span class="o">.</span><span class="n">moves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">incoming_moves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">move</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;receive&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+</pre></div>
+</div>
+<p>Open supplier invoice:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Invoice</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="p">,</span> <span class="o">=</span> <span class="n">purchase</span><span class="o">.</span><span class="n">invoices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">invoice</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;6&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">invoice</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="o">.</span><span class="n">invoice_date</span> <span class="o">=</span> <span class="n">today</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payable</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payable</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payable</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;44.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;44.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+</pre></div>
+</div>
+<p>Sale 5 products:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Sale</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sale.sale&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span> <span class="o">=</span> <span class="n">Sale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">invoice_method</span> <span class="o">=</span> <span class="s">&#39;shipment&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product_average</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+</pre></div>
+</div>
+<p>Send 5 products:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="p">,</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">shipments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;assign_try&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;assigned&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;pack&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;packed&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;28.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;28.00&#39;)</span>
+</pre></div>
+</div>
+<p>Open customer invoice:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="p">,</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">invoices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">receivable</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+</pre></div>
+</div>
+<p>Create an Inventory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Inventory</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.inventory&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stock.location&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage</span><span class="p">,</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;STO&#39;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span> <span class="o">=</span> <span class="n">Inventory</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;complete_lines&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inventory</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_lost_found</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_lost_found</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;11.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_lost_found</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;50.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;39.00&#39;)</span>
+</pre></div>
+</div>
+<p>Create Drop Shipment Move:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ProductSupplier</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;purchase.product_supplier&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span> <span class="o">=</span> <span class="n">ProductSupplier</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">drop_shipment</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">delivery_time</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">supply_on_sale</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span> <span class="o">=</span> <span class="n">Sale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PurchaseRequest</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;purchase.request&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_request</span><span class="p">,</span> <span class="o">=</span> <span class="n">PurchaseRequest</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_purchase</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;purchase.request.create_purchase&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">purchase_request</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span> <span class="o">=</span> <span class="n">purchase_request</span><span class="o">.</span><span class="n">purchase</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="p">,</span> <span class="o">=</span> <span class="n">purchase</span><span class="o">.</span><span class="n">lines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="p">,</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">drop_shipments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;68.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;46.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span> <span class="o">=</span> <span class="n">ProductSupplier</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product_average</span><span class="o">.</span><span class="n">template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">drop_shipment</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">delivery_time</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_supplier</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_average</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">supply_on_sale</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_average</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span> <span class="o">=</span> <span class="n">Sale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product_average</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sale</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_request</span><span class="p">,</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">PurchaseRequest</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;draft&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_purchase</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;purchase.request.create_purchase&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">purchase_request</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span> <span class="o">=</span> <span class="n">purchase_request</span><span class="o">.</span><span class="n">purchase</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="p">,</span> <span class="o">=</span> <span class="n">purchase</span><span class="o">.</span><span class="n">lines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;quote&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;confirm&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;process&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">purchase</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;processing&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="p">,</span> <span class="o">=</span> <span class="n">sale</span><span class="o">.</span><span class="n">drop_shipments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shipment</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;done&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_supplier</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;88.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;66.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stock_customer</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_stock_continental/tests/scenario_account_stock_continental.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

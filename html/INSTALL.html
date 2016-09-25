@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p>FSERP(trytond 3.6.0, proteus 3.6.0)</p>
+<dl class="docutils">
+<dt>Notations:</dt>
+<dd>&lt;text&gt; : input from the user required for the type of value mentioned between the brackets.</dd>
+<dt>Dependencies:</dt>
+<dd>weasyprint,
+proteus 3.6.0,
+pyside</dd>
+<dt>Note:</dt>
+<dd><p class="first">This part of the code consists of different version of trytond and proteus,
+separate from the versions we are currently using and hence the following code
+should be executed when we use it for the first time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="o">/</span><span class="n">trytond</span> <span class="o">-</span><span class="n">c</span> <span class="n">etc</span><span class="o">/</span><span class="n">trytond</span><span class="o">.</span><span class="n">conf</span> <span class="o">-</span><span class="n">d</span> <span class="o">&lt;</span><span class="n">databasename</span><span class="o">&gt;</span> <span class="o">--</span><span class="nb">all</span>
+</pre></div>
+</div>
+<p class="last">After this the database and the trytond will be ready to be worked upon</p>
+</dd>
+<dt>Steps:Follow them the first time only</dt>
+<dd><ol class="first arabic simple">
+<li>In the Ipython shell run the following lines</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">FSERP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span><span class="n">Model</span><span class="p">,</span><span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">con</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;admin&#39;</span><span class="p">,</span><span class="n">database</span><span class="o">=</span><span class="s">&#39;testdb&#39;</span><span class="p">,</span><span class="n">config_file</span><span class="o">=</span><span class="s">&quot;&lt;location of the trytond.conf&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">User</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span> <span class="c">####steps to create a user</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="o">=&lt;</span><span class="n">name</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">password</span><span class="o">=&lt;</span><span class="n">password</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">login</span><span class="o">=&lt;</span><span class="n">username</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span> <span class="c">###steps to create a party</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">=</span><span class="n">Party</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Aider&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">party</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Currency</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;currency.currency&#39;</span><span class="p">)</span> <span class="c">### steps to create a currency</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">currencies</span><span class="o">=</span><span class="n">Currency</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;code&#39;</span><span class="p">,</span><span class="s">&#39;=&#39;</span><span class="p">,</span><span class="s">&#39;INR&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">currency</span><span class="p">,</span><span class="o">=</span><span class="n">currencies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company_config</span><span class="o">=</span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;company.company.config&#39;</span><span class="p">)</span><span class="c">### steps to create a company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Group</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.group&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">con</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">con</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;company&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span><span class="o">=</span><span class="n">company_config</span><span class="o">.</span><span class="n">form</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span><span class="o">.</span><span class="n">party</span><span class="o">=</span><span class="n">party</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span><span class="o">.</span><span class="n">currency</span><span class="o">=</span><span class="n">currency</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;add&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="last arabic simple" start="2">
+<li>Run the mainfile.py</li>
+<li>Enter the username and password</li>
+<li>Then click at admin panel</li>
+<li>Enter the credentials</li>
+<li>Edit the values and then save it.This should modify the company details.</li>
+</ol>
+</dd>
+<dt>Report:</dt>
+<dd>If you find any bug or error kindly contact me on <a class="reference external" href="mailto:jitesh&#46;aider&#37;&#52;&#48;gmail&#46;com">jitesh<span>&#46;</span>aider<span>&#64;</span>gmail<span>&#46;</span>com</a></dd>
+</dl>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/INSTALL.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

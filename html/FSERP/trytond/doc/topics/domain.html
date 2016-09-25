@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Domain &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="domain">
+<span id="topics-domain"></span><h1>Domain<a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Data_domain">Domains</a> represent a set of records. A domain is a list of none or
+more clauses. A clause is a condition, which returns true or false.
+A record belongs to a domain, when the final result of the list of
+clauses returns true.</p>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<p>The definition of a simple domain with one clause is represented
+by this pattern:</p>
+<div class="highlight-python"><div class="highlight"><pre>domain = [(&lt;field name&gt;, &lt;operator&gt;, &lt;operand&gt;)]
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt></dt>
+<dd><p class="first">Is the name of a <a class="reference internal" href="../ref/models/fields.html#module-trytond.model.fields" title="trytond.model.fields"><tt class="xref py py-mod docutils literal"><span class="pre">trytond.model.fields</span></tt></a> or a
+<a class="reference internal" href="pyson.html#topics-pyson"><em>pyson</em></a> statement, that evaluates to a
+string.</p>
+<p>A field of type <a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Many2One" title="trytond.model.fields.Many2One"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2One</span></tt></a> or
+<a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Many2Many" title="trytond.model.fields.Many2Many"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2Many</span></tt></a> or
+<a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.One2Many" title="trytond.model.fields.One2Many"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.One2Many</span></tt></a> or
+<a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.One2One" title="trytond.model.fields.One2One"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.One2One</span></tt></a> or
+<a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Reference" title="trytond.model.fields.Reference"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Reference</span></tt></a> can be dereferenced to related
+models. This is illustrated by the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;country.name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Japan&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p class="last">The number of <em>dots</em> in a clause is not limited.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>For <a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Reference" title="trytond.model.fields.Reference"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Reference</span></tt></a>, an extra ending clause is
+needed to define the target model to join, for example:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;origin.party.name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;John Doe&#39;</span><span class="p">,</span> <span class="s">&#39;sale.sale&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">operator</span></tt></dt>
+<dd>Is an operator out of <a class="reference internal" href="#domain-operators">Domain Operators</a> or a
+<a class="reference internal" href="pyson.html#topics-pyson"><em>pyson</em></a> statement, that evaluates to
+a domain operator string.</dd>
+<dt><tt class="docutils literal"><span class="pre">operand</span></tt></dt>
+<dd>Is an operand or a <a class="reference internal" href="pyson.html#topics-pyson"><em>pyson</em></a> statement. The
+type of operand depends on the kind of &lt;field name&gt;.</dd>
+</dl>
+<p>The definition of an empty domain is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>An empty domain without clauses will always return all <em>active</em>
+records. A record is active, when its appropriate
+<a class="reference internal" href="../ref/models/models.html#trytond.model.Model" title="trytond.model.Model"><tt class="xref py py-class docutils literal"><span class="pre">Model</span></tt></a> contains a
+<a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Boolean" title="trytond.model.fields.Boolean"><tt class="xref py py-class docutils literal"><span class="pre">Boolean</span></tt></a> field with name <tt class="docutils literal"><span class="pre">active</span></tt>,
+and set to true. When the appropriate <a class="reference internal" href="../ref/models/models.html#trytond.model.Model" title="trytond.model.Model"><tt class="xref py py-class docutils literal"><span class="pre">Model</span></tt></a>
+does not contain a <a class="reference internal" href="../ref/models/fields.html#trytond.model.fields.Boolean" title="trytond.model.fields.Boolean"><tt class="xref py py-class docutils literal"><span class="pre">Boolean</span></tt></a> field with
+name <tt class="docutils literal"><span class="pre">active</span></tt> all records are returned.</p>
+<p>A domain can be setup as a combination of clauses, like shown in
+this pattern:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;field name1&#39;</span><span class="p">,</span> <span class="s">&#39;operator1&#39;</span><span class="p">,</span> <span class="s">&#39;operand1&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;field name2&#39;</span><span class="p">,</span> <span class="s">&#39;operator2&#39;</span><span class="p">,</span> <span class="s">&#39;operand2&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;field name3&#39;</span><span class="p">,</span> <span class="s">&#39;operator3&#39;</span><span class="p">,</span> <span class="s">&#39;operand3&#39;</span><span class="p">),]</span>
+</pre></div>
+</div>
+<p>The single clauses are implicitly combined with a logical
+<a class="reference external" href="http://en.wikipedia.org/wiki/Logical_and">AND</a> operation.</p>
+<p>In the domain syntax it is possible to provide explicitly the
+combination operation of the clauses. These operations can be <a class="reference external" href="http://en.wikipedia.org/wiki/Logical_and">AND</a>
+or <a class="reference external" href="http://en.wikipedia.org/wiki/Logical_or">OR</a>. This is illustrated by the following pattern:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[</span> <span class="s">&#39;OR&#39;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;field name1&#39;</span><span class="p">,</span> <span class="s">&#39;operator1&#39;</span><span class="p">,</span> <span class="s">&#39;operand1&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;field name2&#39;</span><span class="p">,</span> <span class="s">&#39;operator2&#39;</span><span class="p">,</span> <span class="s">&#39;operand2&#39;</span><span class="p">),</span>
+        <span class="p">],</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;field name3&#39;</span><span class="p">,</span> <span class="s">&#39;operator3&#39;</span><span class="p">,</span> <span class="s">&#39;operand3&#39;</span><span class="p">),</span>
+        <span class="p">],]</span>
+</pre></div>
+</div>
+<p>Here the domain is evaluated like this: <tt class="docutils literal"><span class="pre">((clause1</span> <span class="pre">AND</span> <span class="pre">clause2)</span>
+<span class="pre">OR</span> <span class="pre">clause3)</span></tt>. Please note that the <tt class="docutils literal"><span class="pre">AND</span></tt> operation is implicit
+assumed when no operator is given. While the <tt class="docutils literal"><span class="pre">OR</span></tt> operation must
+be given explicitly. The former pattern is equivalent to the
+following completely explicit domain definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">domain</span> <span class="o">=</span> <span class="p">[</span> <span class="s">&#39;OR&#39;</span><span class="p">,</span>
+             <span class="p">[</span> <span class="s">&#39;AND&#39;</span><span class="p">,</span> <span class="p">[</span>
+                     <span class="p">(</span><span class="s">&#39;field name1&#39;</span><span class="p">,</span> <span class="s">&#39;operator1&#39;</span><span class="p">,</span> <span class="s">&#39;operand1&#39;</span><span class="p">),</span>
+                 <span class="p">],</span> <span class="p">[</span>
+                     <span class="p">(</span><span class="s">&#39;field name2&#39;</span><span class="p">,</span> <span class="s">&#39;operator2&#39;</span><span class="p">,</span> <span class="s">&#39;operand2&#39;</span><span class="p">),</span>
+                 <span class="p">],</span>
+             <span class="p">],</span> <span class="p">[</span>
+                 <span class="p">(</span><span class="s">&#39;field name3&#39;</span><span class="p">,</span> <span class="s">&#39;operator3&#39;</span><span class="p">,</span> <span class="s">&#39;operand3&#39;</span><span class="p">),</span>
+         <span class="p">],]</span>
+</pre></div>
+</div>
+<p>Obviously the use of the implicit <tt class="docutils literal"><span class="pre">AND</span></tt> operation makes the code
+more readable.</p>
+</div>
+<div class="section" id="domain-operators">
+<h2>Domain Operators<a class="headerlink" href="#domain-operators" title="Permalink to this headline">¶</a></h2>
+<p>The following operators are allowed in the domain syntax.
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;operator&gt;</span></tt> and <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt> are dereferenced
+to their values. The description of each operator follows this
+pattern, unless otherwise noted:</p>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;field name&gt;, &lt;operator&gt;, &lt;operand&gt;)
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3><tt class="docutils literal"><span class="pre">=</span></tt><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a parity operator. Returns true when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>
+equals to <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3><tt class="docutils literal"><span class="pre">!=</span></tt><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is an imparity operator. It is the negation of the <a class="reference internal" href="#id1">=</a> operator.</div></blockquote>
+</div>
+<div class="section" id="like">
+<h3><tt class="docutils literal"><span class="pre">like</span></tt><a class="headerlink" href="#like" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Is a pattern matching operator. Returns true when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>
+is contained in the pattern represented by <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</p>
+<p>In <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt> an underscore (<tt class="docutils literal"><span class="pre">_</span></tt>) matches any single
+character, a percent sign (<tt class="docutils literal"><span class="pre">%</span></tt>) matches any string with zero
+or more characters. To use <tt class="docutils literal"><span class="pre">_</span></tt> or <tt class="docutils literal"><span class="pre">%</span></tt> as literal, use the
+backslash <tt class="docutils literal"><span class="pre">\</span></tt> to escape them. All matching is case sensitive.</p>
+</div></blockquote>
+</div>
+<div class="section" id="not-like">
+<h3><tt class="docutils literal"><span class="pre">not</span> <span class="pre">like</span></tt><a class="headerlink" href="#not-like" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a pattern matching operator. It is the negation of the <a class="reference internal" href="#like">like</a>
+operator.</div></blockquote>
+</div>
+<div class="section" id="ilike">
+<h3><tt class="docutils literal"><span class="pre">ilike</span></tt><a class="headerlink" href="#ilike" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a pattern matching operator. The same use as <a class="reference internal" href="#like">like</a> operator,
+but matching is case insensitive.</div></blockquote>
+</div>
+<div class="section" id="not-ilike">
+<h3><tt class="docutils literal"><span class="pre">not</span> <span class="pre">ilike</span></tt><a class="headerlink" href="#not-ilike" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a pattern matching operator. The negation of the  <a class="reference internal" href="#ilike">ilike</a> operator.</div></blockquote>
+</div>
+<div class="section" id="in">
+<h3><tt class="docutils literal"><span class="pre">in</span></tt><a class="headerlink" href="#in" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a list member operator. Returns true when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is
+in <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt> list.</div></blockquote>
+</div>
+<div class="section" id="not-in">
+<h3><tt class="docutils literal"><span class="pre">not</span> <span class="pre">in</span></tt><a class="headerlink" href="#not-in" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a list non-member operator. The negation of the <a class="reference internal" href="#in">in</a> operator.</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h3><tt class="docutils literal"><span class="pre">&lt;</span></tt><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Is a <em>less than</em> operator. Returns true for type string of
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>  when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is alphabetically
+sorted before <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</p>
+<p>Returns true for type number of <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> when
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is less than <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3><tt class="docutils literal"><span class="pre">&gt;</span></tt><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Is a <em>greater than</em> operator. Returns true for type string of
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is alphabetically
+sorted after  <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</p>
+<p>Returns true for type number of <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> when
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is greater <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3><tt class="docutils literal"><span class="pre">&lt;=</span></tt><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a <em>less than or equal</em> operator. Returns the same as using the
+<a class="reference internal" href="#id3">&lt;</a> operator, but also returns true when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is
+equal to <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</div></blockquote>
+</div>
+<div class="section" id="id6">
+<h3><tt class="docutils literal"><span class="pre">&gt;=</span></tt><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a <em>greater than or equal</em> operator. Returns the same as using
+the <a class="reference internal" href="#id4">&gt;</a> operator, but also returns true when <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>
+is equal to <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>.</div></blockquote>
+</div>
+<div class="section" id="child-of">
+<h3><tt class="docutils literal"><span class="pre">child_of</span></tt><a class="headerlink" href="#child-of" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Is a parent child comparison operator. In case <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is a
+<tt class="xref py py-class docutils literal"><span class="pre">one2many</span></tt> returns true, if
+<tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is a child of <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt>. <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt>
+and <tt class="docutils literal"><span class="pre">&lt;operand&gt;</span></tt> are represented each by an <tt class="docutils literal"><span class="pre">id</span></tt>.
+In case <tt class="docutils literal"><span class="pre">&lt;field</span> <span class="pre">name&gt;</span></tt> is a <tt class="xref py py-class docutils literal"><span class="pre">many2many</span></tt>
+not linked to itself, the clause pattern extends to:</p>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;field name&gt;, [&#39;child_of&#39;|&#39;not_child_of&#39;], &lt;operand&gt;, &lt;parent field&gt;)
+</pre></div>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">&lt;parent</span> <span class="pre">field&gt;</span></tt> is the name of the field constituting the
+<tt class="xref py py-class docutils literal"><span class="pre">many2one</span></tt> on the target model.</p>
+</div></blockquote>
+</div>
+<div class="section" id="not-child-of">
+<h3><tt class="docutils literal"><span class="pre">not</span> <span class="pre">child_of</span></tt><a class="headerlink" href="#not-child-of" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Is a parent child comparison operator. It is the negation of the
+<a class="reference internal" href="#child-of">child_of</a> operator.</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Domain</a><ul>
+<li><a class="reference internal" href="#syntax">Syntax</a></li>
+<li><a class="reference internal" href="#domain-operators">Domain Operators</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">=</span></tt></a></li>
+<li><a class="reference internal" href="#id2"><tt class="docutils literal"><span class="pre">!=</span></tt></a></li>
+<li><a class="reference internal" href="#like"><tt class="docutils literal"><span class="pre">like</span></tt></a></li>
+<li><a class="reference internal" href="#not-like"><tt class="docutils literal"><span class="pre">not</span> <span class="pre">like</span></tt></a></li>
+<li><a class="reference internal" href="#ilike"><tt class="docutils literal"><span class="pre">ilike</span></tt></a></li>
+<li><a class="reference internal" href="#not-ilike"><tt class="docutils literal"><span class="pre">not</span> <span class="pre">ilike</span></tt></a></li>
+<li><a class="reference internal" href="#in"><tt class="docutils literal"><span class="pre">in</span></tt></a></li>
+<li><a class="reference internal" href="#not-in"><tt class="docutils literal"><span class="pre">not</span> <span class="pre">in</span></tt></a></li>
+<li><a class="reference internal" href="#id3"><tt class="docutils literal"><span class="pre">&lt;</span></tt></a></li>
+<li><a class="reference internal" href="#id4"><tt class="docutils literal"><span class="pre">&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#id5"><tt class="docutils literal"><span class="pre">&lt;=</span></tt></a></li>
+<li><a class="reference internal" href="#id6"><tt class="docutils literal"><span class="pre">&gt;=</span></tt></a></li>
+<li><a class="reference internal" href="#child-of"><tt class="docutils literal"><span class="pre">child_of</span></tt></a></li>
+<li><a class="reference internal" href="#not-child-of"><tt class="docutils literal"><span class="pre">not</span> <span class="pre">child_of</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/topics/domain.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

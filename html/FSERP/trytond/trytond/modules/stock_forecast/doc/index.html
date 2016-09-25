@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Stock Forecast Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stock-forecast-module">
+<h1>Stock Forecast Module<a class="headerlink" href="#stock-forecast-module" title="Permalink to this headline">¶</a></h1>
+<p>The stock forecast module provide a simple way to create stock moves
+toward customers with a date in the future. This allow other stock
+mecanism to anticipate customer demand.</p>
+<div class="section" id="forecast">
+<h2>Forecast<a class="headerlink" href="#forecast" title="Permalink to this headline">¶</a></h2>
+<p>The forecast form contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A location from which the products will leave.</li>
+<li>A destination (which is a customer location).</li>
+<li>Two dates defining a period in the future.</li>
+<li>A company</li>
+<li>A list of forcast lines with:<ul>
+<li>A product</li>
+<li>A quantity which represent the total demand for the period</li>
+<li>A minimal quantity for each move.</li>
+<li>A unit of measure.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>The &#8220;Complete Forecast&#8221; button allow to auto-complete forecast lines
+based on previous stock output for dates in the past.</p>
+<p>The forecasts are deactivated automatically when their period has passed.</p>
+<div class="section" id="forecast-states">
+<h3>Forecast States<a class="headerlink" href="#forecast-states" title="Permalink to this headline">¶</a></h3>
+<p>Draft</p>
+<blockquote>
+<div>It is the initial state and the state used for edition. No moves are
+linked to the forecast lines</div></blockquote>
+<p>Done</p>
+<blockquote>
+<div><p>Once in state done, moves are created for each forecast line:</p>
+<blockquote>
+<div><ul class="simple">
+<li>They are spread homogeneously between the two dates of the
+forecast.</li>
+<li>Move quantities are bigger or equal to the minimal quantity set
+on the forecast line.</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>Cancel</p>
+<blockquote>
+<div>On a cancelled forecast all existing moves are cancelled and the form
+is readonly.</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Stock Forecast Module</a><ul>
+<li><a class="reference internal" href="#forecast">Forecast</a><ul>
+<li><a class="reference internal" href="#forecast-states">Forecast States</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/stock_forecast/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

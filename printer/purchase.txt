@@ -1,0 +1,19 @@
+         Aider Solutions          
+             Plakkat              
+           680666 Kochi           
+##################################
+Purchase Order to Ramesh          
+Purchase Ledger1510003            
+            [09-Oct-2015] 10:58 AM
+==================================
+No Code Item   Category Units  Qty
+==================================
+1  101  Sugar  Spices   Kilo     3
+                        gram      
+==================================
+        Total Items:             1
+
+              Authorized Signatory
+
+         AIDER SOLUTIONS          
+ (C)http://www.aidersolutions.in/ 

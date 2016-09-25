@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>798</width>
+    <height>1868</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Global</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <item row="0" column="1">
+      <widget class="CustomLine" name="key_global_quit"/>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Quit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tabs</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Inventory</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <widget class="CustomLine" name="key_tabs_inventory"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_7">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Billing</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="CustomLine" name="key_tabs_billing"/>
+     </item>
+     <item row="1" column="2" rowspan="2">
+      <widget class="QLabel" name="label_8">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Employee</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3" rowspan="2">
+      <widget class="CustomLine" name="key_tabs_employee"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Menu</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" rowspan="2">
+      <widget class="CustomLine" name="key_tabs_menu"/>
+     </item>
+     <item row="3" column="2" rowspan="2">
+      <widget class="QLabel" name="label_9">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Waste</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3" rowspan="2">
+      <widget class="CustomLine" name="key_tabs_waste"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Report</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="CustomLine" name="key_tabs_report"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_10">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tab Controls</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="15" column="2">
+      <widget class="QLabel" name="label_38">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventoryadd_newrow">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_search">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>Add Stock</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_additem">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventoryitem_addnewitem"/>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_11">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Inventory</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="4">
+      <widget class="QLabel" name="label_25">
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_22">
+       <property name="text">
+        <string>Insert New Row</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventoryrelease_todaysrelease">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="2">
+      <widget class="QLabel" name="label_34">
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1" colspan="5">
+      <widget class="QLabel" name="label_29">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Purchase Schedule</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_print">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventoryadd_addstock">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="4">
+      <widget class="QLabel" name="label_30">
+       <property name="text">
+        <string>Add Item</string>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorysupplier_add"/>
+     </item>
+     <item row="12" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_thismonth">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorystock_refresh"/>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>Refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventorystock_print"/>
+     </item>
+     <item row="11" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_today">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="QLabel" name="label_19">
+       <property name="text">
+        <string>Print</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QLabel" name="label_24">
+       <property name="text">
+        <string>Today's Release</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventoryrelease_newrow">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="QLabel" name="label_41">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add New Item</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_tommorow">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_thisweek">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventorypurchase_clear">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="5">
+      <widget class="QLabel" name="label_17">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Stock</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" colspan="5">
+      <widget class="QLabel" name="label_20">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1" colspan="5">
+      <widget class="QLabel" name="label_23">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Release</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="1" colspan="5">
+      <widget class="QLabel" name="label_39">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Supplier</string>
+       </property>
+      </widget>
+     </item>
+     <item row="16" column="1" colspan="5">
+      <widget class="QLabel" name="label_40">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Item</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="2">
+      <widget class="QLabel" name="label_33">
+       <property name="text">
+        <string>Print</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="4">
+      <widget class="QLabel" name="label_32">
+       <property name="text">
+        <string>Today</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="2">
+      <widget class="QLabel" name="label_31">
+       <property name="text">
+        <string>Tommorow</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="4">
+      <widget class="QLabel" name="label_35">
+       <property name="text">
+        <string>This Month</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="2">
+      <widget class="QLabel" name="label_37">
+       <property name="text">
+        <string>This Week</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="4">
+      <widget class="QLabel" name="label_36">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventoryrelease_release">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="2">
+      <widget class="QLabel" name="label_26">
+       <property name="text">
+        <string>Release</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="5">
+      <widget class="CustomLine" name="key_tabcon_inventoryrelease_addnewrow">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="4">
+      <widget class="QLabel" name="label_28">
+       <property name="text">
+        <string>Add New Row</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="2">
+      <widget class="QLabel" name="label_27">
+       <property name="text">
+        <string>Discard</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="3">
+      <widget class="CustomLine" name="key_tabcon_inventoryrelease_discard">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="3" column="2">
+      <widget class="CustomLine" name="key_tabcon_billingbills_search"/>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="label_45">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Reset Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="4">
+      <widget class="QLabel" name="label_44">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bills</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_43">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>New Bill</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="CustomLine" name="key_tabcon_billingbills_reset"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_42">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Billing</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="CustomLine" name="key_tabcon_billingedit_pay"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="label_46">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="CustomLine" name="key_tabcon_billingbills_newbill"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLabel" name="label_73">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Pay</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QLabel" name="label_47">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="CustomLine" name="key_tabcon_billingedit_save"/>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLabel" name="label_75">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Print</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="CustomLine" name="key_tabcon_billingedit_print"/>
+     </item>
+     <item row="4" column="1" colspan="4">
+      <widget class="QLabel" name="label_74">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Edit Bill</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="7" column="4">
+      <widget class="CustomLine" name="key_tabcon_empmgtpayroll_save">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLabel" name="label_55">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtattendence_save">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtpayroll_search"/>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLabel" name="label_59">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="CustomLine" name="key_tabcon_empmgtemployee_view"/>
+     </item>
+     <item row="9" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtshift_view"/>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLabel" name="label_58">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtattendence_search"/>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="label_50">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="3">
+      <widget class="QLabel" name="label_61">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add Shift</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtemployee_add"/>
+     </item>
+     <item row="9" column="4">
+      <widget class="CustomLine" name="key_tabcon_empmgtshift_add">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="label_54">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="CustomLine" name="key_tabcon_empmgtattendence_create"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_48">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="3">
+      <widget class="QLabel" name="label_57">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="label_53">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Create Attendence</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="2">
+      <widget class="CustomLine" name="key_tabcon_empmgtsal_view"/>
+     </item>
+     <item row="11" column="4">
+      <widget class="CustomLine" name="key_tabcon_empmgtsal_new">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="3">
+      <widget class="QLabel" name="label_64">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>New Salary Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QLabel" name="label_62">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_49">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Employee Management</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" colspan="4">
+      <widget class="QLabel" name="label_52">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Attendence </string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1" colspan="4">
+      <widget class="QLabel" name="label_56">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Payroll</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1" colspan="4">
+      <widget class="QLabel" name="label_60">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Shift</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="4">
+      <widget class="QLabel" name="label_51">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Employee</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1" colspan="4">
+      <widget class="QLabel" name="label_63">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Salary Settings</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="3" column="1" colspan="4">
+      <widget class="QLabel" name="label_71">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Mon-Sun</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_65">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Menu Management</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="CustomLine" name="key_tabcon_menumgtmonsun_refresh"/>
+     </item>
+     <item row="1" column="1" colspan="4">
+      <widget class="QLabel" name="label_68">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Menu</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="label_69">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="CustomLine" name="key_tabcon_menumgtmenu_add">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="CustomLine" name="key_tabcon_menumgtmonsun_add"/>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="label_67">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add New Dish</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLabel" name="label_70">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add Dish</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="CustomLine" name="key_tabcon_menumgtmonsun_view">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="CustomLine" name="key_tabcon_menumgtmenu_view"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_66">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="label_72">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Refresh</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="key_resetdefault_button">
+       <property name="text">
+        <string>Reset Default</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="key_apply_button">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomLine</class>
+   <extends>QLineEdit</extends>
+   <header location="global">customline.customline</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>key_global_quit</tabstop>
+  <tabstop>key_tabs_inventory</tabstop>
+  <tabstop>key_tabs_billing</tabstop>
+  <tabstop>key_tabs_menu</tabstop>
+  <tabstop>key_tabs_employee</tabstop>
+  <tabstop>key_tabs_report</tabstop>
+  <tabstop>key_tabs_waste</tabstop>
+  <tabstop>key_tabcon_inventorystock_refresh</tabstop>
+  <tabstop>key_tabcon_inventorystock_print</tabstop>
+  <tabstop>key_tabcon_inventoryadd_newrow</tabstop>
+  <tabstop>key_tabcon_inventoryadd_addstock</tabstop>
+  <tabstop>key_tabcon_inventoryrelease_todaysrelease</tabstop>
+  <tabstop>key_tabcon_inventoryrelease_newrow</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_search</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_additem</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_print</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_today</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_tommorow</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_thismonth</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_thisweek</tabstop>
+  <tabstop>key_tabcon_inventorypurchase_clear</tabstop>
+  <tabstop>key_tabcon_inventorysupplier_add</tabstop>
+  <tabstop>key_tabcon_inventoryitem_addnewitem</tabstop>
+  <tabstop>key_tabcon_billingbills_newbill</tabstop>
+  <tabstop>key_tabcon_billingbills_reset</tabstop>
+  <tabstop>key_tabcon_billingbills_search</tabstop>
+  <tabstop>key_tabcon_billingedit_pay</tabstop>
+  <tabstop>key_tabcon_billingedit_save</tabstop>
+  <tabstop>key_tabcon_billingedit_print</tabstop>
+  <tabstop>key_tabcon_empmgtemployee_add</tabstop>
+  <tabstop>key_tabcon_empmgtemployee_view</tabstop>
+  <tabstop>key_tabcon_empmgtattendence_search</tabstop>
+  <tabstop>key_tabcon_empmgtattendence_create</tabstop>
+  <tabstop>key_tabcon_empmgtattendence_save</tabstop>
+  <tabstop>key_tabcon_empmgtpayroll_search</tabstop>
+  <tabstop>key_tabcon_empmgtpayroll_save</tabstop>
+  <tabstop>key_tabcon_empmgtshift_view</tabstop>
+  <tabstop>key_tabcon_empmgtshift_add</tabstop>
+  <tabstop>key_tabcon_empmgtsal_view</tabstop>
+  <tabstop>key_tabcon_empmgtsal_new</tabstop>
+  <tabstop>key_tabcon_menumgtmenu_view</tabstop>
+  <tabstop>key_tabcon_menumgtmenu_add</tabstop>
+  <tabstop>key_tabcon_menumgtmonsun_view</tabstop>
+  <tabstop>key_tabcon_menumgtmonsun_refresh</tabstop>
+  <tabstop>key_tabcon_menumgtmonsun_add</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

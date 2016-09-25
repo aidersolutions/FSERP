@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project Plan Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="project-plan-module">
+<h1>Project Plan Module<a class="headerlink" href="#project-plan-module" title="Permalink to this headline">¶</a></h1>
+<p>The Project Plan module adds planning features on top of the Project
+module.</p>
+<div class="section" id="allocation">
+<h2>Allocation<a class="headerlink" href="#allocation" title="Permalink to this headline">¶</a></h2>
+<p>An allocation links together an employee, a task and a percentage. It
+defines which part of his time the employee should dedicate to this
+task.</p>
+</div>
+<div class="section" id="work">
+<h2>Work<a class="headerlink" href="#work" title="Permalink to this headline">¶</a></h2>
+<p>The Work model is extended to support planning features:</p>
+<ul class="simple">
+<li>Tasks dependencies: Each work may have predecessor and
+successors. Predecessor and successor must share the same parent
+project.</li>
+<li>tasks leveling, I.E. automatically delay some task to avoid
+overallocation of resources.</li>
+<li>Early Start and Late End computation: If Constraint Start and
+Constraint End are set on a work, on its parent work or on one of
+the predecessors/successors, the Early Start and Late End dates (but
+also Late Start and Early Finish dates) are computed automatically.</li>
+<li>Resource allocation: Each task may allocate one or more resource
+(I.E. a certain amount of time of an employee).</li>
+<li>Requests: On each work, a list of request is available, allowing to
+exchange and follow various information about the work execution.</li>
+</ul>
+<p>The <em>Task Leveling</em> wizard allow to level a group of tasks to avoid
+eventual overallocation of resources, It will delay some tasks
+depending on task precedencies and task sequences.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Project Plan Module</a><ul>
+<li><a class="reference internal" href="#allocation">Allocation</a></li>
+<li><a class="reference internal" href="#work">Work</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/project_plan/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

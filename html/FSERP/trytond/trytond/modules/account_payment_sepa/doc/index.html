@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Payment SEPA Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-payment-sepa-module">
+<h1>Account Payment SEPA Module<a class="headerlink" href="#account-payment-sepa-module" title="Permalink to this headline">¶</a></h1>
+<p>The account_payment_sepa module allows to generate SEPA files for a Payment
+Group.</p>
+<div class="section" id="journal">
+<h2>Journal<a class="headerlink" href="#journal" title="Permalink to this headline">¶</a></h2>
+<p>The Journal has some fields when the process method is SEPA:</p>
+<ul class="simple">
+<li>Bank Account Number.</li>
+<li>Payable Flavor:
+- pain.001.001.03
+- pain.001.001.05</li>
+<li>Receivable Flavor:
+- pain.008.001.02
+- pain.008.001.04</li>
+<li>Batch Booking.</li>
+<li>Charge Bearer:
+- Debtor
+- Creditor
+- Shared
+- Service Level</li>
+</ul>
+</div>
+<div class="section" id="group">
+<h2>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h2>
+<p>The Group has a field <cite>SEPA Messages</cite> containing the XML messages.</p>
+</div>
+<div class="section" id="mandate">
+<h2>Mandate<a class="headerlink" href="#mandate" title="Permalink to this headline">¶</a></h2>
+<p>The Mandate stores information for the Direct Debit. It is mainly defined by:</p>
+<ul class="simple">
+<li>Party.</li>
+<li>Account Number.</li>
+<li>Identification.</li>
+<li>Type:
+- Recurrent
+- One-off</li>
+<li>Scheme:
+- CORE
+- Business to Business</li>
+<li>Signature Date</li>
+</ul>
+<p>The mandate can be in one of this states:</p>
+<ul class="simple">
+<li>Draft</li>
+<li>Requested</li>
+<li>Validated</li>
+<li>Canceled</li>
+</ul>
+</div>
+<div class="section" id="message">
+<h2>Message<a class="headerlink" href="#message" title="Permalink to this headline">¶</a></h2>
+<p>The Message stores the incoming and outgoing XML message.</p>
+<p>The message can be in one of this states:</p>
+<ul class="simple">
+<li>Draft</li>
+<li>Waiting</li>
+<li>Done</li>
+<li>Canceled</li>
+</ul>
+<div class="section" id="bank-to-customer-debit-credit-notification-camt-054">
+<h3>Bank to Customer Debit Credit Notification (camt.054)<a class="headerlink" href="#bank-to-customer-debit-credit-notification-camt-054" title="Permalink to this headline">¶</a></h3>
+<p>For incoming message camt.054, each booked entry will succeed the corresponding
+payment if any return information is found. Otherwise it will fail and the
+return reason will be stored on it.</p>
+</div>
+</div>
+<div class="section" id="party">
+<h2>Party<a class="headerlink" href="#party" title="Permalink to this headline">¶</a></h2>
+<p>The Party has a field <cite>SEPA Creditor Identifier</cite> used for the party of the
+company.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account Payment SEPA Module</a><ul>
+<li><a class="reference internal" href="#journal">Journal</a></li>
+<li><a class="reference internal" href="#group">Group</a></li>
+<li><a class="reference internal" href="#mandate">Mandate</a></li>
+<li><a class="reference internal" href="#message">Message</a><ul>
+<li><a class="reference internal" href="#bank-to-customer-debit-credit-notification-camt-054">Bank to Customer Debit Credit Notification (camt.054)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#party">Party</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_payment_sepa/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

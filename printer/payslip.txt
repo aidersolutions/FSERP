@@ -1,0 +1,27 @@
+         Aider Solutions          
+             Plakkat              
+           680666 Kochi           
+##################################
+Employee Name:Raju                
+Designation:Server                
+PAN Number:3455631                
+Month and Year:October 2015       
+            [10-Oct-2015] 08:02 AM
+==================================
+          Basic Pay:         15000
+                 DA:          2250
+                HRA:           750
+                 PF:          -450
+                ESI:          -300
+   Professional Tax:          -300
+   Other Deductions:            -0
+==================================
+              Gross:          2400
+   Total Deductions:         -1050
+                Net:          2260
+             Rupees:Two Thousand, Two Hundred And Sixty
+
+              Authorized Signatory
+
+         AIDER SOLUTIONS          
+ (C)http://www.aidersolutions.in/ 

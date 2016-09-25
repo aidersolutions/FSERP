@@ -1,0 +1,144 @@
+<!DOCTYPE Html>
+<html lang='en'>
+<head>
+    <title>
+        Stock
+    </title>
+    <style>
+        @page{
+        margin-top:40mm;
+        @bottom-right {
+        font-size: 80%;
+        content: 'Aider Solutions(c)http://www.aidersolutions.in/';
+        }
+        }
+        body{
+        font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        }
+        #header_content{
+        width:100%;
+        }
+        #header-left{
+        display: inline-block;
+        vertical-align: top;
+        position:relative;
+        height:64px;
+        width:64px;
+        overflow:hidden;
+        }
+        #header-left img{
+        width:100%;
+        }
+        #header-middle{
+        display: inline-block;
+        vertical-align: top;
+        width: 180px;
+        position:relative;
+        }
+        #header-right{
+        display: inline-block;
+        vertical-align: top;
+        float: right;
+        position:relative;
+        }
+        table{
+        width:100%;
+        border-collapse: collapse;
+        }
+        thead {
+        color: grey;
+        }
+        thead th{
+        border:1px solid grey;
+        text-align: center;
+        }
+        caption{
+        text-align: left;
+        color: silver;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 5px;
+        }
+        tbody tr:nth-child(even) {
+        background: WhiteSmoke;
+        }
+        tbody tr td:nth-last-child(2),
+        tbody tr td:nth-last-child(1),
+        tbody tr td:nth-last-child(0){
+        text-align: right;
+        }
+        .footer th{
+        color: grey;
+        text-align: right;
+        }
+        .footer td{
+        color: grey;
+        text-align: right !important;
+        border:1px solid grey
+        }
+        #acknowledgement{
+        margin-top: 40px;
+        text-align:right;
+        }
+        #right-corner{
+        text-align: right;
+        margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div id='header_content'>
+        <div id='header-left'>
+            <img src="{{user.company}}"/>
+            {#<!-- should replace src="{{compay logo if available}}" -->#}
+        </div>
+        <div id='header-middle'>
+            {{user.name}},{{user.address}}
+            <!--Aider solutions,Amritha Niketan,Plakkat Nagar,KK Road, Kaloor,Kerala India, Pin Code:682017-->
+        </div>
+        <div id='header-right'>{{user.date}}</div>
+        <hr/>
+    </div>
+</header>
+<div id='body_content'>
+    <table>
+        <caption>Bill {{user.status}}</caption>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Item</th>
+            <th>Rate</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%for i in user.menu%}
+        <tr id='table-data'>
+            <td>{{loop.index}}</td>
+            <td>{{i.item}}</td>
+            <td>{{i.rate}}</td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.amount}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+        <tr class='footer'>
+            <th colspan='4'>Total</th>
+            <td>Rs.{{user.total}}</td>
+        </tr>
+        <tr class='footer'>
+            <th colspan='4'>{{user.servicetax}}</th>
+            <td>Rs.{{user.servicetax_amount}}</td>
+        </tr>
+        <tr class='footer'>
+            <th colspan='4'>Grand Total</th>
+            <td>Rs.{{user.grandtotal}}</td>
+        </tr>
+    </table>
+    <div id='acknowledgement'>Authorized Signatory</div>
+</div>
+<footer><div id='right-corner'>Aider Solutions(c)http://www.aidersolutions.in/</div></footer>
+</body>
+</html>

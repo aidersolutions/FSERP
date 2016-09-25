@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Asset Scenario &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-asset-scenario">
+<h1>Account Asset Scenario<a class="headerlink" href="#account-asset-scenario" title="Permalink to this headline">¶</a></h1>
+<p>Imports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.company.tests.tools</span> <span class="kn">import</span> <span class="n">create_company</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">get_company</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account.tests.tools</span> <span class="kn">import</span> <span class="n">create_fiscalyear</span><span class="p">,</span> \
+<span class="gp">... </span>    <span class="n">create_chart</span><span class="p">,</span> <span class="n">get_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">from</span><span class="o">.</span><span class="n">trytond</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">account_invoice</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">tools</span> <span class="kn">import</span> \
+<span class="gp">... </span>    <span class="nn">set_fiscalyear_invoice_sequences</span><span class="o">,</span> <span class="nn">create_payment_term</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">trytond.modules.account_asset.tests.tools</span> \
+<span class="gp">... </span>    <span class="kn">import</span> <span class="n">add_asset_accounts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">set_trytond</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Install account_asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Module</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ir.module.module&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="p">,</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">find</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;account_asset&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;install&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;ir.module.module.install_upgrade&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create company:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_company</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">get_company</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reload the context:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_preferences</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create fiscal year:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span> <span class="o">=</span> <span class="n">set_fiscalyear_invoice_sequences</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">create_fiscalyear</span><span class="p">(</span><span class="n">company</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiscalyear</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;create_period&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create chart of accounts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">create_chart</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">add_asset_accounts</span><span class="p">(</span><span class="n">get_accounts</span><span class="p">(</span><span class="n">company</span><span class="p">),</span> <span class="n">company</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;revenue&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_account</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;asset&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;expense&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span> <span class="o">=</span> <span class="n">accounts</span><span class="p">[</span><span class="s">&#39;depreciation&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create an asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ProductUom</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.uom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span><span class="p">,</span> <span class="o">=</span> <span class="n">ProductUom</span><span class="o">.</span><span class="n">find</span><span class="p">([(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Unit&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProductTemplate</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.template&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Product</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product.product&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span> <span class="o">=</span> <span class="n">ProductTemplate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Asset&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;assets&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">default_uom</span> <span class="o">=</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">list_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">cost_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">depreciable</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">account_expense</span> <span class="o">=</span> <span class="n">expense</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">account_revenue</span> <span class="o">=</span> <span class="n">revenue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">account_asset</span> <span class="o">=</span> <span class="n">asset_account</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">account_depreciation</span> <span class="o">=</span> <span class="n">depreciation_account</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">depreciation_duration</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_template</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_product</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">asset_template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_product</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create supplier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Party</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;party.party&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Supplier&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">Party</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Customer&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create payment term:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span> <span class="o">=</span> <span class="n">create_payment_term</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payment_term</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Buy an asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Invoice</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">InvoiceLine</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.invoice.line&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;in_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">supplier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">InvoiceLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">invoice_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">asset_product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">asset_account</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span> <span class="o">=</span> <span class="n">today</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="p">,</span> <span class="o">=</span> <span class="n">supplier_invoice</span><span class="o">.</span><span class="n">lines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">asset_account</span><span class="o">.</span><span class="n">debit</span><span class="p">,</span> <span class="n">asset_account</span><span class="o">.</span><span class="n">credit</span><span class="p">)</span> <span class="o">==</span> \
+<span class="gp">... </span>    <span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1000&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Depreciate the asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Asset</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;account.asset&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span> <span class="o">=</span> <span class="n">Asset</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">asset_product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">supplier_invoice_line</span> <span class="o">=</span> <span class="n">invoice_line</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">value</span>
+<span class="go">Decimal(&#39;1000.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">start_date</span> <span class="o">==</span> <span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">end_date</span> <span class="o">==</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span> <span class="o">+</span>
+<span class="gp">... </span>    <span class="n">relativedelta</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">quantity</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="n">unit</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">residual_value</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;100&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;create_lines&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
+<span class="go">24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">depreciation</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;37.5&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">24</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">actual_value</span>
+<span class="go">Decimal(&#39;962.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">accumulated_depreciation</span>
+<span class="go">Decimal(&#39;37.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">.</span><span class="n">actual_value</span>
+<span class="go">Decimal(&#39;550.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">.</span><span class="n">accumulated_depreciation</span>
+<span class="go">Decimal(&#39;450.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">actual_value</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">accumulated_depreciation</span>
+<span class="go">Decimal(&#39;900.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;run&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create Moves for 3 months:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.asset.create_moves&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_moves&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;112.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;112.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;0.00&#39;)</span>
+</pre></div>
+</div>
+<p>Update the asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">update</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.asset.update&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">asset</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1100&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;update_asset&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">amount</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">latest_move_date</span> <span class="o">==</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">next_depreciation_date</span> <span class="o">==</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_move&#39;</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_move&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">value</span>
+<span class="go">Decimal(&#39;1100&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">depreciation</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[:</span><span class="mi">3</span><span class="p">]]</span>
+<span class="go">[Decimal(&#39;37.50&#39;), Decimal(&#39;37.50&#39;), Decimal(&#39;37.50&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">depreciation</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;42.26&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">20</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">depreciation</span>
+<span class="go">Decimal(&#39;42.30&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;112.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;112.50&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+</pre></div>
+</div>
+<p>Create Moves for 3 other months:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="s">&#39;account.asset.create_moves&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="p">(</span><span class="n">supplier_invoice</span><span class="o">.</span><span class="n">invoice_date</span>
+<span class="gp">... </span>    <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_moves</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;create_moves&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;239.28&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;239.28&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expense</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;100.00&#39;)</span>
+</pre></div>
+</div>
+<p>Sale the asset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice</span> <span class="o">=</span> <span class="n">Invoice</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;out_invoice&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">customer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span> <span class="o">=</span> <span class="n">InvoiceLine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">invoice_line</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">asset_product</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">asset</span> <span class="o">=</span> <span class="n">asset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">unit_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;600&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invoice_line</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="n">revenue</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_invoice</span><span class="o">.</span><span class="n">state</span>
+<span class="go">u&#39;posted&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset</span><span class="o">.</span><span class="n">customer_invoice_line</span> <span class="o">==</span> <span class="n">customer_invoice</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;860.72&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">revenue</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;600.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_account</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_account</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;1000.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asset_account</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;1100.00&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">debit</span>
+<span class="go">Decimal(&#39;339.28&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depreciation_account</span><span class="o">.</span><span class="n">credit</span>
+<span class="go">Decimal(&#39;239.28&#39;)</span>
+</pre></div>
+</div>
+<p>Generate the asset report:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">print_depreciation_table</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;account.asset.print_depreciation_table&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_depreciation_table</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;print_&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_asset/tests/scenario_account_asset.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:ir.action.report:"
+msgid "Invalid email definition on report \"%s\"."
+msgstr ""
+"La definició del correu electrònic sobre l'informe \"%s\", no és correcta."
+
+msgctxt "error:party.party:"
+msgid "The UUID of the party must be unique."
+msgstr "L'UUID del tercer ha de ser únic."
+
+msgctxt "error:webdav.collection:"
+msgid ""
+"You can not create a collection named \"%(parent)s\" in collection "
+"\"%(child)s\" because there is already a file with that name."
+msgstr ""
+"No podeu crear un directori amb el nom \"%(parent)s\" dins del directori "
+"\"%(child)s\" perquè ja existeix un altre amb aquest nom."
+
+msgctxt "field:party.party,uuid:"
+msgid "UUID"
+msgstr "UUID"
+
+msgctxt "field:party.party,vcard:"
+msgid "VCard"
+msgstr "vCard"
+
+msgctxt "help:party.party,uuid:"
+msgid "Universally Unique Identifier"
+msgstr "Identificador universal únic."
+
+msgctxt "model:ir.action,name:report_party_vcard"
+msgid "VCard"
+msgstr "vCard"

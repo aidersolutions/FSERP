@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modules &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="modules">
+<span id="topics-modules"></span><h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<p>The modules of Tryton extend the functionality of the platform. The server
+comes by default with only a basic functionality included in these modules:
+<tt class="docutils literal"><span class="pre">ir</span></tt>, <tt class="docutils literal"><span class="pre">res</span></tt>, <tt class="docutils literal"><span class="pre">webdav</span></tt>.</p>
+<div class="section" id="module-structure">
+<h2>Module Structure<a class="headerlink" href="#module-structure" title="Permalink to this headline">¶</a></h2>
+<p>A module is a directory in trytond/modules which contains at least two files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">__init__.py</span></tt>: a Tryton module must be a Python module.</li>
+<li><tt class="docutils literal"><span class="pre">tryton.cfg</span></tt>: a Configuration file that describes the Tryton module.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="init-py-file">
+<h3><tt class="docutils literal"><span class="pre">__init__.py</span></tt> file<a class="headerlink" href="#init-py-file" title="Permalink to this headline">¶</a></h3>
+<p>It is the Python <tt class="docutils literal"><span class="pre">__init__.py</span></tt> to define a module. It must contains a method
+named <cite>register()</cite> that must register to the pool all the objects of the module.</p>
+</div>
+<div class="section" id="tryton-cfg-file">
+<h3><tt class="docutils literal"><span class="pre">tryton.cfg</span></tt> file<a class="headerlink" href="#tryton-cfg-file" title="Permalink to this headline">¶</a></h3>
+<p>It is a configuration file using the format of <a class="reference external" href="http://docs.python.org/library/configparser.html">ConfigParser</a> that must
+contain <cite>tryton</cite> section with this following name:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">version</span></tt>: The version number of the module.</li>
+<li><tt class="docutils literal"><span class="pre">depends</span></tt>: A one per line list of modules on which this module depends.</li>
+<li><tt class="docutils literal"><span class="pre">extras_depend</span></tt>: A one per line list of modules on which this module
+<em>may</em> depend.</li>
+<li><tt class="docutils literal"><span class="pre">xml</span></tt>: The one per line list of the XML files of the module. They will
+be loaded in the given order at the installation or update of the module.</li>
+</ul>
+</div></blockquote>
+<p>Here is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>[tryton]
+version=0.0.1
+depends:
+    ir
+    res
+    country
+xml:
+    party.xml
+    category.xml
+    address.xml
+    contact_mechanism.xml
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="python-files">
+<h2>Python Files<a class="headerlink" href="#python-files" title="Permalink to this headline">¶</a></h2>
+<p>The Python files define the models for the modules.</p>
+</div>
+<div class="section" id="xml-files">
+<h2>XML Files<a class="headerlink" href="#xml-files" title="Permalink to this headline">¶</a></h2>
+<p>The XML files define data that will be inserted into the database.</p>
+<p>There is an rnc for those files stored in <tt class="docutils literal"><span class="pre">trytond/tryton.rnc</span></tt>.</p>
+<p>The following snippet gives a first idea of what an xml file looks:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;tryton&gt;</span>
+    <span class="nt">&lt;data&gt;</span>
+        <span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;res.group&quot;</span> <span class="na">id=</span><span class="s">&quot;group_party_admin&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Party Administration<span class="nt">&lt;/field&gt;</span>
+        <span class="nt">&lt;/record&gt;</span>
+        <span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;res.user-res.group&quot;</span>
+            <span class="na">id=</span><span class="s">&quot;user_admin_group_party_admin&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;user&quot;</span> <span class="na">ref=</span><span class="s">&quot;res.user_admin&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;group&quot;</span> <span class="na">ref=</span><span class="s">&quot;group_party_admin&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/record&gt;</span>
+
+        <span class="nt">&lt;menuitem</span> <span class="na">name=</span><span class="s">&quot;Party Management&quot;</span> <span class="na">sequence=</span><span class="s">&quot;0&quot;</span> <span class="na">id=</span><span class="s">&quot;menu_party&quot;</span>
+            <span class="na">icon=</span><span class="s">&quot;tryton-users&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span> <span class="na">id=</span><span class="s">&quot;party_view_tree&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>party.party<span class="nt">&lt;/field&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;type&quot;</span><span class="nt">&gt;</span>tree<span class="nt">&lt;/field&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;arch&quot;</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[</span>
+<span class="cp">                &lt;tree string=&quot;Parties&quot;&gt;</span>
+<span class="cp">                    &lt;field name=&quot;code&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;name&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;lang&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;vat_code&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;active&quot; tree_invisible=&quot;1&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;vat_country&quot; tree_invisible=&quot;1&quot;/&gt;</span>
+<span class="cp">                    &lt;field name=&quot;vat_number&quot; tree_invisible=&quot;1&quot;/&gt;</span>
+<span class="cp">                &lt;/tree&gt;</span>
+<span class="cp">                ]]&gt;</span>
+            <span class="nt">&lt;/field&gt;</span>
+        <span class="nt">&lt;/record&gt;</span>
+    <span class="nt">&lt;/data&gt;</span>
+<span class="nt">&lt;/tryton&gt;</span>
+</pre></div>
+</div>
+<p>Here is the list of the tags:</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">tryton</span></tt>: The main tag of the xml</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">data</span></tt>: Define a set of data inside the file. It can have the
+attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">noupdate</span></tt> to prevent the framework to update the records,</li>
+<li><tt class="docutils literal"><span class="pre">skiptest</span></tt> to prevent import of data when running tests,</li>
+<li><tt class="docutils literal"><span class="pre">depends</span></tt> to import data only if all modules in the comma separated
+module list value are installed,</li>
+<li><tt class="docutils literal"><span class="pre">grouped</span></tt> to create records at the end with a grouped call.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">record</span></tt>: Create a record of the model defined by the attribute
+<tt class="docutils literal"><span class="pre">model</span></tt> in the database. The <tt class="docutils literal"><span class="pre">id</span></tt> attribute can be used to refer to
+the record later in any xml file.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">field</span></tt>: Set the value of the field with the name defined by the
+attribute <tt class="docutils literal"><span class="pre">name</span></tt>.</p>
+<p>Here is the list of attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">search</span></tt>: Only for relation field. It contains a domain which is
+used to search for the value to use. The first value found will be
+used.</li>
+<li><tt class="docutils literal"><span class="pre">ref</span></tt>: Only for relation field. It contains an xml id of the
+relation to use as value. It must be prefixed by the module name with
+an ending dot, if the record is defined in an other module.</li>
+<li><tt class="docutils literal"><span class="pre">eval</span></tt>: Python code to evaluate and use result as value.</li>
+<li><tt class="docutils literal"><span class="pre">pyson</span></tt>: convert the evaluated value into <a class="reference internal" href="../../ref/pyson.html#ref-pyson"><em>PYSON</em></a>
+string.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Field content is considered as a string. So for fields that require
+other types, it is required to use the <tt class="docutils literal"><span class="pre">eval</span></tt> attribute.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">menuitem</span></tt>: Shortcut to create ir.ui.menu records.</p>
+<p>Here is the list of attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: The id of the menu.</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the menu.</li>
+<li><tt class="docutils literal"><span class="pre">icon</span></tt>: The icon of the menu.</li>
+<li><tt class="docutils literal"><span class="pre">sequence</span></tt>: The sequence value used to order the menu entries.</li>
+<li><tt class="docutils literal"><span class="pre">parent</span></tt>: The xml id of the parent menu.</li>
+<li><tt class="docutils literal"><span class="pre">action</span></tt>: The xml id of the action linked to the menu.</li>
+<li><tt class="docutils literal"><span class="pre">groups</span></tt>: A list of xml id of group, that have access to the menu,
+separated by commas.</li>
+<li><tt class="docutils literal"><span class="pre">active</span></tt>: A boolean telling if the menu is active or not.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Modules</a><ul>
+<li><a class="reference internal" href="#module-structure">Module Structure</a><ul>
+<li><a class="reference internal" href="#init-py-file"><tt class="docutils literal"><span class="pre">__init__.py</span></tt> file</a></li>
+<li><a class="reference internal" href="#tryton-cfg-file"><tt class="docutils literal"><span class="pre">tryton.cfg</span></tt> file</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python-files">Python Files</a></li>
+<li><a class="reference internal" href="#xml-files">XML Files</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/FSERP/trytond/doc/topics/modules/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

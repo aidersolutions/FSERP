@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'salary_settings_popup.ui'
+#
+# Created: Thu Jun 18 14:13:14 2015
+#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PySide import QtCore, QtGui
+
+class Ui_salary_settings(object):
+    def setupUi(self, salary_settings):
+        salary_settings.setObjectName("salary_settings")
+        salary_settings.resize(355, 284)
+        self.verticalLayout = QtGui.QVBoxLayout(salary_settings)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.formLayout = QtGui.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.label = QtGui.QLabel(salary_settings)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label)
+        self.salarysettings_designation_combobox = QtGui.QComboBox(salary_settings)
+        self.salarysettings_designation_combobox.setObjectName("salarysettings_designation_combobox")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.salarysettings_designation_combobox)
+        self.label_2 = QtGui.QLabel(salary_settings)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_2)
+        self.salarysettings_da_linedit = QtGui.QLineEdit(salary_settings)
+        self.salarysettings_da_linedit.setObjectName("salarysettings_da_linedit")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.salarysettings_da_linedit)
+        self.label_3 = QtGui.QLabel(salary_settings)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_3)
+        self.salarysettings_hra_linedit = QtGui.QLineEdit(salary_settings)
+        self.salarysettings_hra_linedit.setObjectName("salarysettings_hra_linedit")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.salarysettings_hra_linedit)
+        self.label_4 = QtGui.QLabel(salary_settings)
+        self.label_4.setObjectName("label_4")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_4)
+        self.salarysettings_pf_linedit = QtGui.QLineEdit(salary_settings)
+        self.salarysettings_pf_linedit.setObjectName("salarysettings_pf_linedit")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.salarysettings_pf_linedit)
+        self.label_5 = QtGui.QLabel(salary_settings)
+        self.label_5.setObjectName("label_5")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.LabelRole, self.label_5)
+        self.salarysettings_esi_linedit = QtGui.QLineEdit(salary_settings)
+        self.salarysettings_esi_linedit.setObjectName("salarysettings_esi_linedit")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.salarysettings_esi_linedit)
+        self.label_6 = QtGui.QLabel(salary_settings)
+        self.label_6.setObjectName("label_6")
+        self.formLayout.setWidget(5, QtGui.QFormLayout.LabelRole, self.label_6)
+        self.salarysettings_proftax_linedit = QtGui.QLineEdit(salary_settings)
+        self.salarysettings_proftax_linedit.setObjectName("salarysettings_proftax_linedit")
+        self.formLayout.setWidget(5, QtGui.QFormLayout.FieldRole, self.salarysettings_proftax_linedit)
+        self.verticalLayout.addLayout(self.formLayout)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.salarysettings_delete_button = QtGui.QPushButton(salary_settings)
+        self.salarysettings_delete_button.setObjectName("salarysettings_delete_button")
+        self.horizontalLayout.addWidget(self.salarysettings_delete_button)
+        self.salarysettings_newdesignation_button = QtGui.QPushButton(salary_settings)
+        self.salarysettings_newdesignation_button.setObjectName("salarysettings_newdesignation_button")
+        self.horizontalLayout.addWidget(self.salarysettings_newdesignation_button)
+        self.salarysettings_save_button = QtGui.QPushButton(salary_settings)
+        self.salarysettings_save_button.setObjectName("salarysettings_save_button")
+        self.horizontalLayout.addWidget(self.salarysettings_save_button)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.retranslateUi(salary_settings)
+        QtCore.QMetaObject.connectSlotsByName(salary_settings)
+        salary_settings.setTabOrder(self.salarysettings_designation_combobox, self.salarysettings_da_linedit)
+        salary_settings.setTabOrder(self.salarysettings_da_linedit, self.salarysettings_hra_linedit)
+        salary_settings.setTabOrder(self.salarysettings_hra_linedit, self.salarysettings_pf_linedit)
+        salary_settings.setTabOrder(self.salarysettings_pf_linedit, self.salarysettings_esi_linedit)
+        salary_settings.setTabOrder(self.salarysettings_esi_linedit, self.salarysettings_proftax_linedit)
+        salary_settings.setTabOrder(self.salarysettings_proftax_linedit, self.salarysettings_save_button)
+        salary_settings.setTabOrder(self.salarysettings_save_button, self.salarysettings_newdesignation_button)
+        salary_settings.setTabOrder(self.salarysettings_newdesignation_button, self.salarysettings_delete_button)
+
+    def retranslateUi(self, salary_settings):
+        salary_settings.setWindowTitle(QtGui.QApplication.translate("salary_settings", "Salary Settings", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("salary_settings", "Designation", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("salary_settings", "DA %", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("salary_settings", "HRA %", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setText(QtGui.QApplication.translate("salary_settings", "PF %", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_5.setText(QtGui.QApplication.translate("salary_settings", "ESI %", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_6.setText(QtGui.QApplication.translate("salary_settings", "Professsional Tax %", None, QtGui.QApplication.UnicodeUTF8))
+        self.salarysettings_delete_button.setText(QtGui.QApplication.translate("salary_settings", "Delete", None, QtGui.QApplication.UnicodeUTF8))
+        self.salarysettings_newdesignation_button.setText(QtGui.QApplication.translate("salary_settings", "New Designation", None, QtGui.QApplication.UnicodeUTF8))
+        self.salarysettings_save_button.setText(QtGui.QApplication.translate("salary_settings", "Save", None, QtGui.QApplication.UnicodeUTF8))
+

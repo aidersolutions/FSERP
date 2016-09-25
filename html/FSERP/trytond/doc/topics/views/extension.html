@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending View &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="extending-view">
+<span id="topics-extension"></span><h1>Extending View<a class="headerlink" href="#extending-view" title="Permalink to this headline">¶</a></h1>
+<p>Extending a view means, that the original view will be modified by a set of
+rules which are defined with XML.</p>
+<p>For this purpose, the extension engine uses xpath expressions.</p>
+<p>The view is defined with the field <tt class="docutils literal"><span class="pre">inherit</span></tt> of the ir.ui.view.</p>
+<p>If the field <tt class="docutils literal"><span class="pre">domain</span></tt> (a Python string representation of a <a class="reference internal" href="../domain.html#topics-domain"><em>domain</em></a>) is not set or evaluated to True, the inheritance will be
+proceeded.</p>
+<div class="section" id="xml-description">
+<h2>XML Description<a class="headerlink" href="#xml-description" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data">
+<h3>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<p>Each view must start with this tag.</p>
+</div>
+<div class="section" id="xpath">
+<h3>xpath<a class="headerlink" href="#xpath" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">expr</span></tt>: the xpath expression to find a node in the inherited view.</li>
+<li><tt class="docutils literal"><span class="pre">position</span></tt>: Define the position in relation to the node found. It can
+be <tt class="docutils literal"><span class="pre">before</span></tt>, <tt class="docutils literal"><span class="pre">after</span></tt>, <tt class="docutils literal"><span class="pre">replace</span></tt>, <tt class="docutils literal"><span class="pre">inside</span></tt> or
+<tt class="docutils literal"><span class="pre">replace_attributes</span></tt> which will change the attributes.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;data&gt;</span>
+    <span class="nt">&lt;xpath</span>
+        <span class="na">expr=</span><span class="s">&quot;/form/notebook/page/separator[@name=&amp;quot;signature&amp;quot;]&quot;</span>
+        <span class="na">position=</span><span class="s">&quot;before&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;main_company&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;main_company&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;company&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;company&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;employee&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;employee&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xpath&gt;</span>
+<span class="nt">&lt;/data&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending View</a><ul>
+<li><a class="reference internal" href="#xml-description">XML Description</a><ul>
+<li><a class="reference internal" href="#data">data</a></li>
+<li><a class="reference internal" href="#xpath">xpath</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/FSERP/trytond/doc/topics/views/extension.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

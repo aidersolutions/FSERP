@@ -1,0 +1,444 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>report &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for report</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Report Module Ui&quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> \
+    <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QDateEdit</span><span class="p">,</span> <span class="n">QFileDialog</span>
+
+<span class="kn">from</span> <span class="nn">PySide.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">report_popupGUI.report_empoyeedetails_popup</span> <span class="kn">import</span> <span class="n">Ui_report_empoyeedetails_popup</span>
+<span class="kn">from</span> <span class="nn">inventory</span> <span class="kn">import</span> <span class="n">Stock</span>
+<span class="kn">from</span> <span class="nn">employee</span> <span class="kn">import</span> <span class="n">EmployeeDetail</span><span class="p">,</span> <span class="n">EmployeeDetailDialog</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Report"><a class="viewcode-back" href="../report.html#report.Report">[docs]</a><span class="k">class</span> <span class="nc">Report</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">####</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_tab_5&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_8</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_8</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;horizontalLayout_8&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_detail_tabWidget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tabs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalLayout_8</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="p">)</span>
+        <span class="c">###signals and slots &amp;&amp; other stuffs</span>
+        <span class="c"># self.mainwindow = Ui_MainWindow  # just for the ease of finding the attributes in pycharm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_tab_5</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_focus</span>
+
+
+<div class="viewcode-block" id="Report.add_tabs"><a class="viewcode-back" href="../report.html#report.Report.add_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">add_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:add new tabs to the table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">employee</span> <span class="o">=</span> <span class="n">EmployeeNew</span><span class="p">()</span>
+        <span class="n">hygiene</span> <span class="o">=</span> <span class="n">Hygiene</span><span class="p">()</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">Stock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">employee</span><span class="o">.</span><span class="n">employeedetail_tab_1</span><span class="p">,</span> <span class="s">&#39;Employee&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">hygiene</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">,</span> <span class="s">&#39;Hygiene&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">stock_tab_1</span><span class="p">,</span> <span class="s">&#39;Stock&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Report.change_focus"><a class="viewcode-back" href="../report.html#report.Report.change_focus">[docs]</a>    <span class="k">def</span> <span class="nf">change_focus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:sets focus for the  child widgets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_detail_tabWidget</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">wid</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+            <span class="n">wid</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="ReportEmployeeTestDialogue"><a class="viewcode-back" href="../report.html#report.ReportEmployeeTestDialogue">[docs]</a><span class="k">class</span> <span class="nc">ReportEmployeeTestDialogue</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside ReportEmployeeTestDialogue&#39;</span><span class="p">)</span>
+        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span> <span class="o">=</span> <span class="n">Ui_report_empoyeedetails_popup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowCloseButtonHint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_openfile_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_newrow_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ReportEmployeeTestDialogue.open_directory"><a class="viewcode-back" href="../report.html#report.ReportEmployeeTestDialogue.open_directory">[docs]</a>    <span class="k">def</span> <span class="nf">open_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:Opens the directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Select Report&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~&#39;</span><span class="p">),</span>
+                                               <span class="s">&quot;Image Files (*.png *.jpg *.bmp);;PDF Files (*.pdf)&quot;</span><span class="p">))</span>
+        <span class="k">print</span> <span class="nb">file</span>  <span class="c"># provides the location</span>
+</div>
+<div class="viewcode-block" id="ReportEmployeeTestDialogue.add_rows"><a class="viewcode-back" href="../report.html#report.ReportEmployeeTestDialogue.add_rows">[docs]</a>    <span class="k">def</span> <span class="nf">add_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:adds a new row to the table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">test_name</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">QDateEdit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">test_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dialogue</span><span class="o">.</span><span class="n">testdialogue_table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ReportEmployeeTestDialogue.load_rows"><a class="viewcode-back" href="../report.html#report.ReportEmployeeTestDialogue.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:Populates the table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;loaded&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_rows</span><span class="p">()</span>  <span class="c"># pass args when we have values from db</span>
+
+</div></div>
+<div class="viewcode-block" id="EmployeeDetailDialogEdit"><a class="viewcode-back" href="../report.html#report.EmployeeDetailDialogEdit">[docs]</a><span class="k">class</span> <span class="nc">EmployeeDetailDialogEdit</span><span class="p">(</span><span class="n">EmployeeDetailDialog</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside EmployeeDetailDialogueEdit&#39;</span><span class="p">)</span>
+        <span class="n">EmployeeDetailDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_newdesignation_pushbutton</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_newdepartment_pushbutton</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeedelete_pushbutton</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c"># self.setDisabled(True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeeid_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeename_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeesurname_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeefathername_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeeadhar_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeebasicpay_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeecontact_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeepan_lineedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeeaddress_textedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeeshift_combobox</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employdesignation_combobox</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeedepartment_combobox</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeeperiod_combobox</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeesex_combobox</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeedob_dateedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeedoj_dateedit</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeesave_pushbutton</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;View Test Details&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">employeedialogue_employeesave_pushbutton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view_employee_details</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EmployeeDetailDialogEdit.save_or_edit_employee"><a class="viewcode-back" href="../report.html#report.EmployeeDetailDialogEdit.save_or_edit_employee">[docs]</a>    <span class="k">def</span> <span class="nf">save_or_edit_employee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="EmployeeDetailDialogEdit.view_employee_details"><a class="viewcode-back" href="../report.html#report.EmployeeDetailDialogEdit.view_employee_details">[docs]</a>    <span class="k">def</span> <span class="nf">view_employee_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:popup for employee details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">ReportEmployeeTestDialogue</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="EmployeeNew"><a class="viewcode-back" href="../report.html#report.EmployeeNew">[docs]</a><span class="k">class</span> <span class="nc">EmployeeNew</span><span class="p">(</span><span class="n">EmployeeDetail</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside EmployeeNew&#39;</span><span class="p">)</span>
+        <span class="n">EmployeeDetail</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employeetab_add_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;Refresh&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EmployeeNew.popup_employee_form"><a class="viewcode-back" href="../report.html#report.EmployeeNew.popup_employee_form">[docs]</a>    <span class="k">def</span> <span class="nf">popup_employee_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        who=the employee number of the employee to be viewed</span>
+<span class="sd">        if no who parameter provided then an empty form pops up...</span>
+<span class="sd">        shows a form to edit the employee details</span>
+<span class="sd">        after success adds a new row to te table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span> <span class="o">=</span> <span class="n">EmployeeDetailDialogEdit</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popup</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_employee_details</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Hygiene"><a class="viewcode-back" href="../report.html#report.Hygiene">[docs]</a><span class="k">class</span> <span class="nc">Hygiene</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">####</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Inside Hygiene&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;reporthygiene_tab_2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_23</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_23</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout_23&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;gridLayout_21&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginepest_table&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_newrow_buttuon</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_newrow_buttuon</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginepest_newrow_buttuon&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_newrow_buttuon</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_save_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_save_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginepest_save_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_save_button</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_openfile_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_openfile_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginepest_openfile_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_openfile_button</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginewater_table&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">setHorizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setCascadingSectionResizes</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_newrow_buttuon</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_newrow_buttuon</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginewater_newrow_buttuon&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_newrow_buttuon</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_save_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_save_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginewater_save_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_save_button</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_openfile_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_openfile_button</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;report_hyginewater_openfile_button&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_openfile_button</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">spacerItem23</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem23</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">spacerItem24</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem24</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_4</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_4</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_4&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_5</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_5</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">&quot;label_5&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_23</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_21</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">spacerItem25</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">148</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_23</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">spacerItem26</span> <span class="o">=</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">148</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridLayout_23</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">spacerItem26</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c">### retanslate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Date&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Organization Name&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_newrow_buttuon</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;New Row&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_save_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_openfile_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Open File&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Date&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">horizontalHeaderItem</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Organization Name&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_newrow_buttuon</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;New Row&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_save_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_openfile_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Open File&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_4</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Pest Control Test&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_5</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s">&quot;Water Control Test&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                   <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span><span class="p">))</span>
+        <span class="c">###signals and slots &amp;&amp; other stuffs</span>
+        <span class="c"># self.mainwindow = Ui_MainWindow  # just for the ease of finding the attributes in pycharm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_newrow_buttuon</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;pest_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_table_rows</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_table_rows</span><span class="p">(</span><span class="s">&#39;watertable&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_newrow_buttuon</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;water_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_table_rows</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_openfile_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;pest_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_openfile_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;water_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;pest_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_table</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tablename</span><span class="o">=</span><span class="s">&#39;water_table&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_table</span><span class="p">(</span><span class="n">tablename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporthygiene_tab_2</span><span class="o">.</span><span class="n">focusInEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_rows</span>
+
+
+<div class="viewcode-block" id="Hygiene.load_table_rows"><a class="viewcode-back" href="../report.html#report.Hygiene.load_table_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tablename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:Populates the rows</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_table_rows</span><span class="p">(</span><span class="n">tablename</span><span class="p">)</span>  <span class="c"># add *args to send the test date and name with respective tablenames</span>
+</div>
+<div class="viewcode-block" id="Hygiene.add_table_rows"><a class="viewcode-back" href="../report.html#report.Hygiene.add_table_rows">[docs]</a>    <span class="k">def</span> <span class="nf">add_table_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tablename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:adds a new row to the pes table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tablename</span> <span class="o">==</span> <span class="s">&#39;pest_table&#39;</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="n">organization_name</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">QDateEdit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">organization_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">organization_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">organization_name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Hygiene.open_file"><a class="viewcode-back" href="../report.html#report.Hygiene.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tablename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param tablename:the table of which the file is to be stored</span>
+<span class="sd">        :return:saves the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tablename</span> <span class="o">==</span> <span class="s">&#39;pest_table&#39;</span><span class="p">:</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&quot;Select Directory&quot;</span><span class="p">,</span> <span class="s">&quot;/home/projects/&quot;</span><span class="p">,</span>
+                                            <span class="s">&quot;Image Files (*.png *.jpg *.bmp)&quot;</span><span class="p">))</span>
+            <span class="k">print</span> <span class="nb">file</span>  <span class="c"># provides the location</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&quot;Select Directory&quot;</span><span class="p">,</span> <span class="s">&quot;/home/projects/&quot;</span><span class="p">,</span>
+                                            <span class="s">&quot;Image Files (*.png *.jpg *.bmp)&quot;</span><span class="p">))</span>
+            <span class="k">print</span> <span class="nb">file</span>  <span class="c"># provides the location</span>
+</div>
+<div class="viewcode-block" id="Hygiene.save_table"><a class="viewcode-back" href="../report.html#report.Hygiene.save_table">[docs]</a>    <span class="k">def</span> <span class="nf">save_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tablename</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Hygiene save table initiated&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tablename</span> <span class="o">==</span> <span class="s">&#39;pest_table&#39;</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">tablename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">tablename</span>
+</div>
+<div class="viewcode-block" id="Hygiene.load_rows"><a class="viewcode-back" href="../report.html#report.Hygiene.load_rows">[docs]</a>    <span class="k">def</span> <span class="nf">load_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:loads the rows of the tables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginepest_table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_table_rows</span><span class="p">(</span><span class="s">&#39;pest_table&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_hyginewater_table</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_table_rows</span><span class="p">(</span><span class="s">&#39;water_table&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

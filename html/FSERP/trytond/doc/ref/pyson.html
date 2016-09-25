@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PYSON &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-trytond.pyson"><span id="ref-pyson"></span></span><div class="section" id="pyson">
+<h1>PYSON<a class="headerlink" href="#pyson" title="Permalink to this headline">¶</a></h1>
+<p>PYSON is the PYthon Statement and Object Notation.</p>
+<p>There is also a more <a class="reference internal" href="../topics/pyson.html#topics-pyson"><em>practical introduction into
+PYSON statements</em></a>.</p>
+<dl class="class">
+<dt id="trytond.pyson.PYSON">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">PYSON</tt><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Base class of any PYSON statement. It is never used directly.</p>
+<p>Instance methods:</p>
+<dl class="method">
+<dt id="trytond.pyson.PYSON.pyson">
+<tt class="descclassname">PYSON.</tt><tt class="descname">pyson</tt><big>(</big><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSON.pyson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSON.pyson" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Method that returns the internal dictionary representation of the
+statement.</p>
+<dl class="method">
+<dt id="trytond.pyson.PYSON.types">
+<tt class="descclassname">PYSON.</tt><tt class="descname">types</tt><big>(</big><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSON.types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSON.types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Method that returns a set of all possible types which the statement
+can become when evaluated.</p>
+<dl class="classmethod">
+<dt id="trytond.pyson.PYSON.eval">
+<em class="property">classmethod </em><tt class="descclassname">PYSON.</tt><tt class="descname">eval</tt><big>(</big><em>dct</em>, <em>context</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSON.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSON.eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Method which returns the evaluation of the statement given in
+<tt class="docutils literal"><span class="pre">dct</span></tt> within the <tt class="docutils literal"><span class="pre">context</span></tt>. <tt class="docutils literal"><span class="pre">dct</span></tt> contains a
+dictionary which is the internal representation of a PYSON
+statement. <tt class="docutils literal"><span class="pre">context</span></tt> contains a dictionary with contextual
+values.</p>
+<div class="section" id="encoder-and-decoder">
+<h2>Encoder and Decoder<a class="headerlink" href="#encoder-and-decoder" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="trytond.pyson.PYSONEncoder">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">PYSONEncoder</tt><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSONEncoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Encoder for PYSON statements into string representations.</p>
+<p>Instance method:</p>
+<blockquote>
+<div><dl class="method">
+<dt id="trytond.pyson.PYSONEncoder.encode">
+<tt class="descclassname">PYSONEncoder.</tt><tt class="descname">encode</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#trytond.pyson.PYSONEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns a string representation of a given PYSON statement.
+<tt class="docutils literal"><span class="pre">object</span></tt> contains a PYSON statement.</p>
+</div></blockquote>
+<dl class="class">
+<dt id="trytond.pyson.PYSONDecoder">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">PYSONDecoder</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">[</span>, <em>noeval</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#PYSONDecoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.PYSONDecoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Decoder for string into the evaluated or not PYSON statement.</p>
+<p>Instance method:</p>
+<blockquote>
+<div><dl class="method">
+<dt id="trytond.pyson.PYSONDecoder.decode">
+<tt class="descclassname">PYSONDecoder.</tt><tt class="descname">decode</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#trytond.pyson.PYSONDecoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns a PYSON statement evaluated or not of a given string.
+<tt class="docutils literal"><span class="pre">object</span></tt> contains a string.</p>
+</div></blockquote>
+</div>
+<div class="section" id="statements">
+<h2>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h2>
+<p>The following statements can be used in <a class="reference internal" href="#trytond.pyson.PYSON" title="trytond.pyson.PYSON"><tt class="xref py py-class docutils literal"><span class="pre">PYSON</span></tt></a>.</p>
+<dl class="class">
+<dt id="trytond.pyson.Eval">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Eval</tt><big>(</big><em>value</em><span class="optional">[</span>, <em>default</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.Eval" title="trytond.pyson.Eval"><tt class="xref py py-class docutils literal"><span class="pre">Eval()</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Eval()</span></tt>
+statement for evaluations. When evaluated, it returns the
+value of the statement named by <tt class="docutils literal"><span class="pre">value</span></tt>, if defined in the
+evaluation context, otherwise the <tt class="docutils literal"><span class="pre">default</span></tt> value (empty
+string by default).  Returns an instance of itself.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The default value determines the type of the statement.</p>
+</div>
+<dl class="class">
+<dt id="trytond.pyson.Not">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Not</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Not"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Not" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Not" title="trytond.pyson.Not"><tt class="xref py py-class docutils literal"><span class="pre">Not</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Not()</span></tt>
+statement for logical negations. When evaluated, returns
+the boolean negation of the value of the statement named by
+<tt class="docutils literal"><span class="pre">value</span></tt>, if defined in the evaluation context. Returns an
+instance of itself.</p>
+<dl class="class">
+<dt id="trytond.pyson.Bool">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Bool</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Bool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Bool" title="trytond.pyson.Bool"><tt class="xref py py-class docutils literal"><span class="pre">Bool</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Bool()</span></tt>
+statement for boolean evaluations. Returns the boolean
+representation of the value of the statement named by
+<tt class="docutils literal"><span class="pre">value</span></tt>.</p>
+<dl class="class">
+<dt id="trytond.pyson.And">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">And</tt><big>(</big><em>*statements</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#And"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.And" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.And" title="trytond.pyson.And"><tt class="xref py py-class docutils literal"><span class="pre">And</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">And()</span></tt>
+statement for logical <em>and</em> operations. Returns the result of
+the logical conjunction of two or more values named by the
+statements in the <tt class="docutils literal"><span class="pre">statements</span></tt> tuple.</p>
+<dl class="class">
+<dt id="trytond.pyson.Or">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Or</tt><big>(</big><em>*statements</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Or"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Or" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.Or" title="trytond.pyson.Or"><tt class="xref py py-class docutils literal"><span class="pre">Or</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Or()</span></tt>
+statement for logical <em>or</em> operations. Returns the result of
+the logical disjunction of two or more values named by the
+statements in the <tt class="docutils literal"><span class="pre">statements</span></tt> tuple.</p>
+<dl class="class">
+<dt id="trytond.pyson.Equal">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Equal</tt><big>(</big><em>statement1</em>, <em>statement2</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Equal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.Equal" title="trytond.pyson.Equal"><tt class="xref py py-class docutils literal"><span class="pre">Equal</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Equal()</span></tt>
+statement for equation comparisons. Returns true when a value of
+a statement named by <tt class="docutils literal"><span class="pre">statement1</span></tt> and the value of a statement
+named by <tt class="docutils literal"><span class="pre">statement2</span></tt> are equal, otherwise returns false.</p>
+<dl class="class">
+<dt id="trytond.pyson.Greater">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Greater</tt><big>(</big><em>statement1</em>, <em>statement2</em><span class="optional">[</span>, <em>equal</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Greater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Greater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Greater" title="trytond.pyson.Greater"><tt class="xref py py-class docutils literal"><span class="pre">Greater</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Greater()</span></tt>
+statement for <em>greater-than</em> comparisons. Returns true when the value
+of the statement named by <tt class="docutils literal"><span class="pre">statement1</span></tt> is strictly greater than the
+value of the statement named by <tt class="docutils literal"><span class="pre">statement2</span></tt>,  otherwise
+returns false. Is the value of the variable named by <tt class="docutils literal"><span class="pre">equal</span></tt> is
+true, then returns also true when both values of statements named by
+<tt class="docutils literal"><span class="pre">statement1</span></tt> and <tt class="docutils literal"><span class="pre">statement2</span></tt> are equal. In this case
+<a class="reference internal" href="#trytond.pyson.Greater" title="trytond.pyson.Greater"><tt class="xref py py-class docutils literal"><span class="pre">Greater</span></tt></a> works as a <em>greater-than or equal</em> operator.</p>
+<dl class="class">
+<dt id="trytond.pyson.Less">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Less</tt><big>(</big><em>statement1</em>, <em>statement2</em><span class="optional">[</span>, <em>equal</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Less"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Less" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Less" title="trytond.pyson.Less"><tt class="xref py py-class docutils literal"><span class="pre">Less</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Less()</span></tt>
+statement for <em>less-than</em> comparisons. Returns true when the value
+of the statement named by <tt class="docutils literal"><span class="pre">statement1</span></tt> is strictly less than the
+value of the statement named by <tt class="docutils literal"><span class="pre">statement2</span></tt>,  otherwise
+returns false. Is the value of the variable named <tt class="docutils literal"><span class="pre">equal</span></tt> is true,
+then returns also true when both values of the statements named by
+<tt class="docutils literal"><span class="pre">statement1</span></tt> and <tt class="docutils literal"><span class="pre">statement2</span></tt> are equal. In this case
+<a class="reference internal" href="#trytond.pyson.Less" title="trytond.pyson.Less"><tt class="xref py py-class docutils literal"><span class="pre">Less</span></tt></a>  works as a <em>less-than or equal</em> operator.</p>
+<dl class="class">
+<dt id="trytond.pyson.If">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">If</tt><big>(</big><em>condition</em>, <em>then_statement</em>, <em>else_statement</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#If"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.If" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.If" title="trytond.pyson.If"><tt class="xref py py-class docutils literal"><span class="pre">If</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">If()</span></tt>
+statement for conditional flow control operations. Returns the
+value of the statement named by <tt class="docutils literal"><span class="pre">then_statement</span></tt> when the value
+of the statement named by <tt class="docutils literal"><span class="pre">condition</span></tt> evaluates true.
+Otherwise returns the value of the statement named by
+<tt class="docutils literal"><span class="pre">else_statement</span></tt>.</p>
+<dl class="class">
+<dt id="trytond.pyson.Get">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Get</tt><big>(</big><em>obj</em>, <em>key</em><span class="optional">[</span>, <em>default</em><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Get" title="trytond.pyson.Get"><tt class="xref py py-class docutils literal"><span class="pre">Get</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Get()</span></tt>
+statement for dictionary look-up operations and evaluation.
+Look up and returns the value of a key named by <tt class="docutils literal"><span class="pre">key</span></tt> in an
+object named by <tt class="docutils literal"><span class="pre">obj</span></tt> if defined.
+Otherwise returns the value of the variable named by <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
+<dl class="class">
+<dt id="trytond.pyson.In">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">In</tt><big>(</big><em>key</em>, <em>obj</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#In"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.In" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.In" title="trytond.pyson.In"><tt class="xref py py-class docutils literal"><span class="pre">In</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">In()</span></tt>
+statement for look-up dictionary or integer objects. Returns true when
+a list (or dictionary) object named by <tt class="docutils literal"><span class="pre">obj</span></tt> contains the value of
+the variable (or key) named by <tt class="docutils literal"><span class="pre">key</span></tt>. Otherwise returns false.</p>
+<dl class="class">
+<dt id="trytond.pyson.Date">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Date</tt><big>(</big><span class="optional">[</span><em>year</em><span class="optional">[</span>, <em>month</em><span class="optional">[</span>, <em>day</em><span class="optional">[</span>, <em>delta_years</em><span class="optional">[</span>, <em>delta_month</em><span class="optional">[</span>, <em>delta_days</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Date" title="trytond.pyson.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Date()</span></tt>
+statement for date related conversions and basic calculations.
+Returns a date object which represents
+the values of arguments named by the <em>variables</em> explained below.
+Missing values of arguments named by <tt class="docutils literal"><span class="pre">year</span></tt> or <tt class="docutils literal"><span class="pre">month</span></tt> or
+<tt class="docutils literal"><span class="pre">day</span></tt> take their defaults from the actual date. When values of
+arguments named by <tt class="docutils literal"><span class="pre">delta_*</span></tt> are given, they are added to the
+values of the appropriate arguments in a date and time preserving
+manner.</p>
+<p>Arguments:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">year</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">month</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">day</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_years</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_month</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_days</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+</dl>
+<dl class="class">
+<dt id="trytond.pyson.DateTime">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">DateTime</tt><big>(</big><span class="optional">[</span><em>year</em><span class="optional">[</span>, <em>month</em><span class="optional">[</span>, <em>day</em><span class="optional">[</span>, <em>hour</em><span class="optional">[</span>, <em>minute</em><span class="optional">[</span>, <em>second</em><span class="optional">[</span>, <em>microsecond</em><span class="optional">[</span>, <em>delta_years</em><span class="optional">[</span>, <em>delta_months</em><span class="optional">[</span>, <em>delta_days</em><span class="optional">[</span>, <em>delta_hours</em><span class="optional">[</span>, <em>delta_minutes</em><span class="optional">[</span>, <em>delta_seconds</em><span class="optional">[</span>, <em>delta_microseconds</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#DateTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.DateTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.DateTime" title="trytond.pyson.DateTime"><tt class="xref py py-class docutils literal"><span class="pre">DateTime</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Date()</span></tt>
+statement for date and time related conversions and calculations.
+Returns a date time object which represents the values of
+variables named by the <em>arguments</em> explained below.
+Missing values of arguments named by  <tt class="docutils literal"><span class="pre">year</span></tt>, <tt class="docutils literal"><span class="pre">month</span></tt>, <tt class="docutils literal"><span class="pre">day</span></tt>,
+<tt class="docutils literal"><span class="pre">hour</span></tt>, <tt class="docutils literal"><span class="pre">minute</span></tt>, <tt class="docutils literal"><span class="pre">second</span></tt>, <tt class="docutils literal"><span class="pre">microseconds</span></tt> take their
+defaults from the actual date and time.
+When values of arguments named by <tt class="docutils literal"><span class="pre">delta_*</span></tt> are given, these are
+added  to the appropriate attributes in a date and time preserving
+manner.</p>
+<p>Arguments:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">year</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">month</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">day</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">hour</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">minute</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">second</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">microsecond</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_years</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_month</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_days</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_hours</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_minutes</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_seconds</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+<dt><tt class="docutils literal"><span class="pre">delta_microseconds</span></tt></dt>
+<dd>Contains a PYSON statement of type int or long.</dd>
+</dl>
+<dl class="class">
+<dt id="trytond.pyson.Len">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Len</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Len" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A <a class="reference internal" href="#trytond.pyson.Len" title="trytond.pyson.Len"><tt class="xref py py-class docutils literal"><span class="pre">Len</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Len()</span></tt> statement for length of a
+dictionary, list or string. Returns the number of items in <tt class="docutils literal"><span class="pre">value</span></tt>.</p>
+<dl class="class">
+<dt id="trytond.pyson.Id">
+<em class="property">class </em><tt class="descclassname">trytond.pyson.</tt><tt class="descname">Id</tt><big>(</big><em>module</em>, <em>fs_id</em><big>)</big><a class="reference internal" href="../../../../_modules/trytond/pyson.html#Id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trytond.pyson.Id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An <a class="reference internal" href="#trytond.pyson.Id" title="trytond.pyson.Id"><tt class="xref py py-class docutils literal"><span class="pre">Id</span></tt></a> object represents the PYSON <tt class="docutils literal"><span class="pre">Id()</span></tt> statement for filesystem id
+evaluations. When converted into the internal dictionary, it returns the
+database id stored in <cite>ir.model.data</cite>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PYSON</a><ul>
+<li><a class="reference internal" href="#encoder-and-decoder">Encoder and Decoder</a></li>
+<li><a class="reference internal" href="#statements">Statements</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/ref/pyson.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

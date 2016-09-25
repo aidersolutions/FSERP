@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>printer.print_execute &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for printer.print_execute</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">pdfkit</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;jitesh&#39;</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span>
+<span class="kn">import</span> <span class="nn">tempfile</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">proteus</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Wizard</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+
+<div class="viewcode-block" id="PrintNow"><a class="viewcode-back" href="../../printer.html#printer.print_execute.PrintNow">[docs]</a><span class="k">class</span> <span class="nc">PrintNow</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">printer</span><span class="p">,</span> <span class="n">dataobj</span><span class="p">,</span> <span class="n">printformat</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">environment</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;printer&#39;</span><span class="p">)))</span>  <span class="c"># linux dependent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printer</span> <span class="o">=</span> <span class="n">printer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileformat</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;bill&#39;</span><span class="p">:</span> <span class="s">&#39;bill.html&#39;</span><span class="p">,</span> <span class="s">&#39;stock&#39;</span><span class="p">:</span> <span class="s">&#39;stock.html&#39;</span><span class="p">,</span> <span class="s">&#39;purchase&#39;</span><span class="p">:</span> <span class="s">&#39;purchase_schedule.html&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;payslip&#39;</span><span class="p">:</span> <span class="s">&#39;payslip.html&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span> <span class="o">=</span> <span class="n">dataobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">=</span> <span class="n">printformat</span>
+
+<div class="viewcode-block" id="PrintNow.start_print"><a class="viewcode-back" href="../../printer.html#printer.print_execute.PrintNow.start_print">[docs]</a>    <span class="k">def</span> <span class="nf">start_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileformat</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PrintNow.start"><a class="viewcode-back" href="../../printer.html#printer.print_execute.PrintNow.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param template:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="n">con</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="n">User</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res.user&#39;</span><span class="p">)</span>
+        <span class="n">party</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">con</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">main_company</span><span class="o">.</span><span class="n">party</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">addresses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">==</span> <span class="s">&#39;bill&#39;</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">menu_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;printer&#39;</span><span class="p">,</span> <span class="s">&#39;company.png&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">menu_list</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s">&#39;Paid&#39;</span><span class="p">:</span>
+                <span class="n">user</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">user</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;To Be Paid&#39;</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;servicetax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;tax&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;servicetax_amount&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;tax_amount&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;grandtotal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;grand&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">full_address</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">==</span> <span class="s">&#39;purchase&#39;</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">purchase_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">supplier</span> <span class="o">=</span> <span class="n">purchase_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;supplier&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;purchase_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">purchase_list</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;printer&#39;</span><span class="p">,</span> <span class="s">&#39;company.png&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;batch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">full_address</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;supplier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">supplier</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">==</span> <span class="s">&#39;stock&#39;</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">stock_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;stock_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stock_list</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;printer&#39;</span><span class="p">,</span> <span class="s">&#39;company.png&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">full_address</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">printformat</span> <span class="o">==</span> <span class="s">&#39;payslip&#39;</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">pay_slip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobj</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&#39;printer&#39;</span><span class="p">,</span> <span class="s">&#39;company.png&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">full_address</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;designation&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;pan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;pan&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;basic_pay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;basic_pay&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;da&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;gross&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;gross&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;hra&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;pf&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;esi&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;professional_tax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;professional_tax&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;other_deductions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;other_deductions&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;total_deduction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;total_deduction&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;net&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;net&#39;</span><span class="p">]</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;rupees&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pay_slip</span><span class="p">[</span><span class="s">&#39;rupees&#39;</span><span class="p">]</span>
+
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">############################test object instad of selfdataobj</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">menu</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">menu_item</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="s">&#39;10/15/2015&#39;</span><span class="p">,</span> <span class="s">&#39;code&#39;</span><span class="p">:</span> <span class="s">&#39;542&#39;</span><span class="p">,</span> <span class="s">&#39;item&#39;</span><span class="p">:</span> <span class="s">&#39;rice&#39;</span><span class="p">,</span> <span class="s">&#39;rate&#39;</span><span class="p">:</span> <span class="s">&#39;100&#39;</span><span class="p">,</span> <span class="s">&#39;amount&#39;</span><span class="p">:</span> <span class="s">&#39;500&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="s">&#39;grains&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;quantity&#39;</span><span class="p">:</span> <span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;supplier&#39;</span><span class="p">:</span> <span class="s">&#39;id2015&#39;</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+                <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">menu_item</span><span class="p">)</span>
+
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">menu</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;50000&#39;</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;servicetax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;12.5&#39;</span>
+            <span class="n">user</span><span class="p">[</span><span class="s">&#39;grandtotal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;51250&#39;</span>
+            <span class="c">##############################</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">handle</span><span class="p">,</span> <span class="n">destination_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s">&#39;.pdf&#39;</span><span class="p">)</span>
+            <span class="c"># HTML(string=&#39;&#39;.join(self.html.generate(user=user)),</span>
+            <span class="c"># base_url=os.path.join(os.getcwd(), &#39;printer&#39;)).write_pdf(</span>
+            <span class="c"># destination_file)</span>
+            <span class="n">pdfkit</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)),</span> <span class="n">destination_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">startfile</span><span class="p">(</span><span class="n">destination_file</span><span class="p">,</span> <span class="s">&#39;print&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="s">&#39;lp -t testfile -d {0} {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">printer</span><span class="p">,</span> <span class="n">destination_file</span><span class="p">)</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="c"># with open(&#39;lol.html&#39;, &#39;w&#39;) as f:</span>
+                <span class="c"># print &quot;created file&quot;</span>
+                <span class="c"># f.write(&#39;&#39;.join(self.html.generate(user=user)))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;In Printing&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">destination_file</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDWR</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">destination_file</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                            <span class="k">print</span> <span class="s">&quot;In removing&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;In Accessing&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">destination_file</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

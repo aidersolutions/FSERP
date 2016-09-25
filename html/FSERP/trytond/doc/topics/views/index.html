@@ -1,0 +1,849 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Views &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="views">
+<span id="topics-views"></span><h1>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h1>
+<p>The views are used to display records of an <a class="reference internal" href="../../ref/models/models.html#trytond.model.ModelView" title="trytond.model.ModelView"><tt class="xref py py-class docutils literal"><span class="pre">ModelView</span></tt></a> to the user.</p>
+<p>In Tryton, <a class="reference internal" href="../../ref/models/models.html#trytond.model.ModelView" title="trytond.model.ModelView"><tt class="xref py py-class docutils literal"><span class="pre">ModelView</span></tt></a> can have several views.
+An <cite>action</cite> opens a window and defines which view to show.</p>
+<p>The views are built from XML that is stored in the <cite>view</cite> directory of the
+module or in the databases thanks to the model ir.ui.view.</p>
+<p>So generally, they are defined in xml files with this kind of xml where name is
+the name of the XML file in the <cite>view</cite> directory:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span> <span class="na">id=</span><span class="s">&quot;view_id&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>model name<span class="nt">&lt;/field&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;type&quot;</span><span class="nt">&gt;</span>type name<span class="nt">&lt;/field&gt;</span>
+    <span class="c">&lt;!--field name=&quot;inherit&quot; ref=&quot;inherit_view_id&quot;/--&gt;</span>
+    <span class="c">&lt;!--field name=&quot;field_childs&quot;&gt;field name&lt;/field--&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>view_name<span class="nt">&lt;/field&gt;</span>
+<span class="nt">&lt;/record&gt;</span>
+</pre></div>
+</div>
+<p>There is three types of views:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Form</li>
+<li>Tree</li>
+<li>Graph</li>
+</ul>
+</div></blockquote>
+<div class="section" id="form-view">
+<h2>Form view<a class="headerlink" href="#form-view" title="Permalink to this headline">¶</a></h2>
+<p>The RNG describing the xml of a form view is stored in trytond/ir/ui/form.rng.
+There is also a RNC in trytond/ir/ui/form.rnc.</p>
+<p>A form view is used to display one record of an object.</p>
+<p>Elements of the view are put on the screen following the rules:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Elements are placed on the screen from left to right, from top to bottom,
+according to the order of the xml.</li>
+<li>The screen composed of a table with a fixed number of columns and enough
+rows to handle all elements.</li>
+<li>Elements take one or more columns when they are put in the table. If
+there are not enough free columns on the current row, the elements are put
+at the begining of the next row.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="xml-description">
+<h3>XML description<a class="headerlink" href="#xml-description" title="Permalink to this headline">¶</a></h3>
+<p>List of attributes shared by many form elements:</p>
+<blockquote>
+<div><ul class="simple" id="common-attributes-id">
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: A unique identifier for the tag if there is no name attribute.</li>
+</ul>
+<ul class="simple" id="common-attributes-yexpand">
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: A boolean to specify if the label should expand to take up
+any extra vertical space.</li>
+</ul>
+<ul class="simple" id="common-attributes-yfill">
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: A boolean to specify if the label should fill the vertical
+space allocated to it in the table cell.</li>
+</ul>
+<ul class="simple" id="common-attributes-yalign">
+<li><tt class="docutils literal"><span class="pre">yalign</span></tt>: The vertical alignment, from 0.0 to 1.0.</li>
+</ul>
+<ul class="simple" id="common-attributes-xexpand">
+<li><tt class="docutils literal"><span class="pre">xexpand</span></tt>: The same as yexpand but for horizontal space.</li>
+</ul>
+<ul class="simple" id="common-attributes-xfill">
+<li><tt class="docutils literal"><span class="pre">xfill</span></tt>: The same as yfill but for horizontal space.</li>
+</ul>
+<ul class="simple" id="common-attributes-xalign">
+<li><tt class="docutils literal"><span class="pre">xalign</span></tt>: The horizontal alignment, from 0.0 to 1.0.</li>
+</ul>
+<ul class="simple" id="common-attributes-colspan">
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: The number of columns the widget must take in the table.</li>
+</ul>
+<ul id="common-attributes-states">
+<li><p class="first"><tt class="docutils literal"><span class="pre">states</span></tt>: A string of <a class="reference internal" href="../pyson.html#topics-pyson"><em>PYSON statement</em></a> that will
+be evaluated with the values of the current record.</p>
+<p>It must return a dictionary where keys can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">invisible</span></tt>: If true, the widget will be hidden.</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt>: If true, the field will be required.</li>
+<li><tt class="docutils literal"><span class="pre">readonly</span></tt>: If true, the field will be readonly.</li>
+<li><tt class="docutils literal"><span class="pre">icon</span></tt>: Only for button, it must return the icon name to use or
+False.</li>
+<li><tt class="docutils literal"><span class="pre">pre_validate</span></tt>: Only for button, it contains a domain to apply
+on the record before calling the button.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple" id="common-attributes-help">
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: The string that will be displayed when the cursor hovers over
+the widget.</li>
+</ul>
+<ul class="simple" id="common-attributes-pre-validate">
+<li><tt class="docutils literal"><span class="pre">pre_validate</span></tt>: A boolean only for fields
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.One2Many" title="trytond.model.fields.One2Many"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.One2Many</span></tt></a> to specify if the client must
+pre-validate the records using
+<a class="reference internal" href="../../ref/models/models.html#trytond.model.Model.pre_validate" title="trytond.model.Model.pre_validate"><tt class="xref py py-meth docutils literal"><span class="pre">trytond.model.Model.pre_validate()</span></tt></a>.</li>
+</ul>
+<ul class="simple" id="common-attributes-completion">
+<li><tt class="docutils literal"><span class="pre">completion</span></tt>: A boolean only for fields
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.Many2One" title="trytond.model.fields.Many2One"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2One</span></tt></a>,
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.Many2Many" title="trytond.model.fields.Many2Many"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Many2Many</span></tt></a> and
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.One2Many" title="trytond.model.fields.One2Many"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.One2Many</span></tt></a> to specifiy if the client must
+auto-complete the field. The default value is True.</li>
+</ul>
+<ul class="simple" id="common-attributes-factor">
+<li><tt class="docutils literal"><span class="pre">factor</span></tt>: A factor to apply on fields
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.Integer" title="trytond.model.fields.Integer"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Integer</span></tt></a>,
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.Float" title="trytond.model.fields.Float"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Float</span></tt></a> and
+<a class="reference internal" href="../../ref/models/fields.html#trytond.model.fields.Numeric" title="trytond.model.fields.Numeric"><tt class="xref py py-class docutils literal"><span class="pre">trytond.model.fields.Numeric</span></tt></a> to display on the widget. The
+default value is 1.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="form">
+<h4>form<a class="headerlink" href="#form" title="Permalink to this headline">¶</a></h4>
+<p>Each form view must start with this tag.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The text that will be used as default title for the tab or
+the window.</li>
+</ul>
+<ul id="form-attributes-on-write">
+<li><p class="first"><tt class="docutils literal"><span class="pre">on_write</span></tt>: The name of a method on the Model of the view that will be
+called when a record is saved.  The method must return a list of record
+ids that the client must reload if they are already loaded.  The function
+must have this syntax:</p>
+<p><tt class="docutils literal"><span class="pre">on_write(self,</span> <span class="pre">ids)</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The method must be registered in <a class="reference internal" href="../../ref/models/models.html#trytond.model.Model.__rpc__" title="trytond.model.Model.__rpc__"><tt class="xref py py-attr docutils literal"><span class="pre">trytond.model.Model.__rpc__</span></tt></a>.</p>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">col</span></tt>: The number of columns for the view.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">cursor</span></tt>: The name of the field that must have the cursor by default.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="label">
+<h4>label<a class="headerlink" href="#label" title="Permalink to this headline">¶</a></h4>
+<p>Display static string.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed in the label.</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field whose description will be used for
+string. Except if <tt class="docutils literal"><span class="pre">string</span></tt> is set, it will use this value and the value
+of the field if <tt class="docutils literal"><span class="pre">string</span></tt> is empty.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: see <a class="reference internal" href="#common-attributes-id">common-attributes-id</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-yexpand">common-attributes-yexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: see in <a class="reference internal" href="#common-attributes-yfill">common-attributes-yfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yalign</span></tt>: see in <a class="reference internal" href="#common-attributes-yalign">common-attributes-yalign</a>.</li>
+<li><tt class="docutils literal"><span class="pre">xexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-xexpand">common-attributes-xexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">xfill</span></tt>: see in <a class="reference internal" href="#common-attributes-xfill">common-attributes-xfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">xalign</span></tt>: see in <a class="reference internal" href="#common-attributes-xalign">common-attributes-xalign</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a>.</li>
+<li>Requires that either <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">name</span></tt> is defined.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="field">
+<h4>field<a class="headerlink" href="#field" title="Permalink to this headline">¶</a></h4>
+<p>Display a field of the object with the value of the current record.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field.</li>
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed for the widget.</li>
+<li><tt class="docutils literal"><span class="pre">widget</span></tt>: The widget that must be used instead of the default one.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: The string that will be displayed when the cursor stays over the
+widget.</li>
+<li><tt class="docutils literal"><span class="pre">width</span></tt>: The minimum width the widget should request, or -1 to unset.</li>
+<li><tt class="docutils literal"><span class="pre">height</span></tt>: The minimum height the widget should request, or -1 to unset.</li>
+<li><tt class="docutils literal"><span class="pre">readonly</span></tt>: Boolean to set the field readonly.</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt>: Boolean to set the field required.</li>
+<li><tt class="docutils literal"><span class="pre">mode</span></tt>: Only for One2Many fields: it is a comma separated list, that
+specifies the order of the view used to display the relation. (Example:
+<tt class="docutils literal"><span class="pre">tree,form</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">view_ids</span></tt>: A comma separated list that specifies the view ids used to
+display the relation.</li>
+<li><tt class="docutils literal"><span class="pre">product</span></tt>: Only for One2Many fields, a comma separated list of target
+field name used to create records from the cartesian product.</li>
+<li><tt class="docutils literal"><span class="pre">completion</span></tt>: Only for Many2One fields, it is a boolean to set the
+completion of the field.</li>
+<li><tt class="docutils literal"><span class="pre">invisible</span></tt>: The field will not be displayed, but it will fill cells in
+the table.</li>
+<li><tt class="docutils literal"><span class="pre">filename_visible</span></tt>: Only for Binary fields, boolean that enables the
+display of the filename.</li>
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-yexpand">common-attributes-yexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: see in <a class="reference internal" href="#common-attributes-yfill">common-attributes-yfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">xexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-xexpand">common-attributes-xexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">xfill</span></tt>: see in <a class="reference internal" href="#common-attributes-xfill">common-attributes-xfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a>.</li>
+<li><tt class="docutils literal"><span class="pre">pre_validate</span></tt>: see in <a class="reference internal" href="#common-attributes-pre-validate">common-attributes-pre_validate</a>.</li>
+<li><tt class="docutils literal"><span class="pre">completion</span></tt>: see in <a class="reference internal" href="#common-attributes-completion">common-attributes-completion</a>.</li>
+<li><tt class="docutils literal"><span class="pre">factor</span></tt>: see in <a class="reference internal" href="#common-attributes-factor">common-attributes-factor</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="image">
+<h4>image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h4>
+<p>Display an image.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: the name of the image. It must be the name with the extension
+of an image from <tt class="docutils literal"><span class="pre">tryton/share/pixmaps/</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-yexpand">common-attributes-yexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: see in <a class="reference internal" href="#common-attributes-yfill">common-attributes-yfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="separator">
+<h4>separator<a class="headerlink" href="#separator" title="Permalink to this headline">¶</a></h4>
+<p>Display a horizontal separator.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed above the separator.</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field from which the description will be used
+for string.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: see in <a class="reference internal" href="#common-attributes-id">common-attributes-id</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-yexpand">common-attributes-yexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: see in <a class="reference internal" href="#common-attributes-yfill">common-attributes-yfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a>.</li>
+<li>Requires that either <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">name</span></tt> is defined.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="newline">
+<h4>newline<a class="headerlink" href="#newline" title="Permalink to this headline">¶</a></h4>
+<p>Force to use a new row.</p>
+</div>
+<div class="section" id="button">
+<span id="form-button"></span><h4>button<a class="headerlink" href="#button" title="Permalink to this headline">¶</a></h4>
+<p>Display a button.</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed inside the button.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the function that will be called. The function must
+have this syntax:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">button(cls,</span> <span class="pre">records)</span></tt></p>
+</div></blockquote>
+<p>The function may return an <cite>ir.action</cite> id or one of those client side
+action keywords:</p>
+</li>
+</ul>
+</div></blockquote>
+<blockquote id="topics-views-client-actions">
+<div><blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">new</span></tt>: to create a new record</li>
+<li><tt class="docutils literal"><span class="pre">delete</span></tt>: to delete the selected records</li>
+<li><tt class="docutils literal"><span class="pre">remove</span></tt>: to remove the record if it has a parent</li>
+<li><tt class="docutils literal"><span class="pre">copy</span></tt>: to copy the selected records</li>
+<li><tt class="docutils literal"><span class="pre">next</span></tt>: to go to the next record</li>
+<li><tt class="docutils literal"><span class="pre">previous</span></tt>: to go to the previous record</li>
+<li><tt class="docutils literal"><span class="pre">close</span></tt>: to close the current tab</li>
+<li><tt class="docutils literal"><span class="pre">switch</span> <span class="pre">&lt;view</span> <span class="pre">type&gt;</span></tt>: to switch the view to the defined type</li>
+<li><tt class="docutils literal"><span class="pre">reload</span></tt>: to reload the current tab</li>
+<li><tt class="docutils literal"><span class="pre">reload</span> <span class="pre">context</span></tt>: to reload user context</li>
+<li><tt class="docutils literal"><span class="pre">reload</span> <span class="pre">menu</span></tt>: to reload menu</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">icon</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">confirm</span></tt>: A text that will be displayed in a confirmation popup when
+the button is clicked.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="notebook">
+<h4>notebook<a class="headerlink" href="#notebook" title="Permalink to this headline">¶</a></h4>
+<p>It adds a notebook widget which can contain page tags.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="page">
+<h4>page<a class="headerlink" href="#page" title="Permalink to this headline">¶</a></h4>
+<p>Define a new tab inside a notebook.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed in the tab.</li>
+<li><tt class="docutils literal"><span class="pre">angle</span></tt>: The angle in degrees between the baseline of the label and the
+horizontal, measured counterclockwise.</li>
+<li><tt class="docutils literal"><span class="pre">col</span></tt>: The number of columns for the page view.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: see in <a class="reference internal" href="#common-attributes-id">common-attributes-id</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li>Requires that either <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">name</span></tt> is defined.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="group">
+<h4>group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h4>
+<p>Create a sub-table in a cell.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: If set a frame will be drawn around the field with a label
+containing the string. Otherwise, the frame will be invisible.</li>
+<li><tt class="docutils literal"><span class="pre">rowspan</span></tt>: The number of rows the group spans in the table.</li>
+<li><tt class="docutils literal"><span class="pre">col</span></tt>: The number of columns for the group contains.</li>
+<li><tt class="docutils literal"><span class="pre">homogeneous</span></tt>: If True all the tables cells are the same size.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: see in <a class="reference internal" href="#common-attributes-id">common-attributes-id</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yexpand</span></tt>: see in <a class="reference internal" href="#common-attributes-yexpand">common-attributes-yexpand</a>.</li>
+<li><tt class="docutils literal"><span class="pre">yfill</span></tt>: see in <a class="reference internal" href="#common-attributes-yfill">common-attributes-yfill</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+<li><tt class="docutils literal"><span class="pre">states</span></tt>: see in <a class="reference internal" href="#common-attributes-states">common-attributes-states</a>.</li>
+<li>Requires that either <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">name</span></tt> is defined.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="hpaned-vpaned">
+<h4>hpaned, vpaned<a class="headerlink" href="#hpaned-vpaned" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">position</span></tt>: The pixel position of divider, a negative value means that
+the position is unset.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: see in <a class="reference internal" href="#common-attributes-id">common-attributes-id</a>.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>. The default
+for panes is 4 columns.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="child">
+<h4>child<a class="headerlink" href="#child" title="Permalink to this headline">¶</a></h4>
+<p>Contains the childs of a hpaned or vpaned.</p>
+</div>
+</div>
+<div class="section" id="example">
+<span id="example-form-view"></span><h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">string=</span><span class="s">&quot;Party&quot;</span> <span class="na">col=</span><span class="s">&quot;6&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="na">xexpand=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;code&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;code&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;active&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;active&quot;</span> <span class="na">xexpand=</span><span class="s">&quot;0&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;notebook</span> <span class="na">colspan=</span><span class="s">&quot;6&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;page</span> <span class="na">string=</span><span class="s">&quot;General&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;addresses&quot;</span> <span class="na">mode=</span><span class="s">&quot;form,tree&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span>
+                <span class="na">view_ids=</span><span class="s">&quot;party.address_view_form,party.address_view_tree_sequence&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;type&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;type&quot;</span> <span class="na">widget=</span><span class="s">&quot;selection&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;lang&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;lang&quot;</span> <span class="na">widget=</span><span class="s">&quot;selection&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;website&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;website&quot;</span> <span class="na">widget=</span><span class="s">&quot;url&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;separator</span> <span class="na">string=</span><span class="s">&quot;Categories&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;categories&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/page&gt;</span>
+        <span class="nt">&lt;page</span> <span class="na">string=</span><span class="s">&quot;Accounting&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;vat_country&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;vat_country&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">name=</span><span class="s">&quot;vat_number&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;vat_number&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/page&gt;</span>
+    <span class="nt">&lt;/notebook&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tree-view">
+<h2>Tree view<a class="headerlink" href="#tree-view" title="Permalink to this headline">¶</a></h2>
+<p>The RNG that describes the xml for a tree view is stored in
+trytond/ir/ui/tree.rng. There is also a RNC in trytond/ir/ui/tree.rnc.</p>
+<p>Tree view is used to display records inside a list or a tree.</p>
+<p>It is a tree if there is a <cite>field_childs</cite> defined and this tree will
+have drag and drop activated if the <cite>field_childs</cite> and the <cite>parent
+field</cite> are defined in the view.</p>
+<p>The columns of the view are put on the screen from left to right.</p>
+<div class="section" id="id1">
+<h3>XML description<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="tree">
+<h4>tree<a class="headerlink" href="#tree" title="Permalink to this headline">¶</a></h4>
+<p>Each tree view must start with this tag.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The text that will be used as default title for the tab or
+the window.</li>
+<li><tt class="docutils literal"><span class="pre">on_write</span></tt>: see <a class="reference internal" href="#form-attributes-on-write">form-attributes-on_write</a>.</li>
+<li><tt class="docutils literal"><span class="pre">editable</span></tt>: If it is set to <tt class="docutils literal"><span class="pre">top</span></tt> or <tt class="docutils literal"><span class="pre">bottom</span></tt>, the list becomes
+editable and the new record will be added on <tt class="docutils literal"><span class="pre">top</span></tt> or <tt class="docutils literal"><span class="pre">bottom</span></tt> of the
+list.</li>
+<li><tt class="docutils literal"><span class="pre">sequence</span></tt>: The name of the field that is used for sorting.  This field
+must be an integer and it will be updated to match the new sort order
+when the user uses <tt class="docutils literal"><span class="pre">Drag</span> <span class="pre">and</span> <span class="pre">Drop</span></tt> on list rows.</li>
+<li><tt class="docutils literal"><span class="pre">colors</span></tt>: A PySON string that will be evaluated for each record. A
+string containing the name of the color will be returned.</li>
+<li><tt class="docutils literal"><span class="pre">keyword_open</span></tt>: A boolean to specify if the client should look for a
+tree_open action on double click instead of switching view.</li>
+<li><tt class="docutils literal"><span class="pre">tree_state</span></tt>: A boolean to specify if the client should save the state
+of the tree.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h4>field<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field.</li>
+<li><tt class="docutils literal"><span class="pre">readonly</span></tt>: Boolean to set the field readonly.</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt>: Boolean to set the field required.</li>
+<li><tt class="docutils literal"><span class="pre">widget</span></tt>: The widget that must be used instead of the default one.</li>
+<li><tt class="docutils literal"><span class="pre">tree_invisible</span></tt>: Boolean to display or not the column.</li>
+<li><tt class="docutils literal"><span class="pre">icon</span></tt>: The name of the field that contains the name of the icon to
+display in the column.</li>
+<li><tt class="docutils literal"><span class="pre">sum</span></tt>: A text for the sum widget that will be added on the bottom of
+list with the sum of all the fields in the column.</li>
+<li><tt class="docutils literal"><span class="pre">width</span></tt>: Set the width of the column.</li>
+<li><tt class="docutils literal"><span class="pre">expand</span></tt>: Boolean to specify if the column should be expanded to take
+available extra space in the view. This space is shared equally among all
+columns that have their &#8220;expand&#8221; property set to True. Resize don&#8217;t work
+if this option is enabled.</li>
+<li><tt class="docutils literal"><span class="pre">pre_validate</span></tt>: see in <a class="reference internal" href="#common-attributes-pre-validate">common-attributes-pre_validate</a>.</li>
+<li><tt class="docutils literal"><span class="pre">completion</span></tt>: see in <a class="reference internal" href="#common-attributes-completion">common-attributes-completion</a>.</li>
+<li><tt class="docutils literal"><span class="pre">factor</span></tt>: see in <a class="reference internal" href="#common-attributes-factor">common-attributes-factor</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="prefix-or-suffix">
+<h4>prefix or suffix<a class="headerlink" href="#prefix-or-suffix" title="Permalink to this headline">¶</a></h4>
+<p>A <tt class="docutils literal"><span class="pre">field</span></tt> could contain one or many <tt class="docutils literal"><span class="pre">prefix</span></tt> or <tt class="docutils literal"><span class="pre">suffix</span></tt> that will be
+diplayed in the same column.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The text that will be displayed.</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field whose value will be displayed.</li>
+<li><tt class="docutils literal"><span class="pre">icon</span></tt>: The name of the field that contains the name of the icon to
+display or the name of the icon.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h4>button<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <a class="reference internal" href="#form-button">form-button</a>.</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Example<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;tree</span> <span class="na">string=</span><span class="s">&quot;Taxes&quot;</span> <span class="na">sequence=</span><span class="s">&quot;sequence&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;percentage&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;suffix</span> <span class="na">string=</span><span class="s">&quot;%&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/field&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;group&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;type&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;active&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;sequence&quot;</span> <span class="na">tree_invisible=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/tree&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="id5">
+<h4>button<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>Display a button.</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">string</span></tt>: The string that will be displayed inside the button.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the function that will be called. The function must
+have this syntax:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">button(cls,</span> <span class="pre">records)</span></tt></p>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">confirm</span></tt>: A text that will be displayed in a confirmation popup when
+the button is clicked.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">help</span></tt>: see in <a class="reference internal" href="#common-attributes-help">common-attributes-help</a></p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="graph-view">
+<h2>Graph view<a class="headerlink" href="#graph-view" title="Permalink to this headline">¶</a></h2>
+<p>The RNG that describes the xml for a graph view is stored in
+trytond/ir/ui/graph.rng.  There is also a RNC in trytond/ir/ui/graph.rnc.</p>
+<div class="section" id="id6">
+<h3>XML description<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="graph">
+<h4>graph<a class="headerlink" href="#graph" title="Permalink to this headline">¶</a></h4>
+<p>Each graph view must start with this tag.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">type</span></tt>: <tt class="docutils literal"><span class="pre">vbar</span></tt>, <tt class="docutils literal"><span class="pre">hbar</span></tt>, <tt class="docutils literal"><span class="pre">line</span></tt>, <tt class="docutils literal"><span class="pre">pie</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: the name of the graph.</li>
+<li><tt class="docutils literal"><span class="pre">background</span></tt>: an hexaecimal value for the color of the
+background.</li>
+<li><tt class="docutils literal"><span class="pre">color</span></tt>: the main color.</li>
+<li><tt class="docutils literal"><span class="pre">legend</span></tt>: a boolean to specify if the legend must be displayed.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="x-y">
+<h4>x, y<a class="headerlink" href="#x-y" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div>Describe the field that must be used for axis.  <tt class="docutils literal"><span class="pre">x</span></tt> must contain
+only one tag <tt class="docutils literal"><span class="pre">field</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> must at least one but may contain
+many.</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h4>field<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">name</span></tt>: the name of the field on the object to use.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">string</span></tt>: allow to override the string that comes from the
+object.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">key</span></tt>: can be used to distinguish fields with the same name but
+with different domain.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">domain</span></tt>: a PySON string which is evaluated with the object value as
+context. If the result is true the field value is added to the graph.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">fill</span></tt>: defined if the graph shall be filled.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">empty</span></tt>: defined if the line graph must put a point for missing
+dates.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">color</span></tt>: the color of the field.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">interpolation</span></tt>: defined how the line graph must interpolate points.
+The default is <tt class="docutils literal"><span class="pre">linear</span></tt>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">constant-center</span></tt>: use the value of the nearest point, see
+<a class="reference external" href="http://en.wikipedia.org/wiki/Nearest-neighbor_interpolation">Nearest-neighbor interpolation</a></li>
+<li><tt class="docutils literal"><span class="pre">constant-left</span></tt>: use the value of the nearest left point.</li>
+<li><tt class="docutils literal"><span class="pre">constant-right</span></tt>: use the value of the nearest right point.</li>
+<li><tt class="docutils literal"><span class="pre">linear</span></tt>: see <a class="reference external" href="http://en.wikipedia.org/wiki/Linear_interpolation">linear interpolation</a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>Example<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;graph</span> <span class="na">string=</span><span class="s">&quot;Invoice by date&quot;</span> <span class="na">type=</span><span class="s">&quot;vbar&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;x&gt;</span>
+      <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;invoice_date&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/x&gt;</span>
+  <span class="nt">&lt;y&gt;</span>
+      <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;total_amount&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/y&gt;</span>
+<span class="nt">&lt;/graph&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="board-view">
+<h2>Board view<a class="headerlink" href="#board-view" title="Permalink to this headline">¶</a></h2>
+<p>The RNG that describes the xml for a board view is stored in
+trytond/ir/ui/board.rng.  There is also a RNC in trytond/ir/ui/graph.rnc.</p>
+<p>Board view is used to display multiple views at once.</p>
+<p>Elements are put on the screen followin the same rules as for <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+<p>The views can be updated by the selection of records on an other view inside
+the same board by using <a class="reference internal" href="../../ref/pyson.html#trytond.pyson.Eval" title="trytond.pyson.Eval"><tt class="xref py py-class docutils literal"><span class="pre">Eval()</span></tt></a> on the action id of the
+other view in the domain.</p>
+<div class="section" id="id9">
+<h3>XML description<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="board">
+<h4>board<a class="headerlink" href="#board" title="Permalink to this headline">¶</a></h4>
+<p>Each board view must start with this tag.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The text that will be used as default titla for the atb or
+the window.</li>
+<li><tt class="docutils literal"><span class="pre">col</span></tt>: The number of columns for the view.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h4>image<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id11">
+<h4>separator<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id12">
+<h4>label<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id13">
+<h4>newline<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id14">
+<h4>notebook<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id15">
+<h4>page<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id16">
+<h4>group<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id17">
+<h4>hpaned, vpaned<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="id18">
+<h4>child<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
+<p>Same as in <tt class="docutils literal"><span class="pre">Form</span></tt> view.</p>
+</div>
+<div class="section" id="action">
+<h4>action<a class="headerlink" href="#action" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The id of the action window.</li>
+<li><tt class="docutils literal"><span class="pre">colspan</span></tt>: see in <a class="reference internal" href="#common-attributes-colspan">common-attributes-colspan</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="calendar-view">
+<h2>Calendar view<a class="headerlink" href="#calendar-view" title="Permalink to this headline">¶</a></h2>
+<p>The RNG that describes the xml for a calendar view is stored in
+trytond/ir/ui/calendar.rng. There is also a RNC in trytond/ir/ui/calendar.rnc.</p>
+<p>Calendar view is use to display records as events on a calendar based on a
+<cite>dtstart</cite> and optionally a <cite>dtend</cite>.</p>
+<div class="section" id="id19">
+<h3>XML description<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="calendar">
+<h4>calendar<a class="headerlink" href="#calendar" title="Permalink to this headline">¶</a></h4>
+<p>Each calendar view must start with this tag.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">dtstart</span></tt>: The name of the field that contains the start date.</li>
+<li><tt class="docutils literal"><span class="pre">dtend</span></tt>: The name of the field that contains the end date.</li>
+<li><tt class="docutils literal"><span class="pre">string</span></tt>: The text that will be used as default title for the tab or
+the window.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id20">
+<h4>field<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the field.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id21">
+<h3>Example<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;calendar</span> <span class="na">string=</span><span class="s">&quot;Productions&quot;</span> <span class="na">dtstart=</span><span class="s">&quot;planned_date&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;code&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;product&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;reference&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/calendar&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Views</a><ul>
+<li><a class="reference internal" href="#form-view">Form view</a><ul>
+<li><a class="reference internal" href="#xml-description">XML description</a><ul>
+<li><a class="reference internal" href="#form">form</a></li>
+<li><a class="reference internal" href="#label">label</a></li>
+<li><a class="reference internal" href="#field">field</a></li>
+<li><a class="reference internal" href="#image">image</a></li>
+<li><a class="reference internal" href="#separator">separator</a></li>
+<li><a class="reference internal" href="#newline">newline</a></li>
+<li><a class="reference internal" href="#button">button</a></li>
+<li><a class="reference internal" href="#notebook">notebook</a></li>
+<li><a class="reference internal" href="#page">page</a></li>
+<li><a class="reference internal" href="#group">group</a></li>
+<li><a class="reference internal" href="#hpaned-vpaned">hpaned, vpaned</a></li>
+<li><a class="reference internal" href="#child">child</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tree-view">Tree view</a><ul>
+<li><a class="reference internal" href="#id1">XML description</a><ul>
+<li><a class="reference internal" href="#tree">tree</a></li>
+<li><a class="reference internal" href="#id2">field</a></li>
+<li><a class="reference internal" href="#prefix-or-suffix">prefix or suffix</a></li>
+<li><a class="reference internal" href="#id3">button</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">Example</a><ul>
+<li><a class="reference internal" href="#id5">button</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graph-view">Graph view</a><ul>
+<li><a class="reference internal" href="#id6">XML description</a><ul>
+<li><a class="reference internal" href="#graph">graph</a></li>
+<li><a class="reference internal" href="#x-y">x, y</a></li>
+<li><a class="reference internal" href="#id7">field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#board-view">Board view</a><ul>
+<li><a class="reference internal" href="#id9">XML description</a><ul>
+<li><a class="reference internal" href="#board">board</a></li>
+<li><a class="reference internal" href="#id10">image</a></li>
+<li><a class="reference internal" href="#id11">separator</a></li>
+<li><a class="reference internal" href="#id12">label</a></li>
+<li><a class="reference internal" href="#id13">newline</a></li>
+<li><a class="reference internal" href="#id14">notebook</a></li>
+<li><a class="reference internal" href="#id15">page</a></li>
+<li><a class="reference internal" href="#id16">group</a></li>
+<li><a class="reference internal" href="#id17">hpaned, vpaned</a></li>
+<li><a class="reference internal" href="#id18">child</a></li>
+<li><a class="reference internal" href="#action">action</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calendar-view">Calendar view</a><ul>
+<li><a class="reference internal" href="#id19">XML description</a><ul>
+<li><a class="reference internal" href="#calendar">calendar</a></li>
+<li><a class="reference internal" href="#id20">field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id21">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/FSERP/trytond/doc/topics/views/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

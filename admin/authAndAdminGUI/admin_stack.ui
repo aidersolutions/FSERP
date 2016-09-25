@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>843</width>
+    <height>545</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Admin</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <widget class="QFrame" name="adminFrame">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Hotel Name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="adminpopup_hotelname_linedit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Street &amp; Lane</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="adminpopup_street_linedit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>City</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="adminpopup_city_linedit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Pin</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="adminpopup_pin_linedit"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Latitude</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="adminpopup_latitude_linedit"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Longitude</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="adminpopup_longitude_linedit"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>API Key</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="adminpopup_apikey_linedit"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Tax</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="adminpopup_tax_linedit"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Profile Id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="adminpopup_profileid_linedit"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Password</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLineEdit" name="adminpopup_password_linedit">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>FSSAI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QLineEdit" name="adminpopup_fssai_linedit"/>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_18">
+        <property name="text">
+         <string>TIN</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLineEdit" name="adminpopup_tin_linedit"/>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Developer Mode:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QCheckBox" name="adminpopup_dev_checkbox">
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QPushButton" name="adminpopup_save_button">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="assignFrame">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="adminpopup_assign_newgroup_button">
+        <property name="text">
+         <string>New Group</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QComboBox" name="adminpopup_assign_groupname_combobox"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="adminpopup_assign_delete_button">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QPushButton" name="adminpopup_assign_addmembers_button">
+        <property name="text">
+         <string>Add Members</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Assign Roles</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="3">
+       <widget class="QTableWidget" name="adminpopup_assign_members_table">
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Members in the Group</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QTableWidget" name="adminpopup_assign_roles_table">
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Name of Roles</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="adminpopup_assign_deletegroup_button">
+        <property name="text">
+         <string>Delete Group</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="adminpopup_assign_addroles_button">
+        <property name="text">
+         <string>Add Roles</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="createFrame">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Create or Edit User</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QComboBox" name="adminpopup_createuser_username_combobox"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Username</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="adminpopup_createuser_username_linedit"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Password</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="adminpopup_createuser_password_linedit">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="adminpopup_createuser_delete_button">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="adminpopup_createuser_save_button">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QPushButton" name="adminpopup_createuser_create_button">
+        <property name="text">
+         <string>Create User</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="adminpopup_createuser_name_linedit">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>adminpopup_hotelname_linedit</tabstop>
+  <tabstop>adminpopup_street_linedit</tabstop>
+  <tabstop>adminpopup_city_linedit</tabstop>
+  <tabstop>adminpopup_pin_linedit</tabstop>
+  <tabstop>adminpopup_latitude_linedit</tabstop>
+  <tabstop>adminpopup_longitude_linedit</tabstop>
+  <tabstop>adminpopup_apikey_linedit</tabstop>
+  <tabstop>adminpopup_tax_linedit</tabstop>
+  <tabstop>adminpopup_profileid_linedit</tabstop>
+  <tabstop>adminpopup_password_linedit</tabstop>
+  <tabstop>adminpopup_fssai_linedit</tabstop>
+  <tabstop>adminpopup_tin_linedit</tabstop>
+  <tabstop>adminpopup_dev_checkbox</tabstop>
+  <tabstop>adminpopup_save_button</tabstop>
+  <tabstop>adminpopup_assign_groupname_combobox</tabstop>
+  <tabstop>adminpopup_assign_newgroup_button</tabstop>
+  <tabstop>adminpopup_assign_roles_table</tabstop>
+  <tabstop>adminpopup_assign_deletegroup_button</tabstop>
+  <tabstop>adminpopup_assign_addroles_button</tabstop>
+  <tabstop>adminpopup_assign_members_table</tabstop>
+  <tabstop>adminpopup_assign_delete_button</tabstop>
+  <tabstop>adminpopup_assign_addmembers_button</tabstop>
+  <tabstop>adminpopup_createuser_username_combobox</tabstop>
+  <tabstop>adminpopup_createuser_name_linedit</tabstop>
+  <tabstop>adminpopup_createuser_username_linedit</tabstop>
+  <tabstop>adminpopup_createuser_password_linedit</tabstop>
+  <tabstop>adminpopup_createuser_save_button</tabstop>
+  <tabstop>adminpopup_createuser_delete_button</tabstop>
+  <tabstop>adminpopup_createuser_create_button</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

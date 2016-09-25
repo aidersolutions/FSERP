@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reports &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="reports">
+<span id="topics-reports"></span><h1>Reports<a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h1>
+<p>Tryton can generate dynamic reports in many formats from report and style
+templates. The reports are generated in one step as follows: a report template
+in a special file format, explained later, is interpolated with dynamic data
+and placed into a document of the same file format. Tryton&#8217;s ability to
+generate documents in this way allows documents to be generated for any editor
+that supports the Open Document Format which can be converted to third party
+formats, such as PDF.  Extra libraries are required for this, see INSTALL for
+more information.</p>
+<div class="section" id="report-templates">
+<h2>Report Templates<a class="headerlink" href="#report-templates" title="Permalink to this headline">¶</a></h2>
+<p>Report templates are files with a format supported by relatorio, that contain
+snippets of the Genshi templating language.</p>
+<p>Here is an example of the text that would be placed in an open document text
+document, <tt class="docutils literal"><span class="pre">*.odt</span></tt>, that displays the full name and the address lines of the
+first address of each party. The genshi code is placed in the template using
+<tt class="docutils literal"><span class="pre">Functions-&gt;Placeholder-&gt;Text</span></tt> Fields. These are specific to ODT files.</p>
+<div class="highlight-genshi"><div class="highlight"><pre>&lt;for each=&quot;party in objects&quot;&gt;
+  &lt;party.full_name&gt;
+  &lt;if test=&quot;party.addresses&quot;&gt;
+    &lt;for each=&quot;line in party.addresses[0].full_address.split(&#39;\n&#39;)&quot;&gt;
+      &lt;line&gt;
+    &lt;/for&gt;
+  &lt;/if&gt;
+&lt;/for&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="report-styles">
+<h2>Report styles<a class="headerlink" href="#report-styles" title="Permalink to this headline">¶</a></h2>
+<p>Reports styles let you standardize the header, footer and styles of your
+templates.</p>
+</div>
+<div class="section" id="report-api">
+<h2>Report API<a class="headerlink" href="#report-api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-api">
+<h3>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="xml-description">
+<h3>XML Description<a class="headerlink" href="#xml-description" title="Permalink to this headline">¶</a></h3>
+<p>When defining an <cite>ir.action.report</cite> the following attributes are available:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt>: The name of the report.</li>
+<li><tt class="docutils literal"><span class="pre">report_name</span></tt>: The name of the report model, for example
+my_module.my_report.  This is the name you would use with <cite>Pool().get</cite></li>
+<li><tt class="docutils literal"><span class="pre">model</span></tt>: If this report is of an existing model this is its name.
+For example my_module.my_model. Custom reports that aren&#8217;t of a specific
+model will need to leave this blank.</li>
+<li><tt class="docutils literal"><span class="pre">report</span></tt>: The path to the template file starting with the module, for
+example my_module/my_report.odt.</li>
+<li><tt class="docutils literal"><span class="pre">style</span></tt>: The path to the style file starting with the module, for
+example, my_module/my_style.odt. If no style is to be used this field
+will be blank.</li>
+<li><tt class="docutils literal"><span class="pre">template_extension</span></tt>: The template format.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="report-usage">
+<h2>Report Usage<a class="headerlink" href="#report-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-genshi-and-open-office-reports">
+<h3>Using genshi and open office reports<a class="headerlink" href="#using-genshi-and-open-office-reports" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="setting-up-an-odt-file">
+<h4>Setting up an ODT file<a class="headerlink" href="#setting-up-an-odt-file" title="Permalink to this headline">¶</a></h4>
+<p>If you are creating a report from scratch you should perform the following
+steps:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Remove user data</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;File &gt; Properties...&#8221;</li>
+<li>Uncheck &#8220;Apply user data&#8221;</li>
+<li>Click on &#8220;Reset&#8221;</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Select Style and Formatting</p>
+<blockquote>
+<div><ul class="simple">
+<li>Press F11 or &#8220;Format &gt; Style and Formatting&#8221;</li>
+<li>Click on the drop down at the right top</li>
+<li>Select &#8220;Load Styles&#8221;</li>
+<li>Click on &#8220;From File...&#8221;</li>
+<li>Select a existing report (<tt class="docutils literal"><span class="pre">company/header_A4.odt</span></tt>)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Set some parameters</p>
+<blockquote>
+<div><ul class="simple">
+<li>Set the zoom to 100% (View&gt;Zoom)</li>
+<li>Set the document in read-only mode</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>(<tt class="docutils literal"><span class="pre">Tools&gt;Options&gt;OpenOffice.org&gt;Security</span></tt>) (Decreases the time it takes to
+open the document.)</p>
+<ul>
+<li><p class="first">Usage</p>
+<blockquote>
+<div><ul class="simple">
+<li>Use Liberation fonts (Only necessary if being officially included in
+Tryton)</li>
+<li>Try to use styles in report templates so that they can be extended in
+report styles.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="using-genshi-in-an-odt-file">
+<h4>Using Genshi in an ODT file<a class="headerlink" href="#using-genshi-in-an-odt-file" title="Permalink to this headline">¶</a></h4>
+<p>The genshi code is placed in the template using Functions-&gt;Placeholder-&gt;Text
+Fields. These are specific to <tt class="docutils literal"><span class="pre">*.odt</span></tt> files and can be found in the open
+office menu at Insert -&gt; Fields -&gt; Other and then Functions -&gt; Placeholder -&gt;
+Text.  Type genshi code into the Placeholder field.  There are alternatives for
+embedding genshi that are supported by relatorio but their use is not
+encouraged within Tryton.</p>
+<p>Also note that relatorio only supports a subset of genshi. The directives that
+are supported by relatorio can be found here: <a class="reference external" href="http://code.google.com/p/python-relatorio/wiki/QuickExample">Quick Example</a> .</p>
+<p>See genshi&#8217;s documentation for more information: <a class="reference external" href="http://genshi.edgewall.org/wiki/Documentation/0.5.x/xml-templates.html">Genshi XML Templates</a></p>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>The modules company, account_invoice and stock all contain helpful examples.</p>
+<p>Also see relatorio&#8217;s site for some examples:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://code.google.com/p/python-relatorio/wiki/QuickExample">Quick Example</a></li>
+<li><a class="reference external" href="http://code.google.com/p/python-relatorio/wiki/IndepthIntroduction">In Depth Introduction</a></li>
+<li><a class="reference external" href="http://code.google.com/p/python-relatorio/source/browse/#hg%2Fexamples">Example Documents</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="accessing-models-from-within-the-report">
+<h3>Accessing models from within the report<a class="headerlink" href="#accessing-models-from-within-the-report" title="Permalink to this headline">¶</a></h3>
+<p>By default instances of the models the report is for are passed in to the
+report via a list of objects called <cite>objects</cite>.  These objects behave just as
+they would within trytond itself. You can access any of the models relations as
+well.  For example within the invoice report each object is an invoice and you
+can access the name of the party of the invoice via <cite>invoice.party.name</cite>.
+Additional objects can be passed to a report. This is discussed below in
+<cite>Passing custom data to a report</cite>.</p>
+<p>Within Tryton the underlying model the report can be found by following the
+Menu to <tt class="docutils literal"><span class="pre">Administration</span> <span class="pre">&gt;</span> <span class="pre">UI</span> <span class="pre">&gt;</span> <span class="pre">Actions</span> <span class="pre">&gt;</span> <span class="pre">Report</span></tt>. Furthermore in tryton the
+fields for that model can be found by following the menu to <tt class="docutils literal"><span class="pre">Administration</span> <span class="pre">&gt;</span>
+<span class="pre">Model</span> <span class="pre">&gt;</span> <span class="pre">Model</span></tt>.  Model relation fields can be accessed to any depth, for
+example, one could access <cite>invoice.party.addresses</cite> to get a list of addresses
+for the party of an invoice.</p>
+</div>
+<div class="section" id="creating-a-simple-report-template-for-a-model-from-client">
+<h3>Creating a simple report template for a model from client<a class="headerlink" href="#creating-a-simple-report-template-for-a-model-from-client" title="Permalink to this headline">¶</a></h3>
+<p>TODO: Explain the steps necessary to do this.</p>
+</div>
+<div class="section" id="creating-a-simple-report-template-for-a-model-in-xml">
+<h3>Creating a simple report template for a model in XML<a class="headerlink" href="#creating-a-simple-report-template-for-a-model-in-xml" title="Permalink to this headline">¶</a></h3>
+<p>Less work has to be done if you just want a simple report representation of a
+model.  There are just 2 steps.  First, create a report template file in a
+format supported by relatorio.  Second, describe your report in XML making sure
+to define the correct <tt class="docutils literal"><span class="pre">report_name</span></tt> and <tt class="docutils literal"><span class="pre">model</span></tt>.</p>
+</div>
+<div class="section" id="replacing-existing-tryton-reports">
+<h3>Replacing existing Tryton reports<a class="headerlink" href="#replacing-existing-tryton-reports" title="Permalink to this headline">¶</a></h3>
+<p>To replace an existing report you must deactivate the old report and activate
+the new report.</p>
+<p>For example to deactivate the invoice report:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;ir.action.report&quot;</span> <span class="na">id=</span><span class="s">&quot;account_invoice.report_invoice&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;active&quot;</span> <span class="na">eval=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/record&gt;</span>
+</pre></div>
+</div>
+<p>Then you must activate the new invoice report that exists in your new module:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;record</span> <span class="na">model=</span><span class="s">&quot;ir.action.report&quot;</span> <span class="na">id=</span><span class="s">&quot;report_invoice_new&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Invoice<span class="nt">&lt;/field&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;report_name&quot;</span><span class="nt">&gt;</span>account.invoice<span class="nt">&lt;/field&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>account.invoice<span class="nt">&lt;/field&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;report&quot;</span><span class="nt">&gt;</span>my_module/invoice.odt<span class="nt">&lt;/field&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;style&quot;</span><span class="nt">&gt;</span>module_name/header_A4.odt<span class="nt">&lt;/field&gt;</span>
+  <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;template_extension&quot;</span><span class="nt">&gt;</span>odt<span class="nt">&lt;/field&gt;</span>
+<span class="nt">&lt;/record&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="passing-custom-data-to-a-report">
+<h3>Passing custom data to a report<a class="headerlink" href="#passing-custom-data-to-a-report" title="Permalink to this headline">¶</a></h3>
+<p>TODO: Examples of overriding Report.execute.</p>
+<p>In this example <cite>Report.get_context</cite> is overridden and an employee
+object is set into context.  Now the invoice report will be able to access the
+employee object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">trytond.report</span> <span class="kn">import</span> <span class="n">Report</span>
+<span class="kn">from</span> <span class="nn">tryton.pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="k">class</span> <span class="nc">InvoiceReport</span><span class="p">(</span><span class="n">Report</span><span class="p">):</span>
+    <span class="n">__name__</span> <span class="o">=</span> <span class="s">&#39;account.invoice&#39;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">()</span>
+        <span class="n">Employee</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;company.employee&#39;</span><span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">InvoiceReport</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">employee_id</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">()</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;employee&#39;</span><span class="p">)</span>
+        <span class="n">employee</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="n">employee_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">employee_id</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;employee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">employee</span>
+
+        <span class="k">return</span> <span class="n">context</span>
+
+<span class="n">Pool</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">InvoiceReport</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s">&#39;report&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="replacing-existing-tryton-styles">
+<h3>Replacing existing Tryton styles<a class="headerlink" href="#replacing-existing-tryton-styles" title="Permalink to this headline">¶</a></h3>
+<p>TODO: Explanation of how to override <cite>ir.report.get_style_content</cite> to change
+the default style.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Reports</a><ul>
+<li><a class="reference internal" href="#report-templates">Report Templates</a></li>
+<li><a class="reference internal" href="#report-styles">Report styles</a></li>
+<li><a class="reference internal" href="#report-api">Report API</a><ul>
+<li><a class="reference internal" href="#python-api">Python API</a></li>
+<li><a class="reference internal" href="#xml-description">XML Description</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#report-usage">Report Usage</a><ul>
+<li><a class="reference internal" href="#using-genshi-and-open-office-reports">Using genshi and open office reports</a><ul>
+<li><a class="reference internal" href="#setting-up-an-odt-file">Setting up an ODT file</a></li>
+<li><a class="reference internal" href="#using-genshi-in-an-odt-file">Using Genshi in an ODT file</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accessing-models-from-within-the-report">Accessing models from within the report</a></li>
+<li><a class="reference internal" href="#creating-a-simple-report-template-for-a-model-from-client">Creating a simple report template for a model from client</a></li>
+<li><a class="reference internal" href="#creating-a-simple-report-template-for-a-model-in-xml">Creating a simple report template for a model in XML</a></li>
+<li><a class="reference internal" href="#replacing-existing-tryton-reports">Replacing existing Tryton reports</a></li>
+<li><a class="reference internal" href="#passing-custom-data-to-a-report">Passing custom data to a report</a></li>
+<li><a class="reference internal" href="#replacing-existing-tryton-styles">Replacing existing Tryton styles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/FSERP/trytond/doc/topics/reports/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

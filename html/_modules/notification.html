@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>notification &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for notification</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Notification Module Ui &quot;&quot;&quot;</span>
+
+<span class="n">__authors__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jitesh Nair&quot;</span><span class="p">,</span> <span class="s">&quot;Jayarajan J N&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright 2015, Aider Solutons Pvt. Ltd.&quot;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot; Aider Solutons Pvt. Ltd.&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&quot;Jayarajan J N&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&quot;jayarajanjn@gmail.com&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&quot;Developement&quot;</span>
+
+<span class="kn">from</span> <span class="nn">notification_popupGUI.form</span> <span class="kn">import</span> <span class="n">Ui_Form</span>
+<span class="kn">from</span> <span class="nn">PySide.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<span class="kn">from</span> <span class="nn">notification_popupGUI.notificationtop_template</span> <span class="kn">import</span> <span class="n">Ui_notificationtop_template</span>
+<span class="kn">from</span> <span class="nn">notification_popupGUI.notificationbottom_template</span> <span class="kn">import</span> <span class="n">Ui_notificationbottom_template</span>
+
+
+<div class="viewcode-block" id="Notification"><a class="viewcode-back" href="../notification.html#notification.Notification">[docs]</a><span class="k">class</span> <span class="nc">Notification</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">=</span> <span class="n">Ui_Form</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paddingLeft</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paddingBottom</span> <span class="o">=</span> <span class="mi">25</span>
+        <span class="c"># op=QGraphicsOpacityEffect(self)</span>
+        <span class="c"># op.setOpacity(1.00)</span>
+        <span class="c"># self.setGraphicsEffect(op)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoFillBackground</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomnotification_object_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_topnotification_object</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomnotification_object</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_new_topnotification</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_new_topnotification</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;background-color:#ADEBFF;&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Notification.setParent"><a class="viewcode-back" href="../notification.html#notification.Notification.setParent">[docs]</a>    <span class="k">def</span> <span class="nf">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Notification.updatePosition"><a class="viewcode-back" href="../notification.html#notification.Notification.updatePosition">[docs]</a>    <span class="k">def</span> <span class="nf">updatePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="s">&#39;viewport&#39;</span><span class="p">):</span>
+            <span class="n">parentRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">viewport</span><span class="p">()</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parentRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parentRect</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">parentRect</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">paddingLeft</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">parentRect</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">paddingBottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">parentRect</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="mi">62</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Notification.resizeEvent"><a class="viewcode-back" href="../notification.html#notification.Notification.resizeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">resizeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Notification.showEvent"><a class="viewcode-back" href="../notification.html#notification.Notification.showEvent">[docs]</a>    <span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePosition</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Notification.add_new_topnotification"><a class="viewcode-back" href="../notification.html#notification.Notification.add_new_topnotification">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_topnotification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">NotificationTopTemplate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_topnotification_object</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span><span class="p">]</span> <span class="o">=</span> <span class="n">ob</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">new_notification</span><span class="p">(</span>
+            <span class="s">&#39;Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello&#39;</span>
+            <span class="s">&#39; buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies&#39;</span><span class="p">)</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">toptemplate</span><span class="o">.</span><span class="n">notificationtop_done_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">who</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_topnotification</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">toptemplate</span><span class="o">.</span><span class="n">notificationtop_todo_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">who</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomchecknotification</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">toptemplate</span><span class="o">.</span><span class="n">notificationtop_later_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">who</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topnotification_object_count</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">notify_later</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">notificationTop</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Notification.remove_topnotification"><a class="viewcode-back" href="../notification.html#notification.Notification.remove_topnotification">[docs]</a>    <span class="k">def</span> <span class="nf">remove_topnotification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_topnotification_object</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_topnotification_object</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Notification.new_bottomchecknotification"><a class="viewcode-back" href="../notification.html#notification.Notification.new_bottomchecknotification">[docs]</a>    <span class="k">def</span> <span class="nf">new_bottomchecknotification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomnotification_object_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">NotificationBottomTemplate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomnotification_object</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomnotification_object_count</span><span class="p">]</span> <span class="o">=</span> <span class="n">ob</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">new_notification</span><span class="p">(</span>
+            <span class="s">&#39;Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello&#39;</span>
+            <span class="s">&#39; buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies Hello buddies&#39;</span><span class="p">)</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">bottomtemplate</span><span class="o">.</span><span class="n">todo_checkbox</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_bottomnotification</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">notificationBottom</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_topnotification</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Notification.remove_bottomnotification"><a class="viewcode-back" href="../notification.html#notification.Notification.remove_bottomnotification">[docs]</a>    <span class="k">def</span> <span class="nf">remove_bottomnotification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomnotification_object</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">bottomtemplate</span><span class="o">.</span><span class="n">todo_checkbox</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="n">arg</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomnotification_object</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bottomnotification_object</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Notification.notify_later"><a class="viewcode-back" href="../notification.html#notification.Notification.notify_later">[docs]</a>    <span class="k">def</span> <span class="nf">notify_later</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">print</span> <span class="nb">id</span><span class="p">,</span> <span class="s">&#39;wil be notified later&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_topnotification</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="NotificationTopTemplate"><a class="viewcode-back" href="../notification.html#notification.NotificationTopTemplate">[docs]</a><span class="k">class</span> <span class="nc">NotificationTopTemplate</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NotificationTopTemplate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toptemplate</span> <span class="o">=</span> <span class="n">Ui_notificationtop_template</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toptemplate</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c"># self.setAutoFillBackground(True)</span>
+
+<div class="viewcode-block" id="NotificationTopTemplate.new_notification"><a class="viewcode-back" href="../notification.html#notification.NotificationTopTemplate.new_notification">[docs]</a>    <span class="k">def</span> <span class="nf">new_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">31</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">j</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toptemplate</span><span class="o">.</span><span class="n">notificationtop_message_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="c"># self.toptemplate.notificationtop_image_frame.setAutoFillBackground(True)</span>
+
+</div></div>
+<div class="viewcode-block" id="NotificationBottomTemplate"><a class="viewcode-back" href="../notification.html#notification.NotificationBottomTemplate">[docs]</a><span class="k">class</span> <span class="nc">NotificationBottomTemplate</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NotificationBottomTemplate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomtemplate</span> <span class="o">=</span> <span class="n">Ui_notificationbottom_template</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomtemplate</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c"># self.setAutoFillBackground(True)</span>
+
+<div class="viewcode-block" id="NotificationBottomTemplate.new_notification"><a class="viewcode-back" href="../notification.html#notification.NotificationBottomTemplate.new_notification">[docs]</a>    <span class="k">def</span> <span class="nf">new_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">31</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">j</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomtemplate</span><span class="o">.</span><span class="n">todo_checkbox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="c"># self.toptemplate.notificationtop_image_frame.setAutoFillBackground(True)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">new  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

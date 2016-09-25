@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>authandadmin_tryton module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="index.html" />
+    <link rel="next" title="billing module" href="billing.html" />
+    <link rel="prev" title="authandadmin module" href="authandadmin.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="billing.html" title="billing module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="authandadmin.html" title="authandadmin module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-authandadmin_tryton">
+<span id="authandadmin-tryton-module"></span><h1>authandadmin_tryton module<a class="headerlink" href="#module-authandadmin_tryton" title="Permalink to this headline">¶</a></h1>
+<p>Authorization and admin panel back end</p>
+<dl class="class">
+<dt id="authandadmin_tryton.AccessUser">
+<em class="property">class </em><tt class="descclassname">authandadmin_tryton.</tt><tt class="descname">AccessUser</tt><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the user</p>
+<dl class="attribute">
+<dt id="authandadmin_tryton.AccessUser.Tax">
+<tt class="descname">Tax</tt><a class="headerlink" href="#authandadmin_tryton.AccessUser.Tax" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">account.tax</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="authandadmin_tryton.AccessUser.User">
+<tt class="descname">User</tt><a class="headerlink" href="#authandadmin_tryton.AccessUser.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">res.user</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authandadmin_tryton.AccessUser.get_details">
+<tt class="descname">get_details</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser.get_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser.get_details" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">all the details of the user</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="authandadmin_tryton.AccessUser.get_user">
+<tt class="descname">get_user</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser.get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the user with the corresponding id
+:param id:the id of the user
+:return:the user</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authandadmin_tryton.AccessUser.intitate_everything">
+<tt class="descname">intitate_everything</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser.intitate_everything"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser.intitate_everything" title="Permalink to this definition">¶</a></dt>
+<dd><p>it is ran once to check whether the initial set of company and other stuffs are created properly
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authandadmin_tryton.AccessUser.save_details">
+<tt class="descname">save_details</tt><big>(</big><em>details</em><big>)</big><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser.save_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser.save_details" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>details</strong> &#8211; dict of details</td>
+</tr>
+</tbody>
+</table>
+<p>:return:none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authandadmin_tryton.AccessUser.validate_user">
+<tt class="descname">validate_user</tt><big>(</big><em>user</em>, <em>password</em><big>)</big><a class="reference internal" href="_modules/authandadmin_tryton.html#AccessUser.validate_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#authandadmin_tryton.AccessUser.validate_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>:param user:username of the user
+:param password: password of the user
+:return: valid id if password is correct else 0</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="authandadmin.html"
+                        title="previous chapter">authandadmin module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="billing.html"
+                        title="next chapter">billing module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/authandadmin_tryton.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="billing.html" title="billing module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="authandadmin.html" title="authandadmin module"
+             >previous</a> |</li>
+        <li><a href="index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

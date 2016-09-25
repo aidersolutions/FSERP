@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sale Opportunity Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sale-opportunity-module">
+<h1>Sale Opportunity Module<a class="headerlink" href="#sale-opportunity-module" title="Permalink to this headline">¶</a></h1>
+<p>The sale_opportunity module defines the lead/opportunity model.</p>
+<div class="section" id="lead-opportunity">
+<h2>Lead/Opportunity<a class="headerlink" href="#lead-opportunity" title="Permalink to this headline">¶</a></h2>
+<p>The lead and opportunity are defined by the same record but with different state.
+Depending on the state, fields of the record become mandatory. Here is the
+extensive list of the fields, most of them are optional:</p>
+<ul>
+<li><p class="first">Party: The customer.</p>
+</li>
+<li><p class="first">Address: The main address of the customer.</p>
+</li>
+<li><p class="first">Description: The description of the lead/opportunity.</p>
+</li>
+<li><p class="first">Reference: The internal reference of the lead/opportunity (will be generated
+automatically at creation).</p>
+</li>
+<li><p class="first">Amount: The estimated revenue amount.</p>
+</li>
+<li><p class="first">Currency: Define the currency of the amount.</p>
+</li>
+<li><p class="first">Probability: The probability of conversion.</p>
+</li>
+<li><p class="first">Company: The company which issue the lead/opportunity.</p>
+</li>
+<li><p class="first">Employee: The employee responsible of the lead/opportunity.</p>
+</li>
+<li><p class="first">Start Date: When the lead started.</p>
+</li>
+<li><p class="first">End Date: When the lead ends (automatically set on win, cancel or lost).</p>
+</li>
+<li><p class="first">Payment Term: Define which payment term will be used for the future invoice.</p>
+</li>
+<li><p class="first">Comment: A text field to add custom comments.</p>
+</li>
+<li><p class="first">State: The state of the lead/opportunity. May take one of the following
+values:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Lead</li>
+<li>Opportunity</li>
+<li>Converted</li>
+<li>Won</li>
+<li>Cancelled</li>
+<li>Lost</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Lines: A list of <em>Lead/Opportunity</em> line</p>
+</li>
+<li><p class="first">Sales: The list of sales converted from this opportunity.</p>
+</li>
+<li><p class="first">History: The list of changes made over time to the lead/opportunity.</p>
+</li>
+</ul>
+<p>The first time an opportunity is converted, a sale is created base on the
+information of the opportunity and the lines.
+The amount of the opportunity is later updated with the sales amount.
+Once all the sales of an opportunity are confirmed (or cancelled with at least
+one confirmed), the opportunity is won.
+If all the sales of an opportunity are cancelled than the opportunity is lost.</p>
+</div>
+<div class="section" id="lead-opportunity-line">
+<h2>Lead/Opportunity Line<a class="headerlink" href="#lead-opportunity-line" title="Permalink to this headline">¶</a></h2>
+<p>A lead/opportunity line define a quantity of product that are expected to be sold.</p>
+</div>
+<div class="section" id="reports">
+<h2>Reports<a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h2>
+<p>The sale_opportunity module defines also some reports:</p>
+<ul class="simple">
+<li>Opportunities per Employee.</li>
+<li>Opportunities per Month.</li>
+<li>Opportunities per Employee per Month.</li>
+</ul>
+<p>which all show:</p>
+<ul class="simple">
+<li>The number of leads/opportunities.</li>
+<li>The number of converted opportunities.</li>
+<li>The convertion rate.</li>
+<li>The number of won opportunities.</li>
+<li>The winning rate.</li>
+<li>The number of lost opportunities.</li>
+<li>The total amount of leads/opportunities.</li>
+<li>The total amount of converted opportunities.</li>
+<li>The convertion amount rate.</li>
+<li>The total amount of won opportunities.</li>
+<li>The winning amount rate.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sale Opportunity Module</a><ul>
+<li><a class="reference internal" href="#lead-opportunity">Lead/Opportunity</a></li>
+<li><a class="reference internal" href="#lead-opportunity-line">Lead/Opportunity Line</a></li>
+<li><a class="reference internal" href="#reports">Reports</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/sale_opportunity/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

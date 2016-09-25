@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account Payment Module &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-payment-module">
+<h1>Account Payment Module<a class="headerlink" href="#account-payment-module" title="Permalink to this headline">¶</a></h1>
+<p>The account_payment module allows to generate grouped payments for receivable
+or payable Account Move Lines.</p>
+<div class="section" id="payment">
+<h2>Payment<a class="headerlink" href="#payment" title="Permalink to this headline">¶</a></h2>
+<p>A Payment defines an amount to pay to a party or to receive from a party. It is
+mainly defined by:</p>
+<ul class="simple">
+<li>Journal.</li>
+<li>Kind:
+- Payable
+- Receivable</li>
+<li>Party.</li>
+<li>Line.</li>
+<li>Amount.</li>
+<li>Date.</li>
+<li>Description.</li>
+</ul>
+<p>A payment can be created from an payable or receivable <em>Account Move Line</em>
+using the <cite>Pay Lines</cite> action. The amount is computed from the debit/credit
+deducing existing payments for this line.</p>
+<p>The payment can be in one of this states:</p>
+<ul>
+<li><p class="first">Draft</p>
+<p>The payment is waiting for approval.</p>
+</li>
+<li><p class="first">Approved</p>
+<p>The payment has been approved and is waiting to be processed by the wizard in
+a Group.</p>
+</li>
+<li><p class="first">Processing</p>
+<p>The payment has been processed in a Group.</p>
+</li>
+<li><p class="first">Succeeded</p>
+<p>The payment was successfully processed.</p>
+</li>
+<li><p class="first">Failed</p>
+<p>The payment was not successfully processed.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="group">
+<h2>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h2>
+<p>A group links a set of payment of the same kind processed together inside the
+same journal.</p>
+</div>
+<div class="section" id="journal">
+<h2>Journal<a class="headerlink" href="#journal" title="Permalink to this headline">¶</a></h2>
+<p>A journal defines the configuration of the processing of payments.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account Payment Module</a><ul>
+<li><a class="reference internal" href="#payment">Payment</a></li>
+<li><a class="reference internal" href="#group">Group</a></li>
+<li><a class="reference internal" href="#journal">Journal</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../../_sources/FSERP/trytond/trytond/modules/account_payment/doc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

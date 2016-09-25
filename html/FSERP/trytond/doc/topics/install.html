@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to install Tryton &mdash; new  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="new  documentation" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-install-tryton">
+<span id="topics-install"></span><h1>How to install Tryton<a class="headerlink" href="#how-to-install-tryton" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7 or later (<a class="reference external" href="http://www.python.org/">http://www.python.org/</a>)</li>
+<li>lxml 2.0 or later (<a class="reference external" href="http://lxml.de/">http://lxml.de/</a>)</li>
+<li>relatorio 0.2.0 or later (<a class="reference external" href="http://code.google.com/p/python-relatorio/">http://code.google.com/p/python-relatorio/</a>)</li>
+<li>Genshi (<a class="reference external" href="http://genshi.edgewall.org/">http://genshi.edgewall.org/</a>)</li>
+<li>python-dateutil (<a class="reference external" href="http://labix.org/python-dateutil">http://labix.org/python-dateutil</a>)</li>
+<li>polib (<a class="reference external" href="https://bitbucket.org/izi/polib/wiki/Home">https://bitbucket.org/izi/polib/wiki/Home</a>)</li>
+<li>python-sql 0.2 or later (<a class="reference external" href="http://code.google.com/p/python-sql/">http://code.google.com/p/python-sql/</a>)</li>
+<li>Optional: psycopg 2 or later (<a class="reference external" href="http://www.initd.org/">http://www.initd.org/</a>)</li>
+<li>Optional: psycopg2cffi 2.5.0 or later
+(<a class="reference external" href="http://github.com/chtd/psycopg2cffi">http://github.com/chtd/psycopg2cffi</a>)</li>
+<li>Optional: MySQL-python (<a class="reference external" href="http://sourceforge.net/projects/mysql-python/">http://sourceforge.net/projects/mysql-python/</a>)</li>
+<li>Optional: pywebdav 0.9.8 or later (<a class="reference external" href="http://code.google.com/p/pywebdav/">http://code.google.com/p/pywebdav/</a>)</li>
+<li>Optional: pydot (<a class="reference external" href="http://code.google.com/p/pydot/">http://code.google.com/p/pydot/</a>)</li>
+<li>Optional: unoconv <a class="reference external" href="http://dag.wieers.com/home-made/unoconv/">http://dag.wieers.com/home-made/unoconv/</a>)</li>
+<li>Optional: sphinx (<a class="reference external" href="http://sphinx.pocoo.org/">http://sphinx.pocoo.org/</a>)</li>
+<li>Optional: simplejson (<a class="reference external" href="http://undefined.org/python/#simplejson">http://undefined.org/python/#simplejson</a>)</li>
+<li>Optional: cdecimal (<a class="reference external" href="http://www.bytereef.org/mpdecimal/index.html">http://www.bytereef.org/mpdecimal/index.html</a>)</li>
+<li>Optional: python-Levenshtein
+(<a class="reference external" href="http://github.com/miohtama/python-Levenshtein">http://github.com/miohtama/python-Levenshtein</a>)</li>
+<li>Optional: bcrypt (<a class="reference external" href="https://github.com/pyca/bcrypt">https://github.com/pyca/bcrypt</a>)</li>
+<li>Optional: mock (<a class="reference external" href="http://www.voidspace.org.uk/python/mock/">http://www.voidspace.org.uk/python/mock/</a>)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="install-tryton">
+<h2>Install Tryton<a class="headerlink" href="#install-tryton" title="Permalink to this headline">¶</a></h2>
+<p>There are three easy options to install Tryton:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Install the version provided by your operating system distribution. This
+is the quickest and recommended option for those who has operating system
+that distributes Tryton.</p>
+</li>
+<li><p class="first">Install an official release. Once you&#8217;ve downloaded and unpacked a
+trytond source release, enter the directory where the archive was
+unpacked, and run: <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt></p>
+<p>For advanced options, please refer to the easy_install and/or the
+distutils documentation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall">http://peak.telecommunity.com/DevCenter/EasyInstall</a></li>
+<li><a class="reference external" href="http://docs.python.org/inst/inst.html">http://docs.python.org/inst/inst.html</a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Without installation, just run <tt class="docutils literal"><span class="pre">bin/trytond</span></tt> from where the archive was
+unpacked.</p>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Note that you may need administrator/root privileges for this step, as
+this command will by default attempt to install trytond to the Python
+site-packages directory on your system.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to install Tryton</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#install-tryton">Install Tryton</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/FSERP/trytond/doc/topics/install.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">new  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
